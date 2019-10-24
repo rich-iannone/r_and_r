@@ -1,0 +1,20 @@
+---
+date: "2014-04-13T00:00:00Z"
+external_link: ""
+links:
+- icon: github
+  icon_pack: fab
+  name: GitHub
+  url: https://github.com/rich-iannone/stationaRy
+summary: The stationaRy R package gives us access to historical weather data.
+tags:
+- R Packages
+title: "[R package] stationaRy"
+url_code: ""
+url_pdf: ""
+url_slides: ""
+url_video: ""
+---
+
+The **stationaRy** package allows for fast retrieval of meteorological data from met stations located all over the world. Weather data originates from the 29,729 stations available in this dataset where many of these contain data that go back decades. The data comes from the Integrated Surface Dataset (ISD), which is maintained by the National Oceanic and Atmospheric Administration (NOAA).
+

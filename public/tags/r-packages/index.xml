@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>R Packages | R &amp; R</title>
+    <link>/tags/r-packages/</link>
+      <atom:link href="/tags/r-packages/index.xml" rel="self" type="application/rss+xml" />
+    <description>R Packages</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 20 Mar 2018 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/img/icon-192.png</url>
+      <title>R Packages</title>
+      <link>/tags/r-packages/</link>
+    </image>
+    
+    <item>
+      <title>[R package] gt</title>
+      <link>/projects/gt-pkg/</link>
+      <pubDate>Tue, 20 Mar 2018 00:00:00 +0000</pubDate>
+      <guid>/projects/gt-pkg/</guid>
+      <description>
+
+
+&lt;p&gt;With the &lt;strong&gt;gt&lt;/strong&gt; package, anyone can make wonderful-looking tables using the &lt;strong&gt;R&lt;/strong&gt; programming language. The &lt;strong&gt;gt&lt;/strong&gt; philosophy: we can construct a wide variety of useful tables with a cohesive set of table parts. These include the table header, the stub, the stub head, the column labels, the table body, and the table footer.&lt;/p&gt;
+&lt;p&gt;The gt API is designed to be both straightforward yet powerful. The emphasis is on simple functions for the everyday display table needs. However, there are functions for customizing and annotating tables to convey additional information.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>[R package] blastula</title>
+      <link>/projects/blastula-pkg/</link>
+      <pubDate>Sun, 13 Aug 2017 00:00:00 +0000</pubDate>
+      <guid>/projects/blastula-pkg/</guid>
+      <description>
+
+
+&lt;p&gt;The &lt;strong&gt;blastula&lt;/strong&gt; package makes it easy to produce and send HTML email from R. The message can have three content areas (the body, the header, and the footer) and we can insert Markdown text, R expressions, block-based components, and even some raw HTML. The underlying HTML/CSS is meant to display properly across a wide range of email clients and webmail services. The resulting email message is responsive so it’ll look great on computers and mobile devices.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>[R package] pointblank</title>
+      <link>/projects/pointblank-pkg/</link>
+      <pubDate>Thu, 23 Feb 2017 00:00:00 +0000</pubDate>
+      <guid>/projects/pointblank-pkg/</guid>
+      <description>
+
+
+&lt;p&gt;The &lt;strong&gt;pointblank&lt;/strong&gt; package let’s us validate data in local data frames or tibbles, in CSV and TSV files, and in database tables (PostgreSQL and MySQL). We can get a detailed summary report of the interrogation, showing how many individual tests in each validation step had passed or failed. The self-contained HTML report provides detailed information on the validation outcomes and it can be used as web content.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>[R package] DiagrammeR</title>
+      <link>/projects/diagrammer-pkg/</link>
+      <pubDate>Sun, 28 Dec 2014 00:00:00 +0000</pubDate>
+      <guid>/projects/diagrammer-pkg/</guid>
+      <description>
+
+
+&lt;p&gt;The &lt;strong&gt;DiagrammeR&lt;/strong&gt; package has a collection of graph functions allow you to create graph objects, modify those graphs, get information from the graphs, and do many other useful things. We can easily generate network graphs with data available in tabular datasets. Two specialized data frames contain node data and attributes (node data frames) and edges with associated edge attributes (edge data frames). Because the attributes are always kept alongside the node and edge definitions (within the graph object itself), we can easily work with them.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>[R package] stationaRy</title>
+      <link>/projects/stationary-pkg/</link>
+      <pubDate>Sun, 13 Apr 2014 00:00:00 +0000</pubDate>
+      <guid>/projects/stationary-pkg/</guid>
+      <description>
+
+
+&lt;p&gt;The &lt;strong&gt;stationaRy&lt;/strong&gt; package allows for fast retrieval of meteorological data from met stations located all over the world. Weather data originates from the 29,729 stations available in this dataset where many of these contain data that go back decades. The data comes from the Integrated Surface Dataset (ISD), which is maintained by the National Oceanic and Atmospheric Administration (NOAA).&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>[R package] splitr</title>
+      <link>/projects/splitr-pkg/</link>
+      <pubDate>Tue, 10 Dec 2013 00:00:00 +0000</pubDate>
+      <guid>/projects/splitr-pkg/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;strong&gt;splitr&lt;/strong&gt; is an R package for conducting trajectory and dispersion modeling with HYSPLIT. This is useful for atmospheric scientists as the package helps to determine, from one or more receptor sites, where arriving air masses originated. Conversely, it’s possible to model trajectories of air masses from receptor sites. Forward and backward modeling of gas-phase or particulate matter can also be conducted from defined sites. It’s a means to help explain how, where, and when chemicals and materials are atmospherically transported, dispersed, and deposited.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

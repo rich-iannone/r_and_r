@@ -1,0 +1,19 @@
+---
+date: "2017-08-13T00:00:00Z"
+external_link: ""
+links:
+- icon: github
+  icon_pack: fab
+  name: GitHub
+  url: https://github.com/rich-iannone/blastula
+summary: The blastula R package lets us send HTML email messages.
+tags:
+- R Packages
+title: "[R package] blastula"
+url_code: ""
+url_pdf: ""
+url_slides: ""
+url_video: ""
+---
+
+The **blastula** package makes it easy to produce and send HTML email from R. The message can have three content areas (the body, the header, and the footer) and we can insert Markdown text, R expressions, block-based components, and even some raw HTML. The underlying HTML/CSS is meant to display properly across a wide range of email clients and webmail services. The resulting email message is responsive so it’ll look great on computers and mobile devices.

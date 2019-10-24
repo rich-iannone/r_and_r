@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>/projects/exploring-data-with-r-book/</loc>
+    <lastmod>2019-10-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/projects/</loc>
+    <lastmod>2019-10-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2019-10-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/r-books/</loc>
+    <lastmod>2019-10-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2019-10-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/slides/</loc>
+    <lastmod>2019-02-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/slides/example/</loc>
+    <lastmod>2019-02-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/talk/rstudio-conf-2019/</loc>
+    <lastmod>2019-01-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/talk/</loc>
+    <lastmod>2019-01-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/privacy/</loc>
+    <lastmod>2018-06-28T00:00:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/terms/</loc>
+    <lastmod>2018-06-28T00:00:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/projects/gt-pkg/</loc>
+    <lastmod>2018-03-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/r-packages/</loc>
+    <lastmod>2018-03-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/projects/blastula-pkg/</loc>
+    <lastmod>2017-08-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/projects/pointblank-pkg/</loc>
+    <lastmod>2017-02-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/projects/diagrammer-pkg/</loc>
+    <lastmod>2014-12-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/projects/stationary-pkg/</loc>
+    <lastmod>2014-04-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/projects/splitr-pkg/</loc>
+    <lastmod>2013-12-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/authors/admin/</loc>
+  </url>
+  
+  <url>
+    <loc>/authors/</loc>
+  </url>
+  
+  <url>
+    <loc>/categories/</loc>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+  </url>
+  
+  <url>
+    <loc>/publication_types/</loc>
+  </url>
+  
+  <url>
+    <loc>/publication/</loc>
+  </url>
+  
+</urlset>

@@ -1,0 +1,30 @@
+---
+authors:
+- admin
+bio: I enjoy making things with R and teaching people how to be successful with R.
+email: rich@rstudio.com
+name: Richard Iannone
+organizations:
+- name: RStudio, Inc.
+  url: https://rstudio.com
+role: Software Engineer
+social:
+- icon: envelope
+  icon_pack: fas
+  link: '#contact'
+- icon: linkedin
+  icon_pack: fab
+  link: https://www.linkedin.com/in/richard-iannone-a5640017/
+- icon: twitter
+  icon_pack: fab
+  link: https://twitter.com/riannone
+- icon: github
+  icon_pack: fab
+  link: https://github.com/rich-iannone
+superuser: true
+user_groups:
+- Researchers
+- Visitors
+---
+
+I'm a software engineer at RStudio. Most of my work involves creating **R** packages that make it easier to work with and communicate data. I also enjoy opportunities to teach people how to be successful with **R**. 

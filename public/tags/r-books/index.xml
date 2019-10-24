@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>R Books | R &amp; R</title>
+    <link>/tags/r-books/</link>
+      <atom:link href="/tags/r-books/index.xml" rel="self" type="application/rss+xml" />
+    <description>R Books</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 20 Oct 2019 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/img/icon-192.png</url>
+      <title>R Books</title>
+      <link>/tags/r-books/</link>
+    </image>
+    
+    <item>
+      <title>[R book] Exploring Data with R</title>
+      <link>/projects/exploring-data-with-r-book/</link>
+      <pubDate>Sun, 20 Oct 2019 00:00:00 +0000</pubDate>
+      <guid>/projects/exploring-data-with-r-book/</guid>
+      <description>
+
+
+&lt;p&gt;The book entitled &lt;strong&gt;Exploring Data with R&lt;/strong&gt; teaches you how to do data analysis with &lt;strong&gt;R&lt;/strong&gt;. The book doesn’t assume any prior experience with programming making it a great introduction with easy-to-follow examples and useful exercises.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
