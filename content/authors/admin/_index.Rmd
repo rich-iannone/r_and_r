@@ -1,7 +1,7 @@
 ---
 authors:
 - admin
-bio: I enjoy making things with R and teaching people how to be successful with R.
+bio: I enjoy making things with R and showing people how to be successful with R.
 email: rich@rstudio.com
 name: Richard Iannone
 organizations:
