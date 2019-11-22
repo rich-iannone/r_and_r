@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.5.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Richard Iannone">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="The newest release of the blastula package lets you to do amazing things with HTML email in R and RStudio Connect. You can install blastula 0.3 from CRAN with:
+install.packages(&quot;blastula&quot;) This is a huge release! There are so many new and improved features we won’t be able to get through all of them here. We’ll focus on just two: R Markdown report emailing and improved HTML emailing using SMTP.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/post/2019-11-20-blastula-0-3/blastula-0-3/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.css">
+
+  
+
+
+
+
+  
+
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon-32.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="/post/2019-11-20-blastula-0-3/blastula-0-3/">
+
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="twitter:site" content="@riannone">
+  <meta property="twitter:creator" content="@riannone">
+  
+  <meta property="og:site_name" content="R &amp; R">
+  <meta property="og:url" content="/post/2019-11-20-blastula-0-3/blastula-0-3/">
+  <meta property="og:title" content="blastula 0.3 | R &amp; R">
+  <meta property="og:description" content="The newest release of the blastula package lets you to do amazing things with HTML email in R and RStudio Connect. You can install blastula 0.3 from CRAN with:
+install.packages(&quot;blastula&quot;) This is a huge release! There are so many new and improved features we won’t be able to get through all of them here. We’ll focus on just two: R Markdown report emailing and improved HTML emailing using SMTP."><meta property="og:image" content="/img/icon-192.png">
+  <meta property="twitter:image" content="/img/icon-192.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2019-11-20T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2019-11-20T19:00:32-05:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/post/2019-11-20-blastula-0-3/blastula-0-3/"
+  },
+  "headline": "blastula 0.3",
+  
+  "datePublished": "2019-11-20T00:00:00Z",
+  "dateModified": "2019-11-20T19:00:32-05:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Richard Iannone"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "R \u0026 R",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/img/icon-512.png"
+    }
+  },
+  "description": "The newest release of the blastula package lets you to do amazing things with HTML email in R and RStudio Connect. You can install blastula 0.3 from CRAN with:\ninstall.packages(\u0026quot;blastula\u0026quot;) This is a huge release! There are so many new and improved features we won’t be able to get through all of them here. We’ll focus on just two: R Markdown report emailing and improved HTML emailing using SMTP."
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>blastula 0.3 | R &amp; R</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0 compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">R &amp; R</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav mr-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#contact"><span>Contact</span></a>
+        </li>
+
+        
+        
+
+      
+      </ul>
+      <ul class="navbar-nav ml-auto">
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+        </li>
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+  <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>blastula 0.3</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Last updated on
+      
+    
+    Nov 20, 2019
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    5 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+
+
+<p><img src="blastula-banner.svg" width="100%" /></p>
+<p>The newest release of the <code>blastula</code> package lets you to do amazing things with HTML email in R and RStudio Connect. You can install blastula 0.3 from CRAN with:</p>
+<pre class="r"><code>install.packages(&quot;blastula&quot;)</code></pre>
+<p>This is a huge release! There are so many new and improved features we won’t be able to get through all of them here. We’ll focus on just two: R Markdown report emailing and improved HTML emailing using SMTP.</p>
+<div id="r-markdown-report-emailing-via-connect" class="section level2">
+<h2>R Markdown Report Emailing via Connect</h2>
+<p>The capability to email a rendered R Markdown document in RStudio Connect has been available for well over a year. What would happen is that the report would be in the form of an attachment and message portion of the email would be prepared by largely by RStudio Connect. With <code>blastula</code> v0.3, we can now create an email message body directly with R Markdown. Moreover, we can have a full report for RStudio Connect viewers (with all of the details that are necessary) and an email version of the report with only the necessary elements for the purposes of email).</p>
+<div class="figure">
+<img src="/2019-11-20-blastula-0-3/2019-11-20-blastula-0-3_files/old_versus_new_rsc.png" alt="Old versus new look of emails on RSC" style="width:100.0%" />
+<p class="caption">Old versus new look of emails on RSC</p>
+</div>
+<p>Static elements like ggplots and images are faithfully converted to an HTML email message body that is fully responsive (looking great on both larger displays and mobile devices). We went to great lengths to test and ensure that received emails display without problems on a huge range of email clients.</p>
+<p><img src="device_client_testing.png" width="100%" /></p>
+<p>We thought that emailing R Markdown reports from RStudio Connect was a bit more difficult than it should have been. After going back to the drawing board, there is now an easier-to-use methodology for associating an email to a published R Markdown report. We’ve included the function <code>prepare_rsc_example_files()</code> to spawn a set of example files relevant to R Markdown emailing in RStudio Connect. It provides a working example of a main .Rmd document, an email .Rmd document, and a CSV file that can be included as an attachment (any files generated from the main .Rmd document can also be attached). A full walkthrough that explains how these documents interact, which <code>blastula</code> functions are used, and how to publish to RSC is available at the <code>blastula</code> website. An updated support document in the official RStudio Connect documentation is forthcoming.</p>
+<p>We think that RStudio Connect customers and the recipients of these emails will love the changes implemented here. Expect further improvements to R Markdown emailing via RStudio Connect in future releases.</p>
+</div>
+<div id="improved-html-emailing-using-smtp" class="section level2">
+<h2>Improved HTML Emailing Using SMTP</h2>
+<p>RStudio Connect isn’t the only way to send emails with <code>blastula</code>, we can opt to send our own custom emails through an SMTP server we have access to (e.g., Gmail, Outlook, etc.). These are HTML emails that are, again, responsive to display size and well tested on dozens of email clients. Let’s quickly look at three things that have changed for the better with regard to email composition and SMTP sending.</p>
+<div id="revised-message-composition-with-improved-security" class="section level3">
+<h3>Revised message composition with improved security</h3>
+<p>Previously, text interpolation features from the <strong>glue</strong> package were built into the <code>compose_email()</code> function. This means we could have used the string <code>&quot;The date and time of sending is {Sys.time()}.&quot;</code> directly as input to, say, the message footer. Having the potential for R evaluation in strings invites security risks, so, this is no longer possible. Instead, we can simply opt to use <code>glue::glue()</code> ourselves or <code>paste()</code>. When there is any Markdown or HTML element, the <code>md()</code> function is required. Here is an example of a simple message that uses Markdown:</p>
+<pre class="r"><code>email &lt;-
+  compose_email(
+    body = md(
+&quot;
+## Hello!
+
+This is an email message that was generated by the blastula package.
+
+Yep, we can use **Markdown** formatting but be sure to use the `md()` function.
+
+Here is a link to a great song ([E-MAIL ME!](https://youtu.be/-FcJbEg3vX8)).
+
+Cheers,
+
+The blastula team
+&quot;),
+  footer = md(
+&quot;
+sent via the [blastula](https://rich-iannone.github.io/blastula) R package
+&quot;)
+)
+</code></pre>
+<p>We can always preview the <code>email</code> object in the RStudio Viewer while getting the composition just right. For more details on email message composition with <code>compose_email()</code>, have a look at the <a href="https://rich-iannone.github.io/blastula/articles/simple_composition.html"><em>Simple Email Composition</em> article</a> on the project website.</p>
+</div>
+<div id="no-external-software-to-install-for-smtp-sending" class="section level3">
+<h3>No external software to install for SMTP sending</h3>
+<p>In the few years that blastula has been available, it relied on various pieces of external software for sending email. Not anymore. This release favors the creation of an RFC-2822 email body, sending through the excellent <strong>curl</strong> package. Emails can now be sent dependably with the <code>smtp_send()</code> function on all the major platforms with no up-front installation of a third-party binary.</p>
+</div>
+<div id="improved-credentials-handling" class="section level3">
+<h3>Improved credentials handling</h3>
+<p>The package now ships with functions for setting up and retrieving SMTP configuration and credentials information. We can set this in the system-wide key-value store with <code>create_smtp_creds_key()</code>. With such a key added, the credentials helper <code>creds_key()</code> can be used when sending email through <code>smtp_send()</code>. Alternatively, a credentials file can be created using the <code>create_smtp_creds_file()</code> function (retrieved with the <code>creds_file()</code> credentials helper). Lastly, credentials can be fully specified at the time of sending with the <code>creds()</code> function. Whenever a password is needed for setup, a prompt will appear and the password will be obscured.</p>
+</div>
+<div id="more" class="section level3">
+<h3>More!</h3>
+<p>Other quality-of-life improvements include automatic image embedding (via Base64 encoding) when using output from the <code>add_image()</code> and <code>add_ggplot()</code> functions when composing an email message, automatic image deployment and retrieval of the external image tag through <code>add_imgur_image()</code>, and a set of <code>block_*()</code> functions to compose emails with more complex layouts.</p>
+</div>
+</div>
+<div id="wrapping-up" class="section level2">
+<h2>Wrapping Up</h2>
+<p>We hope that you try out the new <code>blastula</code> package. We can create so many useful things with <strong>R</strong> and having the means to deliver our findings through email is satisfying both for the sender and the recipient.</p>
+</div>
+
+    </div>
+
+    
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/r-packages/">R Packages</a>
+  
+</div>
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=blastula%200.3&amp;body=/post/2019-11-20-blastula-0-3/blastula-0-3/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/post/2019-11-20-blastula-0-3/blastula-0-3/&amp;text=blastula%200.3" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/post/2019-11-20-blastula-0-3/blastula-0-3/&amp;title=blastula%200.3" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/post/2019-11-20-blastula-0-3/blastula-0-3/&amp;title=blastula%200.3" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://reddit.com/submit?url=/post/2019-11-20-blastula-0-3/blastula-0-3/&amp;title=blastula%200.3" target="_blank" rel="noopener" class="share-btn-reddit">
+          <i class="fab fa-reddit-alien"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://pinterest.com/pin/create/link/?url=/post/2019-11-20-blastula-0-3/blastula-0-3/&amp;description=blastula%200.3" target="_blank" rel="noopener" class="share-btn-pinterest">
+          <i class="fab fa-pinterest"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <img class="portrait mr-3" src="/authors/admin/avatar_hu7fba9da1679ce4a56c592454604cb9c1_170620_250x250_fill_q90_lanczos_center.jpg" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="/">Richard Iannone</a></h5>
+      <h6 class="card-subtitle">Software Engineer</h6>
+      <p class="card-text">I enjoy making things with R and teaching people how to be successful with R.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.linkedin.com/in/richard-iannone-a5640017/" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/riannone" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/rich-iannone" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/post/blastula-0-3/">blastula 0.3</a></li>
+      
+      <li><a href="/projects/gt-pkg/">[R package] gt</a></li>
+      
+      <li><a href="/projects/blastula-pkg/">[R package] blastula</a></li>
+      
+      <li><a href="/projects/pointblank-pkg/">[R package] pointblank</a></li>
+      
+      <li><a href="/projects/diagrammer-pkg/">[R package] DiagrammeR</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js" integrity="sha256-1zu+3BnLYV9LdiY85uXMzii3bdrkelyp37e0ZyTAQh0=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/r.min.js"></script>
+        
+      
+
+      
+      
+    
+
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.d6bd04fdad2ad213aa8111c5a3b72fc5.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms</a>
+    
+  </p>
+  
+
+  <p class="powered-by">
+    &copy; 2019 Richard Iannone &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

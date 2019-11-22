@@ -1,0 +1,82 @@
+---
+title: blastula v0.3
+author: Rich
+date: '2019-11-22'
+slug: blastula-0-3
+categories: []
+tags:
+  - R Packages
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2019-11-22T15:31:00-05:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+
+
+<p><img src="/post/2019-11-20-blastula-0-3_files/blastula-banner.svg" style="width:100.0%" /></p>
+<p>The newest release of the <strong>blastula</strong> package lets you to do amazing things with HTML email in <strong>R</strong> and <strong>RStudio Connect</strong>. You can install <strong>blastula</strong> 0.3 from CRAN with:</p>
+<pre class="r"><code>install.packages(&quot;blastula&quot;)</code></pre>
+<p>This is a huge release! There are so many new and improved features we won’t be able to get through all of them here. Let’s focus on just two: <strong>R Markdown</strong> report emailing and improved HTML emailing using SMTP.</p>
+<div id="r-markdown-report-emailing-via-rstudio-connect" class="section level2">
+<h2><strong>R Markdown</strong> Report Emailing via <strong>RStudio Connect</strong></h2>
+<p>The capability to email a rendered <strong>R Markdown</strong> document in <strong>RStudio Connect</strong> has been available for well over a year. What would happen is that the report would be in the form of an attachment and message portion of the email would be prepared largely by <strong>RStudio Connect</strong>. With <strong>blastula</strong> v0.3, we can now create an email message body directly with <strong>R Markdown</strong>. Moreover, we can have a ‘main’ report for <strong>RStudio Connect</strong> viewers (with all of the details) and an ‘email’ version of the report that contains only the necessary elements for the purposes of email.</p>
+<p><img src="/post/2019-11-20-blastula-0-3_files/old_versus_new_rsc.png" style="width:100.0%" /></p>
+<p>Static elements like <strong>ggplot</strong>s and images can be part of the <strong>R Markdown</strong> email. The contents are faithfully converted to an HTML email message body that is fully responsive, so it’ll look great on both larger displays and on mobile devices. We went to great lengths to test and ensure that received emails display without problems on dozens of email clients.</p>
+<p><img src="/post/2019-11-20-blastula-0-3_files/device_client_testing.png" style="width:100.0%" /></p>
+<p>If you thought that emailing <strong>R Markdown</strong> reports from <strong>RStudio Connect</strong> was a bit more difficult than should be, you’ll like this next part. There is now an easier-to-use methodology for associating an email to a published <strong>R Markdown</strong> report. The function <code>prepare_rsc_example_files()</code> is included to generate a set of example files relevant to <strong>R Markdown</strong> emailing in <strong>RStudio Connect</strong>. It provides a working example of a main .Rmd document, an email .Rmd document, and a CSV file that can be included as an attachment (any files generated from the main .Rmd document can also be attached). Documentation that explains how these documents interact, which <strong>blastula</strong> functions are used, and how to publish to RSC, is available in the internal documentation for the <code>attach_connect_email()</code> function. An updated support document in the official <strong>RStudio Connect</strong> documentation is forthcoming.</p>
+<p>I’m pretty sure that <strong>RStudio Connect</strong> users and the recipients of these emails will love the changes implemented here. Expect further improvements to <strong>R Markdown</strong> emailing via <strong>RStudio Connect</strong> in future releases of <strong>blastula</strong>.</p>
+</div>
+<div id="improved-html-emailing-using-smtp" class="section level2">
+<h2>Improved HTML Emailing Using SMTP</h2>
+<p><strong>RStudio Connect</strong> isn’t the only way to send emails with <strong>blastula</strong>. We can opt to send our own custom emails through an SMTP server we have access to (e.g., Gmail, Outlook, etc.). These are HTML emails that are, again, responsive to display size and have been well tested on dozens of email clients. Let’s quickly look at three things that have changed for the better with regard to email composition and SMTP sending.</p>
+<div id="revised-message-composition-with-improved-security" class="section level3">
+<h3>Revised message composition with improved security</h3>
+<p>Previously, text interpolation features from the <strong>glue</strong> package were built into the <code>compose_email()</code> function. This means we could have used the string <code>&quot;The date and time of sending is {Sys.time()}.&quot;</code> directly as input to, say, the message footer. Having the potential for R evaluation in strings invites security risks, so, this is no longer possible. Instead, we can simply opt to use <code>glue::glue()</code> ourselves or <code>paste()</code>. When there is any Markdown or HTML element, the <code>md()</code> function is required. Here is an example of a simple message that uses Markdown:</p>
+<pre class="r"><code>email &lt;-
+  compose_email(
+    body = md(
+&quot;
+## Hello!
+
+This is an email message that was generated by the blastula package.
+
+Yep, we can use **Markdown** formatting but be sure to use the `md()` function.
+
+Here is a link to a great song ([E-MAIL ME!](https://youtu.be/-FcJbEg3vX8)).
+
+Cheers,
+
+The blastula team
+&quot;),
+  footer = md(
+&quot;
+sent via the [blastula](https://rich-iannone.github.io/blastula) R package
+&quot;)
+)
+</code></pre>
+<p>We can always preview the <code>email</code> object in the RStudio Viewer while getting the composition just right. For more details on email message composition with <code>compose_email()</code>, have a look at the <a href="https://rich-iannone.github.io/blastula/articles/simple_composition.html"><em>Simple Email Composition</em> article</a> on the project website.</p>
+</div>
+<div id="no-external-software-to-install-for-smtp-sending" class="section level3">
+<h3>No external software to install for SMTP sending</h3>
+<p>In the few years that <strong>blastula</strong> has been available, it relied on various pieces of external software for sending email. Not anymore. This release favors the creation of an RFC-2822 email body, sending through the excellent <strong>curl</strong> package. This all means that emails can now be sent dependably with the <code>smtp_send()</code> function on all the major platforms with no up-front installation of a third-party binary.</p>
+</div>
+<div id="improved-credentials-handling" class="section level3">
+<h3>Improved credentials handling</h3>
+<p>The package now ships with functions for setting up and retrieving SMTP configuration and credentials information. We can set this in the system-wide key-value store with <code>create_smtp_creds_key()</code>. With such a key added, the credentials helper <code>creds_key()</code> can be used when sending email through <code>smtp_send()</code>. Alternatively, a credentials file can be created using the <code>create_smtp_creds_file()</code> function (retrieved with the <code>creds_file()</code> credentials helper). Lastly, credentials can be fully specified at the time of sending with the <code>creds()</code> function. Whenever a password is needed for setup, a prompt will appear for password entry and the password text will be obscured.</p>
+</div>
+<div id="more" class="section level3">
+<h3>More!</h3>
+<p>Other quality-of-life improvements include automatic image embedding (via Base64 encoding) from the use of the <code>add_image()</code> and <code>add_ggplot()</code> functions when used in conjunction with <code>compose_email()</code>. There’s the option for automatic image deployment and retrieval of the external image tag through the <code>add_imgur_image()</code> function. Finally, there is a new set of <code>block_*()</code> functions that help us compose emails with more complex layouts.</p>
+</div>
+</div>
+<div id="wrapping-up" class="section level2">
+<h2>Wrapping Up</h2>
+<p>I hope that you try out the new release of the <strong>blastula</strong> package. So many useful things can be created with <strong>R</strong> and having the means to deliver our findings through email is super satisfying both for the sender and the recipient.</p>
+</div>

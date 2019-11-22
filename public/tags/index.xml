@@ -5,26 +5,26 @@
     <link>/tags/</link>
       <atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     <description>Tags</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2019 Richard Iannone</copyright><lastBuildDate>Sun, 20 Oct 2019 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2019 Richard Iannone</copyright><lastBuildDate>Fri, 22 Nov 2019 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/img/icon-192.png</url>
+      <url>/img/R_and_R_share.png</url>
       <title>Tags</title>
       <link>/tags/</link>
     </image>
+    
+    <item>
+      <title>R Packages</title>
+      <link>/tags/r-packages/</link>
+      <pubDate>Fri, 22 Nov 2019 00:00:00 +0000</pubDate>
+      <guid>/tags/r-packages/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>R Books</title>
       <link>/tags/r-books/</link>
       <pubDate>Sun, 20 Oct 2019 00:00:00 +0000</pubDate>
       <guid>/tags/r-books/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>R Packages</title>
-      <link>/tags/r-packages/</link>
-      <pubDate>Tue, 20 Mar 2018 00:00:00 +0000</pubDate>
-      <guid>/tags/r-packages/</guid>
       <description></description>
     </item>
     

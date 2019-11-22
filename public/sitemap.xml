@@ -3,6 +3,31 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/post/blastula-0-3/</loc>
+    <lastmod>2019-11-22T15:31:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+    <lastmod>2019-11-22T15:31:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2019-11-22T15:31:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/r-packages/</loc>
+    <lastmod>2019-11-22T15:31:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2019-11-22T15:31:00-05:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/projects/exploring-data-with-r-book/</loc>
     <lastmod>2019-10-20T00:00:00+00:00</lastmod>
   </url>
@@ -13,17 +38,7 @@
   </url>
   
   <url>
-    <loc>/</loc>
-    <lastmod>2019-10-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/tags/r-books/</loc>
-    <lastmod>2019-10-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
     <lastmod>2019-10-20T00:00:00+00:00</lastmod>
   </url>
   
@@ -63,11 +78,6 @@
   </url>
   
   <url>
-    <loc>/tags/r-packages/</loc>
-    <lastmod>2018-03-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/projects/blastula-pkg/</loc>
     <lastmod>2017-08-13T00:00:00+00:00</lastmod>
   </url>
@@ -102,10 +112,6 @@
   
   <url>
     <loc>/categories/</loc>
-  </url>
-  
-  <url>
-    <loc>/post/</loc>
   </url>
   
   <url>
