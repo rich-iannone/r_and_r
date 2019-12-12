@@ -20,24 +20,37 @@
       <description>
 
 
+&lt;html&gt;
+&lt;link rel=&#34;stylesheet&#34; href=&#34;/post/css/style.css&#34; /&gt;
+&lt;/html&gt;
+&lt;html&gt;
+&lt;div class=&#34;tab&#34;&gt;
+&lt;button class=&#34;tablinks&#34; onclick=&#34;openLang(event, &amp;#39;English&amp;#39;)&#34; id=&#34;defaultOpen&#34;&gt;
+English
+&lt;/button&gt;
+&lt;button class=&#34;tablinks&#34; onclick=&#34;openLang(event, &amp;#39;French&amp;#39;)&#34;&gt;
+French
+&lt;/button&gt;
+&lt;button class=&#34;tablinks&#34; onclick=&#34;openLang(event, &amp;#39;German&amp;#39;)&#34;&gt;
+German
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/html&gt;
+&lt;div id=&#34;English&#34; class=&#34;tabcontent&#34;&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2019-11-20-blastula-0-3_files/blastula-banner.svg&#34; style=&#34;width:100.0%&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;The newest release of the &lt;strong&gt;blastula&lt;/strong&gt; package lets you to do amazing things with HTML email in &lt;strong&gt;R&lt;/strong&gt; and &lt;strong&gt;RStudio Connect&lt;/strong&gt;. You can install &lt;strong&gt;blastula&lt;/strong&gt; 0.3 from CRAN with:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;install.packages(&amp;quot;blastula&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;This is a huge release! There are so many new and improved features we won’t be able to get through all of them here. Let’s focus on just two: &lt;strong&gt;R Markdown&lt;/strong&gt; report emailing and improved HTML emailing using SMTP.&lt;/p&gt;
-&lt;div id=&#34;r-markdown-report-emailing-via-rstudio-connect&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;&lt;strong&gt;R Markdown&lt;/strong&gt; Report Emailing via &lt;strong&gt;RStudio Connect&lt;/strong&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;r-markdown-report-emailing-via-rstudio-connect&#34;&gt;&lt;strong&gt;R Markdown&lt;/strong&gt; Report Emailing via &lt;strong&gt;RStudio Connect&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;The capability to email a rendered &lt;strong&gt;R Markdown&lt;/strong&gt; document in &lt;strong&gt;RStudio Connect&lt;/strong&gt; has been available for well over a year. What would happen is that the report would be in the form of an attachment and message portion of the email would be prepared largely by &lt;strong&gt;RStudio Connect&lt;/strong&gt;. With &lt;strong&gt;blastula&lt;/strong&gt; v0.3, we can now create an email message body directly with &lt;strong&gt;R Markdown&lt;/strong&gt;. Moreover, we can have a ‘main’ report for &lt;strong&gt;RStudio Connect&lt;/strong&gt; viewers (with all of the details) and an ‘email’ version of the report that contains only the necessary elements for the purposes of email.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2019-11-20-blastula-0-3_files/old_versus_new_rsc.png&#34; style=&#34;width:100.0%&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Static elements like &lt;strong&gt;ggplot&lt;/strong&gt;s and images can be part of the &lt;strong&gt;R Markdown&lt;/strong&gt; email. The contents are faithfully converted to an HTML email message body that is fully responsive, so it’ll look great on both larger displays and on mobile devices. We went to great lengths to test and ensure that received emails display without problems on dozens of email clients.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2019-11-20-blastula-0-3_files/device_client_testing.png&#34; style=&#34;width:100.0%&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;If you thought that emailing &lt;strong&gt;R Markdown&lt;/strong&gt; reports from &lt;strong&gt;RStudio Connect&lt;/strong&gt; was a bit more difficult than should be, you’ll like this next part. There is now an easier-to-use methodology for associating an email to a published &lt;strong&gt;R Markdown&lt;/strong&gt; report. The function &lt;code&gt;prepare_rsc_example_files()&lt;/code&gt; is included to generate a set of example files relevant to &lt;strong&gt;R Markdown&lt;/strong&gt; emailing in &lt;strong&gt;RStudio Connect&lt;/strong&gt;. It provides a working example of a main .Rmd document, an email .Rmd document, and a CSV file that can be included as an attachment (any files generated from the main .Rmd document can also be attached). Documentation that explains how these documents interact, which &lt;strong&gt;blastula&lt;/strong&gt; functions are used, and how to publish to RSC, is available in the internal documentation for the &lt;code&gt;attach_connect_email()&lt;/code&gt; function. An updated support document in the official &lt;strong&gt;RStudio Connect&lt;/strong&gt; documentation is forthcoming.&lt;/p&gt;
 &lt;p&gt;I’m pretty sure that &lt;strong&gt;RStudio Connect&lt;/strong&gt; users and the recipients of these emails will love the changes implemented here. Expect further improvements to &lt;strong&gt;R Markdown&lt;/strong&gt; emailing via &lt;strong&gt;RStudio Connect&lt;/strong&gt; in future releases of &lt;strong&gt;blastula&lt;/strong&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;improved-html-emailing-using-smtp&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Improved HTML Emailing Using SMTP&lt;/h2&gt;
+&lt;h2 id=&#34;improved-html-emailing-using-smtp&#34;&gt;Improved HTML Emailing Using SMTP&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;RStudio Connect&lt;/strong&gt; isn’t the only way to send emails with &lt;strong&gt;blastula&lt;/strong&gt;. We can opt to send our own custom emails through an SMTP server we have access to (e.g., Gmail, Outlook, etc.). These are HTML emails that are, again, responsive to display size and have been well tested on dozens of email clients. Let’s quickly look at three things that have changed for the better with regard to email composition and SMTP sending.&lt;/p&gt;
-&lt;div id=&#34;revised-message-composition-with-improved-security&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;Revised message composition with improved security&lt;/h3&gt;
+&lt;h3 id=&#34;revised-message-composition-with-improved-security&#34;&gt;Revised message composition with improved security&lt;/h3&gt;
 &lt;p&gt;Previously, text interpolation features from the &lt;strong&gt;glue&lt;/strong&gt; package were built into the &lt;code&gt;compose_email()&lt;/code&gt; function. This means we could have used the string &lt;code&gt;&amp;quot;The date and time of sending is {Sys.time()}.&amp;quot;&lt;/code&gt; directly as input to, say, the message footer. Having the potential for R evaluation in strings invites security risks, so, this is no longer possible. Instead, we can simply opt to use &lt;code&gt;glue::glue()&lt;/code&gt; ourselves or &lt;code&gt;paste()&lt;/code&gt;. When there is any Markdown or HTML element, the &lt;code&gt;md()&lt;/code&gt; function is required. Here is an example of a simple message that uses Markdown:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;email &amp;lt;-
   compose_email(
@@ -62,24 +75,131 @@ sent via the [blastula](https://rich-iannone.github.io/blastula) R package
 )
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;We can always preview the &lt;code&gt;email&lt;/code&gt; object in the RStudio Viewer while getting the composition just right. For more details on email message composition with &lt;code&gt;compose_email()&lt;/code&gt;, have a look at the &lt;a href=&#34;https://rich-iannone.github.io/blastula/articles/simple_composition.html&#34;&gt;&lt;em&gt;Simple Email Composition&lt;/em&gt; article&lt;/a&gt; on the project website.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;no-external-software-to-install-for-smtp-sending&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;No external software to install for SMTP sending&lt;/h3&gt;
+&lt;h3 id=&#34;no-external-software-to-install-for-smtp-sending&#34;&gt;No external software to install for SMTP sending&lt;/h3&gt;
 &lt;p&gt;In the few years that &lt;strong&gt;blastula&lt;/strong&gt; has been available, it relied on various pieces of external software for sending email. Not anymore. This release favors the creation of an RFC-2822 email body, sending through the excellent &lt;strong&gt;curl&lt;/strong&gt; package. This all means that emails can now be sent dependably with the &lt;code&gt;smtp_send()&lt;/code&gt; function on all the major platforms with no up-front installation of a third-party binary.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;improved-credentials-handling&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;Improved credentials handling&lt;/h3&gt;
+&lt;h3 id=&#34;improved-credentials-handling&#34;&gt;Improved credentials handling&lt;/h3&gt;
 &lt;p&gt;The package now ships with functions for setting up and retrieving SMTP configuration and credentials information. We can set this in the system-wide key-value store with &lt;code&gt;create_smtp_creds_key()&lt;/code&gt;. With such a key added, the credentials helper &lt;code&gt;creds_key()&lt;/code&gt; can be used when sending email through &lt;code&gt;smtp_send()&lt;/code&gt;. Alternatively, a credentials file can be created using the &lt;code&gt;create_smtp_creds_file()&lt;/code&gt; function (retrieved with the &lt;code&gt;creds_file()&lt;/code&gt; credentials helper). Lastly, credentials can be fully specified at the time of sending with the &lt;code&gt;creds()&lt;/code&gt; function. Whenever a password is needed for setup, a prompt will appear for password entry and the password text will be obscured.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;more&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;More!&lt;/h3&gt;
+&lt;h3 id=&#34;more&#34;&gt;More!&lt;/h3&gt;
 &lt;p&gt;Other quality-of-life improvements include automatic image embedding (via Base64 encoding) from the use of the &lt;code&gt;add_image()&lt;/code&gt; and &lt;code&gt;add_ggplot()&lt;/code&gt; functions when used in conjunction with &lt;code&gt;compose_email()&lt;/code&gt;. There’s the option for automatic image deployment and retrieval of the external image tag through the &lt;code&gt;add_imgur_image()&lt;/code&gt; function. Finally, there is a new set of &lt;code&gt;block_*()&lt;/code&gt; functions that help us compose emails with more complex layouts.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&#34;wrapping-up&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Wrapping Up&lt;/h2&gt;
+&lt;h2 id=&#34;wrapping-up&#34;&gt;Wrapping Up&lt;/h2&gt;
 &lt;p&gt;I hope that you try out the new release of the &lt;strong&gt;blastula&lt;/strong&gt; package. So many useful things can be created with &lt;strong&gt;R&lt;/strong&gt; and having the means to deliver our findings through email is super satisfying both for the sender and the recipient.&lt;/p&gt;
 &lt;/div&gt;
+&lt;!-- Start French Section --&gt;
+&lt;div id=&#34;French&#34; class=&#34;tabcontent&#34;&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-11-20-blastula-0-3_files/blastula-banner.svg&#34; style=&#34;width:100.0%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;La nouvelle version du package &lt;strong&gt;blastula&lt;/strong&gt; vous permet de faire des choses sympas avec les e-mails HTML dans &lt;strong&gt;R&lt;/strong&gt; et &lt;strong&gt;RStudio Connect&lt;/strong&gt;. Installez &lt;strong&gt;blastula&lt;/strong&gt; 0.3 de CRAN avec:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;install.packages(&amp;quot;blastula&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;C’est une énorme sortie et donc il y a beaucoup de nouvelles choses… Je ne pense pas qu’il y ait assez de temps pour parler de tout ici. Mais ça va, regardons deux choses: envoyer des rapports par e-mail avec &lt;strong&gt;R Markdown&lt;/strong&gt; et des e-mails HTML améliorés (via un serveur SMTP).&lt;/p&gt;
+&lt;h2 id=&#34;emailing-r-markdown-rapports-avec-rstudio-connect&#34;&gt;Emailing &lt;strong&gt;R Markdown&lt;/strong&gt; Rapports avec &lt;strong&gt;RStudio Connect&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;La possibilité d’envoyer un document &lt;strong&gt;R Markdown&lt;/strong&gt; rendu par e-mail est disponible depuis longtemps (dans &lt;strong&gt;RStudio Connect&lt;/strong&gt;). Mais c’était en pièce jointe (un peu décevant). Avec le nouveau package blastula, nous pouvons désormais créer un e-mail entièrement avec &lt;strong&gt;R Markdown&lt;/strong&gt; (le contenu va directement dans l’e-mail). De plus, nous pouvons avoir un rapport «principal» pour les téléspectateurs &lt;strong&gt;RStudio Connect&lt;/strong&gt; (avec tous les détails) et une version «e-mail» du rapport qui contient uniquement les éléments nécessaires aux fins de l’e-mail. Ah… beaucoup mieux!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-11-20-blastula-0-3_files/old_versus_new_rsc.png&#34; style=&#34;width:100.0%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Les éléments statiques tels que &lt;strong&gt;ggplot&lt;/strong&gt;s et les images peuvent faire partie de l’e-mail &lt;strong&gt;R Markdown&lt;/strong&gt;. Le contenu est converti en un corps de message électronique HTML qui a fière allure sur les grands écrans et sur les téléphones cellulaires. Nous avons fait de grands efforts pour tester tout cela. Cela impliquait de consulter les e-mails de nombreux clients de messagerie.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-11-20-blastula-0-3_files/device_client_testing.png&#34; style=&#34;width:100.0%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;L’envoi de rapports &lt;strong&gt;R Markdown&lt;/strong&gt; par &lt;strong&gt;RStudio Connect&lt;/strong&gt; a été un peu difficile. Il est désormais plus facile d’associer un e-mail à un rapport &lt;strong&gt;R Markdown&lt;/strong&gt; publié. La fonction &lt;code&gt;prepare_rsc_example_files()&lt;/code&gt; peut être utilisée pour générer un ensemble d’exemples de fichiers. Ces fichiers montrent comment effectuer des e-mails &lt;strong&gt;R Markdown&lt;/strong&gt; dans &lt;strong&gt;RStudio Connect&lt;/strong&gt;. Les fichiers incluent un document .Rmd principal, un document .Rmd de courrier électronique et un fichier CSV qui peut être inclus en tant que pièce jointe. Pourquoi le CSV? Parce que tous les fichiers générés à partir du document principal .Rmd peuvent également être joints! La documentation qui explique comment ces documents interagissent, quelles fonctions &lt;strong&gt;blastula&lt;/strong&gt; sont utilisées et comment publier sur RSC, est disponible dans la documentation interne de la fonction &lt;code&gt;attach_connect_email()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Ouais. Je suis certain que les utilisateurs de &lt;strong&gt;RStudio Connect&lt;/strong&gt; et les destinataires de ces e-mails adoreront les changements mis en œuvre ici. Nous apporterons plus de modifications aux e-mails &lt;strong&gt;R Markdown&lt;/strong&gt; via &lt;strong&gt;RStudio Connect&lt;/strong&gt; dans les prochaines versions de &lt;strong&gt;blastula&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;emailing-html-amélioré-à-laide-de-smtp&#34;&gt;Emailing HTML amélioré à l’aide de SMTP&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;RStudio Connect&lt;/strong&gt; n’est pas le seul moyen d’envoyer des e-mails avec &lt;strong&gt;blastula&lt;/strong&gt;. Nous pouvons envoyer des e-mails via un serveur SMTP auquel nous avons accès (par exemple, Gmail, Outlook, etc.). Voyons rapidement trois choses qui se sont améliorées en ce qui concerne la composition des e-mails et l’envoi SMTP.&lt;/p&gt;
+&lt;h3 id=&#34;composition-des-messages-révisée-avec-plus-de-sécurité&#34;&gt;Composition des messages révisée avec plus de sécurité&lt;/h3&gt;
+&lt;p&gt;Auparavant, les fonctions d’interpolation de texte du package &lt;strong&gt;glue&lt;/strong&gt; étaient intégrées à la fonction &lt;code&gt;compose_email()&lt;/code&gt;. Cela signifie que nous aurions pu utiliser la déclaration &lt;code&gt;&amp;quot;The date and time of sending is {Sys.time()}.&amp;quot;&lt;/code&gt; Directement comme entrée dans, disons, le pied de page du message. Le fait d’avoir le potentiel d’évaluation R dans les chaînes entraîne des risques de sécurité, ce n’est donc plus possible. Au lieu de cela, nous pouvons simplement choisir d’utiliser &lt;code&gt;glue::glue()&lt;/code&gt; nous-mêmes ou &lt;code&gt;paste()&lt;/code&gt;. Lorsqu’il y a un élément Markdown ou HTML, la fonction &lt;code&gt;md()&lt;/code&gt; est requise. Voici un exemple de message simple qui utilise Markdown (c’est en anglais):&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;email &amp;lt;-
+  compose_email(
+    body = md(
+&amp;quot;
+## Hello!
+
+This is an email message that was generated by the blastula package.
+
+Yep, we can use **Markdown** formatting but be sure to use the `md()` function.
+
+Here is a link to a great song ([E-MAIL ME!](https://youtu.be/-FcJbEg3vX8)).
+
+Cheers,
+
+The blastula team
+&amp;quot;),
+  footer = md(
+&amp;quot;
+sent via the [blastula](https://rich-iannone.github.io/blastula) R package
+&amp;quot;)
+)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Nous pouvons toujours prévisualiser l’objet &lt;code&gt;email&lt;/code&gt; dans la RStudio Viewer tout en obtenant la composition parfaite. Pour plus de détails sur la composition des e-mails avec &lt;code&gt;compose_email()&lt;/code&gt;, consultez l’article &lt;a href=&#34;https://rich-iannone.github.io/blastula/articles/simple_composition.html&#34;&gt;&lt;em&gt;Simple Email Composition&lt;/em&gt;&lt;/a&gt; sur le site web du projet.&lt;/p&gt;
+&lt;h3 id=&#34;aucun-logiciel-externe-nest-nécessaire-pour-envoyer-des-e-mails-avec-smtp&#34;&gt;Aucun logiciel externe n’est nécessaire pour envoyer des e-mails avec SMTP&lt;/h3&gt;
+&lt;p&gt;Au cours des quelques années où &lt;strong&gt;blastula&lt;/strong&gt; a été disponible, il s’est appuyé sur divers logiciels externes pour envoyer des e-mails. Ce n’est plus vrai. Nous créons maintenant un corps d’e-mail RFC-2822 et envoyons des e-mails avec une fonction du package &lt;strong&gt;curl&lt;/strong&gt;. Désormais, les e-mails peuvent désormais être envoyés de manière fiable avec la fonction &lt;code&gt;smtp_send()&lt;/code&gt; sur toutes les principales plates-formes informatiques sans aucune dépendance difficile à installer.&lt;/p&gt;
+&lt;h3 id=&#34;amélioration-de-la-gestion-des-informations-didentification&#34;&gt;Amélioration de la gestion des informations d’identification&lt;/h3&gt;
+&lt;p&gt;Le package possède désormais des fonctions de configuration et de récupération des informations de configuration et d’informations d’identification SMTP. Nous pouvons configurer cela avec &lt;code&gt;create_smtp_creds_key()&lt;/code&gt;. Avec une telle clé ajoutée, l’aide aux informations d’identification &lt;code&gt;creds_key()&lt;/code&gt; peut être utilisée lors de l’envoi d’e-mails via &lt;code&gt;smtp_send()&lt;/code&gt;. Alternativement, un fichier d’informations d’identification peut être créé en utilisant la fonction &lt;code&gt;create_smtp_creds_file()&lt;/code&gt; (récupérée avec &lt;code&gt;creds_file()&lt;/code&gt;). Enfin, les informations d’identification peuvent être entièrement spécifiées au moment de l’envoi avec la fonction &lt;code&gt;creds()&lt;/code&gt;. Chaque fois qu’un mot de passe est nécessaire, une invite apparaîtra pour la saisie du mot de passe (le texte du mot de passe sera masqué).&lt;/p&gt;
+&lt;h3 id=&#34;il-y-a-encore-plus&#34;&gt;Il y a encore plus!&lt;/h3&gt;
+&lt;p&gt;D’autres changements incluent l’intégration automatique d’images (via l’encodage Base64) à partir de l’utilisation des fonctions &lt;code&gt;add_image()&lt;/code&gt; et &lt;code&gt;add_ggplot()&lt;/code&gt; lorsqu’elles sont utilisées avec &lt;code&gt;compose_email()&lt;/code&gt;. La fonction &lt;code&gt;add_imgur_image()&lt;/code&gt; facilite l’utilisation d’images externes dans les e-mails. Enfin, il existe un nouvel ensemble de fonctions &lt;code&gt;block_*()&lt;/code&gt; qui nous aident à composer des e-mails avec des mises en page plus complexes.&lt;/p&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;J’espère que vous essayez la nouvelle version du package &lt;strong&gt;blastula&lt;/strong&gt;. Nous pouvons créer des choses utiles avec &lt;strong&gt;R&lt;/strong&gt; et avoir les moyens de livrer nos résultats par e-mail est super cool pour l’expéditeur et le destinataire.&lt;/p&gt;
+&lt;/div&gt;
+&lt;!-- Start German Section --&gt;
+&lt;div id=&#34;German&#34; class=&#34;tabcontent&#34;&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-11-20-blastula-0-3_files/blastula-banner.svg&#34; style=&#34;width:100.0%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Mit der neuen Version des &lt;strong&gt;blastula&lt;/strong&gt;-Pakets können Sie in &lt;strong&gt;R&lt;/strong&gt; und &lt;strong&gt;RStudio Connect&lt;/strong&gt; coole Dinge mit HTML-E-Mails tun. Installieren Sie CRAN &lt;strong&gt;blastula&lt;/strong&gt; 0.3 mit:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;install.packages(&amp;quot;blastula&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Dies ist ein ziemlich umfangreiches Software-Upgrade! Es gibt so viele neue und verbesserte Funktionen, dass wir sie hier nicht alle durcharbeiten können. Schauen wir uns zwei neue Themen an: &lt;strong&gt;R Markdown&lt;/strong&gt; Bericht-E-Mail und verbessertes HTML-E-Mail mit SMTP.&lt;/p&gt;
+&lt;h2 id=&#34;r-markdown-e-mail-berichte-mit-rstudio-connect&#34;&gt;&lt;strong&gt;R Markdown&lt;/strong&gt; E-Mail-Berichte mit &lt;strong&gt;RStudio Connect&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Die Möglichkeit, ein per E-Mail gesendetes &lt;strong&gt;R Markdown&lt;/strong&gt;-Dokument zu senden, ist seit langem verfügbar (in &lt;strong&gt;RStudio Connect&lt;/strong&gt;). Aber es war anhaftend (etwas enttäuschend). Mit dem neuen Blastula-Paket können wir jetzt eine E-Mail komplett mit &lt;strong&gt;R Markdown&lt;/strong&gt; erstellen (der Inhalt geht direkt in die E-Mail). Außerdem können wir einen “Haupt”-Report für die Zuschauer &lt;strong&gt;RStudio Connect&lt;/strong&gt; (mit allen Details) und eine “E-Mail”-Version des Berichts haben, die nur die für die Zwecke der E-Mail erforderlichen Elemente enthält. Viel besser!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-11-20-blastula-0-3_files/old_versus_new_rsc.png&#34; style=&#34;width:100.0%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Statische Elemente wie &lt;strong&gt;ggplot&lt;/strong&gt;s und Bilder können Teil der &lt;strong&gt;R Markdown&lt;/strong&gt;-E-Mail sein. Der Inhalt wird in einen HTML-Nachrichtentext konvertiert, der auf große Desktop-Displays und Handys großartig aussieht. Wir haben große Anstrengungen unternommen, um all dies zu testen. Dies beinhaltete das Betrachten der E-Mails vieler E-Mail-Clients.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-11-20-blastula-0-3_files/device_client_testing.png&#34; style=&#34;width:100.0%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Es war ein bisschen schwierig, &lt;strong&gt;R Markdown&lt;/strong&gt; von &lt;strong&gt;RStudio Connect&lt;/strong&gt; zu melden. Es ist jetzt einfacher, eine E-Mail mit einem veröffentlichten &lt;strong&gt;R Markdown&lt;/strong&gt;-Report zu verknüpfen. Die Funktion &lt;code&gt;prepare_rsc_example_files()&lt;/code&gt; kann verwendet werden, um einen Satz von Beispieldateien zu generieren. Diese Dateien zeigen, wie &lt;strong&gt;R Markdown&lt;/strong&gt;-E-Mails in &lt;strong&gt;RStudio Connect&lt;/strong&gt; erstellt werden. Die Dateien enthalten ein Haupt-RMD-Dokument, ein RMD-E-Mail-Dokument und eine CSV-Datei, die als Anhang beigefügt werden kann. Warum die CSV? Denn alle Dateien, die aus dem Hauptdokument .Rmd generiert wurden, können auch angehängt werden! Die Dokumentation, die erklärt, wie diese Dokumente interagieren, welche &lt;strong&gt;blastula&lt;/strong&gt;-Funktionen verwendet werden und wie sie in RSC veröffentlicht werden, finden Sie in der internen Dokumentation der Funktion &lt;code&gt;attach_connect_email()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Ja. Ich bin sicher, dass &lt;strong&gt;RStudio Connect&lt;/strong&gt;-Nutzer und -Empfänger dieser E-Mails die hier vorgenommenen Änderungen lieben werden. In zukünftigen Versionen von &lt;strong&gt;blastula&lt;/strong&gt; werden wir weitere Änderungen an &lt;strong&gt;R Markdown&lt;/strong&gt;-E-Mails über &lt;strong&gt;RStudio Connect&lt;/strong&gt; vornehmen.&lt;/p&gt;
+&lt;h2 id=&#34;erweitertes-html-e-mailing-über-smtp&#34;&gt;Erweitertes HTML-E-Mailing über SMTP&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;RStudio Connect&lt;/strong&gt; ist nicht die einzige Möglichkeit, E-Mails mit &lt;strong&gt;blastula&lt;/strong&gt; zu versenden. Wir können E-Mails über einen SMTP-Server senden, auf den wir Zugriff haben (z. B. Google Mail, Outlook usw.). Schauen wir uns kurz drei Dinge an, die sich in Bezug auf die E-Mail-Zusammensetzung und den SMTP-Versand verbessert haben.&lt;/p&gt;
+&lt;h3 id=&#34;überarbeitete-nachrichtenkomposition-mit-mehr-sicherheit&#34;&gt;Überarbeitete Nachrichtenkomposition mit mehr Sicherheit&lt;/h3&gt;
+&lt;p&gt;Zuvor waren die Textinterpolationsfunktionen des &lt;strong&gt;glue&lt;/strong&gt;-Pakets in die Funktion &lt;code&gt;compose_email()&lt;/code&gt; integriert. Dies bedeutet, dass wir die Anweisung &lt;code&gt;&amp;quot;The date and time of sending is {Sys.time()}.&amp;quot;&lt;/code&gt; Direkt als Eintrag beispielsweise in der Fußzeile der Nachricht verwendet haben könnten. Das Potential zur Bewertung &lt;strong&gt;R&lt;/strong&gt; in den Ketten zu haben, führt zu Sicherheitsrisiken, so dass dies nicht mehr möglich ist. Stattdessen können wir uns einfach dafür entscheiden, &lt;code&gt;glue::glue()&lt;/code&gt; oder &lt;code&gt;paste()&lt;/code&gt; zu verwenden. Wenn ein Markdown- oder HTML-Element vorhanden ist, ist die Funktion &lt;code&gt;md()&lt;/code&gt; erforderlich. Hier ist ein Beispiel für eine einfache Nachricht, die Markdown verwendet:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;email &amp;lt;-
+  compose_email(
+    body = md(
+&amp;quot;
+## Hello!
+
+This is an email message that was generated by the blastula package.
+
+Yep, we can use **Markdown** formatting but be sure to use the `md()` function.
+
+Here is a link to a great song ([E-MAIL ME!](https://youtu.be/-FcJbEg3vX8)).
+
+Cheers,
+
+The blastula team
+&amp;quot;),
+  footer = md(
+&amp;quot;
+sent via the [blastula](https://rich-iannone.github.io/blastula) R package
+&amp;quot;)
+)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Wir können weiterhin eine Vorschau des E-Mail-Objekts im &lt;strong&gt;RStudio Viewer&lt;/strong&gt; anzeigen, um die perfekte Komposition zu erhalten. Weitere Informationen zum Verfassen von E-Mails mit &lt;code&gt;compose_email()&lt;/code&gt; finden Sie im Artikel &lt;a href=&#34;https://rich-iannone.github.io/blastula/articles/simple_composition.html&#34;&gt;&lt;em&gt;Simple Email Composition&lt;/em&gt;&lt;/a&gt; auf der Projektwebsite.&lt;/p&gt;
+&lt;h3 id=&#34;zum-versenden-von-e-mails-mit-smtp-ist-keine-externe-software-erforderlich&#34;&gt;Zum Versenden von E-Mails mit SMTP ist keine externe Software erforderlich&lt;/h3&gt;
+&lt;p&gt;In den wenigen Jahren, in denen &lt;strong&gt;blastula&lt;/strong&gt; verfügbar war, stützte er sich zum Versenden von E-Mails auf verschiedene externe Software. Das stimmt nicht mehr. Wir erstellen jetzt einen RFC-2822-E-Mail-Body und senden E-Mails mit einer &lt;strong&gt;curl&lt;/strong&gt;-Paketfunktion. Jetzt können E-Mails mit der Funktion &lt;code&gt;smtp_send()&lt;/code&gt; zuverlässig auf allen wichtigen Computerplattformen ohne schwer zu installierende Abhängigkeiten gesendet werden.&lt;/p&gt;
+&lt;h3 id=&#34;verbesserte-berechtigungsnachweisverwaltung&#34;&gt;Verbesserte Berechtigungsnachweisverwaltung&lt;/h3&gt;
+&lt;p&gt;Das Paket verfügt jetzt über Funktionen zum Konfigurieren und Abrufen von Konfigurationsinformationen und SMTP-Anmeldeinformationen. Wir können dies mit &lt;code&gt;create_smtp_creds_key()&lt;/code&gt; konfigurieren. Mit einem solchen hinzugefügten Schlüssel kann die &lt;code&gt;creds_key()&lt;/code&gt;-Hilfe zum Versenden von E-Mails über &lt;code&gt;smtp_send()&lt;/code&gt; verwendet werden. Alternativ kann eine Berechtigungsnachweisdatei mit der Funktion &lt;code&gt;create_smtp_creds_file()&lt;/code&gt; erstellt werden (abgerufen mit &lt;code&gt;creds_file()&lt;/code&gt;). Schließlich können die Anmeldeinformationen zum Zeitpunkt des Sendens mit der Funktion &lt;code&gt;creds()&lt;/code&gt; vollständig angegeben werden. Immer wenn ein Passwort erforderlich ist, erscheint eine Aufforderung zur Eingabe des Passworts (der Passworttext wird ausgeblendet).&lt;/p&gt;
+&lt;h3 id=&#34;es-gibt-noch-mehr&#34;&gt;Es gibt noch mehr!&lt;/h3&gt;
+&lt;p&gt;Andere Änderungen umfassen die automatische Bildintegration (über Base64-Codierung) durch die Verwendung der Funktionen &lt;code&gt;add_image()&lt;/code&gt; und &lt;code&gt;add_ggplot()&lt;/code&gt;, wenn sie mit &lt;code&gt;compose_email()&lt;/code&gt; verwendet werden. Die Funktion &lt;code&gt;add_imgur_image()&lt;/code&gt; erleichtert die Verwendung externer Bilder in E-Mails. Schließlich gibt es eine neue Reihe von &lt;code&gt;block_*()&lt;/code&gt;-Funktionen, mit denen wir E-Mails mit komplexeren Layouts erstellen können.&lt;/p&gt;
+&lt;h2 id=&#34;die-zukunft-ist-da&#34;&gt;Die Zukunft ist da&lt;/h2&gt;
+&lt;p&gt;Ich hoffe aufrichtig, dass Sie die neue Version des &lt;strong&gt;blastula&lt;/strong&gt;-Pakets testen. Mit &lt;strong&gt;R&lt;/strong&gt; können wir so viele nützliche Dinge erschaffen. Die Möglichkeit, unsere Ergebnisse per E-Mail zu übermitteln, ist für den Absender und den Empfänger eine absolute Freude.&lt;/p&gt;
+&lt;/div&gt;
+&lt;script&gt;
+function openLang(evt, cityName) {
+var i, tabcontent, tablinks;
+tabcontent = document.getElementsByClassName(&#34;tabcontent&#34;);
+for (i = 0; i &lt; tabcontent.length; i++) {
+tabcontent[i].style.display = &#34;none&#34;;
+}
+tablinks = document.getElementsByClassName(&#34;tablinks&#34;);
+for (i = 0; i &lt; tablinks.length; i++) {
+tablinks[i].className = tablinks[i].className.replace(&#34; active&#34;, &#34;&#34;);
+}
+document.getElementById(cityName).style.display = &#34;block&#34;;
+evt.currentTarget.className += &#34; active&#34;;
+}
+
+// Get the element with id=&#34;defaultOpen&#34; and click on it
+document.getElementById(&#34;defaultOpen&#34;).click();
+&lt;/script&gt;
 </description>
     </item>
     
