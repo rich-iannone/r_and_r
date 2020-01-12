@@ -107,6 +107,11 @@
   </url>
   
   <url>
+    <loc>/blogroll/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/authors/</loc>
   </url>
   

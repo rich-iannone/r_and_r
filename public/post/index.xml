@@ -5,7 +5,7 @@
     <link>/post/</link>
       <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2019 Richard Iannone</copyright><lastBuildDate>Fri, 22 Nov 2019 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2020 Richard Iannone</copyright><lastBuildDate>Fri, 22 Nov 2019 00:00:00 +0000</lastBuildDate>
     <image>
       <url>/img/R_and_R_share.png</url>
       <title>Posts</title>
@@ -36,6 +36,7 @@ German
 &lt;/button&gt;
 &lt;/div&gt;
 &lt;/html&gt;
+&lt;!-- Start English Section --&gt;
 &lt;div id=&#34;English&#34; class=&#34;tabcontent&#34;&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2019-11-20-blastula-0-3_files/blastula-banner.svg&#34; style=&#34;width:100.0%&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;The newest release of the &lt;strong&gt;blastula&lt;/strong&gt; package lets you to do amazing things with HTML email in &lt;strong&gt;R&lt;/strong&gt; and &lt;strong&gt;RStudio Connect&lt;/strong&gt;. You can install &lt;strong&gt;blastula&lt;/strong&gt; 0.3 from CRAN with:&lt;/p&gt;
@@ -51,7 +52,7 @@ German
 &lt;h2 id=&#34;improved-html-emailing-using-smtp&#34;&gt;Improved HTML Emailing Using SMTP&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;RStudio Connect&lt;/strong&gt; isn’t the only way to send emails with &lt;strong&gt;blastula&lt;/strong&gt;. We can opt to send our own custom emails through an SMTP server we have access to (e.g., Gmail, Outlook, etc.). These are HTML emails that are, again, responsive to display size and have been well tested on dozens of email clients. Let’s quickly look at three things that have changed for the better with regard to email composition and SMTP sending.&lt;/p&gt;
 &lt;h3 id=&#34;revised-message-composition-with-improved-security&#34;&gt;Revised message composition with improved security&lt;/h3&gt;
-&lt;p&gt;Previously, text interpolation features from the &lt;strong&gt;glue&lt;/strong&gt; package were built into the &lt;code&gt;compose_email()&lt;/code&gt; function. This means we could have used the string &lt;code&gt;&amp;quot;The date and time of sending is {Sys.time()}.&amp;quot;&lt;/code&gt; directly as input to, say, the message footer. Having the potential for R evaluation in strings invites security risks, so, this is no longer possible. Instead, we can simply opt to use &lt;code&gt;glue::glue()&lt;/code&gt; ourselves or &lt;code&gt;paste()&lt;/code&gt;. When there is any Markdown or HTML element, the &lt;code&gt;md()&lt;/code&gt; function is required. Here is an example of a simple message that uses Markdown:&lt;/p&gt;
+&lt;p&gt;Previously, text interpolation features from the &lt;strong&gt;glue&lt;/strong&gt; package were built into the &lt;code&gt;compose_email()&lt;/code&gt; function. This means we could have used the string &lt;code&gt;&#34;The date and time of sending is {Sys.time()}.&#34;&lt;/code&gt; directly as input to, say, the message footer. Having the potential for R evaluation in strings invites security risks, so, this is no longer possible. Instead, we can simply opt to use &lt;code&gt;glue::glue()&lt;/code&gt; ourselves or &lt;code&gt;paste()&lt;/code&gt;. When there is any Markdown or HTML element, the &lt;code&gt;md()&lt;/code&gt; function is required. Here is an example of a simple message that uses Markdown:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;email &amp;lt;-
   compose_email(
     body = md(
@@ -100,7 +101,7 @@ sent via the [blastula](https://rich-iannone.github.io/blastula) R package
 &lt;h2 id=&#34;emailing-html-amélioré-à-laide-de-smtp&#34;&gt;Emailing HTML amélioré à l’aide de SMTP&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;RStudio Connect&lt;/strong&gt; n’est pas le seul moyen d’envoyer des e-mails avec &lt;strong&gt;blastula&lt;/strong&gt;. Nous pouvons envoyer des e-mails via un serveur SMTP auquel nous avons accès (par exemple, Gmail, Outlook, etc.). Voyons rapidement trois choses qui se sont améliorées en ce qui concerne la composition des e-mails et l’envoi SMTP.&lt;/p&gt;
 &lt;h3 id=&#34;composition-des-messages-révisée-avec-plus-de-sécurité&#34;&gt;Composition des messages révisée avec plus de sécurité&lt;/h3&gt;
-&lt;p&gt;Auparavant, les fonctions d’interpolation de texte du package &lt;strong&gt;glue&lt;/strong&gt; étaient intégrées à la fonction &lt;code&gt;compose_email()&lt;/code&gt;. Cela signifie que nous aurions pu utiliser la déclaration &lt;code&gt;&amp;quot;The date and time of sending is {Sys.time()}.&amp;quot;&lt;/code&gt; Directement comme entrée dans, disons, le pied de page du message. Le fait d’avoir le potentiel d’évaluation R dans les chaînes entraîne des risques de sécurité, ce n’est donc plus possible. Au lieu de cela, nous pouvons simplement choisir d’utiliser &lt;code&gt;glue::glue()&lt;/code&gt; nous-mêmes ou &lt;code&gt;paste()&lt;/code&gt;. Lorsqu’il y a un élément Markdown ou HTML, la fonction &lt;code&gt;md()&lt;/code&gt; est requise. Voici un exemple de message simple qui utilise Markdown (c’est en anglais):&lt;/p&gt;
+&lt;p&gt;Auparavant, les fonctions d’interpolation de texte du package &lt;strong&gt;glue&lt;/strong&gt; étaient intégrées à la fonction &lt;code&gt;compose_email()&lt;/code&gt;. Cela signifie que nous aurions pu utiliser la déclaration &lt;code&gt;&#34;The date and time of sending is {Sys.time()}.&#34;&lt;/code&gt; Directement comme entrée dans, disons, le pied de page du message. Le fait d’avoir le potentiel d’évaluation R dans les chaînes entraîne des risques de sécurité, ce n’est donc plus possible. Au lieu de cela, nous pouvons simplement choisir d’utiliser &lt;code&gt;glue::glue()&lt;/code&gt; nous-mêmes ou &lt;code&gt;paste()&lt;/code&gt;. Lorsqu’il y a un élément Markdown ou HTML, la fonction &lt;code&gt;md()&lt;/code&gt; est requise. Voici un exemple de message simple qui utilise Markdown (c’est en anglais):&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;email &amp;lt;-
   compose_email(
     body = md(
@@ -149,7 +150,7 @@ sent via the [blastula](https://rich-iannone.github.io/blastula) R package
 &lt;h2 id=&#34;erweitertes-html-e-mailing-über-smtp&#34;&gt;Erweitertes HTML-E-Mailing über SMTP&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;RStudio Connect&lt;/strong&gt; ist nicht die einzige Möglichkeit, E-Mails mit &lt;strong&gt;blastula&lt;/strong&gt; zu versenden. Wir können E-Mails über einen SMTP-Server senden, auf den wir Zugriff haben (z. B. Google Mail, Outlook usw.). Schauen wir uns kurz drei Dinge an, die sich in Bezug auf die E-Mail-Zusammensetzung und den SMTP-Versand verbessert haben.&lt;/p&gt;
 &lt;h3 id=&#34;überarbeitete-nachrichtenkomposition-mit-mehr-sicherheit&#34;&gt;Überarbeitete Nachrichtenkomposition mit mehr Sicherheit&lt;/h3&gt;
-&lt;p&gt;Zuvor waren die Textinterpolationsfunktionen des &lt;strong&gt;glue&lt;/strong&gt;-Pakets in die Funktion &lt;code&gt;compose_email()&lt;/code&gt; integriert. Dies bedeutet, dass wir die Anweisung &lt;code&gt;&amp;quot;The date and time of sending is {Sys.time()}.&amp;quot;&lt;/code&gt; Direkt als Eintrag beispielsweise in der Fußzeile der Nachricht verwendet haben könnten. Das Potential zur Bewertung &lt;strong&gt;R&lt;/strong&gt; in den Ketten zu haben, führt zu Sicherheitsrisiken, so dass dies nicht mehr möglich ist. Stattdessen können wir uns einfach dafür entscheiden, &lt;code&gt;glue::glue()&lt;/code&gt; oder &lt;code&gt;paste()&lt;/code&gt; zu verwenden. Wenn ein Markdown- oder HTML-Element vorhanden ist, ist die Funktion &lt;code&gt;md()&lt;/code&gt; erforderlich. Hier ist ein Beispiel für eine einfache Nachricht, die Markdown verwendet:&lt;/p&gt;
+&lt;p&gt;Zuvor waren die Textinterpolationsfunktionen des &lt;strong&gt;glue&lt;/strong&gt;-Pakets in die Funktion &lt;code&gt;compose_email()&lt;/code&gt; integriert. Dies bedeutet, dass wir die Anweisung &lt;code&gt;&#34;The date and time of sending is {Sys.time()}.&#34;&lt;/code&gt; Direkt als Eintrag beispielsweise in der Fußzeile der Nachricht verwendet haben könnten. Das Potential zur Bewertung &lt;strong&gt;R&lt;/strong&gt; in den Ketten zu haben, führt zu Sicherheitsrisiken, so dass dies nicht mehr möglich ist. Stattdessen können wir uns einfach dafür entscheiden, &lt;code&gt;glue::glue()&lt;/code&gt; oder &lt;code&gt;paste()&lt;/code&gt; zu verwenden. Wenn ein Markdown- oder HTML-Element vorhanden ist, ist die Funktion &lt;code&gt;md()&lt;/code&gt; erforderlich. Hier ist ein Beispiel für eine einfache Nachricht, die Markdown verwendet:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;email &amp;lt;-
   compose_email(
     body = md(
