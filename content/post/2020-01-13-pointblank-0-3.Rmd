@@ -1,0 +1,509 @@
+---
+title: pointblank v0.3
+author: Rich
+date: '2020-01-13'
+slug: pointblank-0-3
+categories: []
+tags:
+  - R Packages
+subtitle: ''
+summary: 'There is a new release of the **pointblank** package. It tries to prove that assessing data quality does *not* have to be difficult.'
+authors: []
+lastmod: '2020-01-13T00:41:23-05:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+<html>
+<link rel="stylesheet" href="/post/css/style.css" />
+</html>
+
+
+<html>
+<div class="tab">
+<button class="tablinks" onclick="openLang(event, 'English')" id="defaultOpen">English</button>
+<button class="tablinks" onclick="openLang(event, 'French')">French</button>
+<button class="tablinks" onclick="openLang(event, 'German')">German</button>
+</div>
+
+</html>
+<!-- Start English Section --> 
+<div id="English" class="tabcontent">
+
+![](/post/2020-01-13-pointblank-0-3_files/pointblank-banner.svg){width=100%}
+
+The newest release of the **pointblank** package makes it really easy to validate your data with workflows attuned to your data quality needs. You can install **pointblank** 0.3 from CRAN with:
+
+```r
+install.packages("pointblank")
+```
+
+The design goals of **pointblank** are to enable two important data validation workflows with a common set of validation step functions, and, to have the code work seamlessly with data in local data tables and with database tables.
+
+The two dominant workflows that pointblank enables are:
+
+1. data quality reporting
+2. pipeline-based data validation
+
+![](/post/2020-01-13-pointblank-0-3_files/two_different_workflows.png){width=100%}
+
+The first workflow is concerned with the data quality of the target table. One would use validation step functions to create a validation plan. That plan results in an interrogation of the table data. Finally, we get a report of the interrogation to ascertain data quality. The key is to use a large number of validation step functions to reveal inconsistencies or errors in the table.
+
+The second workflow is useful in a data-transformation pipeline that uses tabular data. The validation functions are used directly with data to either warn us of unforeseen data integrity problems or to completely stop the pipeline. Stopping is a good idea when dependent, downstream processes (that would use the data to some extent) would be compromised by bad data. Both workflows use a common set of validation step functions, ‘action levels’ (i.e., failure thresholds) can be set in a stepwise manner. Additionally, we can choose to use our own **R** functions to create side effects like logging.
+
+Both workflows make use of a large collection of simple validation step functions. These functions are named such that it's obvious what the validation does. For example, the `col_vals_gt()` function tests whether cell values in a column are greater than a specified value. The interface for each step function is consistent but also optimized for the particular operation.
+
+## A Walkthrough of **pointblank** in the Data Quality Reporting Workflow
+
+To determine the level of data quality for a table we use something called an *agent*. It develops a validation plan, performs the interrogation, and holds information about that interrogation (we would then ask for a report). The `create_agent()` function is used to create the *agent*. The target table is given to the *agent* and the table can be a tibble or a `tbl_dbi` object that's made through a database connection and the `dplyr::tbl()` function.
+
+We use validation step functions to build a validation plan. There are 23 of them and some check for the existence or the type of column (`col_exists()` or the group of `col_is_*()` functions) whereas others perform a check in each table cell within a column (e.g., all of the `col_vals_*()` functions). We apply our own understanding of the data in the target table when using the **pointblank** step functions, and, we use as many as is necessary for adequate testing.
+
+After using validation step functions to create a validation plan, the `interrogate()` function should then be used. With that, the table will be interrogated and the necessary validation information will be stored in the *agent*.
+
+The **pointblank** package contains a dataset called `small_table` which is indeed small but ideal for simple examples:
+
+``` r
+small_table
+```
+
+```
+#> # A tibble: 13 x 8
+#>    date_time           date           a b             c      d e     f    
+#>    <dttm>              <date>     <int> <chr>     <dbl>  <dbl> <lgl> <chr>
+#>  1 2016-01-04 11:00:00 2016-01-04     2 1-bcd-345     3  3423. TRUE  high 
+#>  2 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low  
+#>  3 2016-01-05 13:32:00 2016-01-05     6 8-kdg-938     3  2343. TRUE  high 
+#>  4 2016-01-06 17:23:00 2016-01-06     2 5-jdo-903    NA  3892. FALSE mid  
+#>  5 2016-01-09 12:36:00 2016-01-09     8 3-ldm-038     7   284. TRUE  low  
+#>  6 2016-01-11 06:15:00 2016-01-11     4 2-dhe-923     4  3291. TRUE  mid  
+#>  7 2016-01-15 18:46:00 2016-01-15     7 1-knw-093     3   843. TRUE  high 
+#>  8 2016-01-17 11:27:00 2016-01-17     4 5-boe-639     2  1036. FALSE low  
+#>  9 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#> 10 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#> 11 2016-01-26 20:07:00 2016-01-26     4 2-dmx-010     7   834. TRUE  low  
+#> 12 2016-01-28 02:51:00 2016-01-28     2 7-dmx-010     8   108. FALSE low  
+#> 13 2016-01-30 11:23:00 2016-01-30     1 3-dka-303    NA  2230. TRUE  high 
+```
+
+The validation plan for this table uses the following assertions:
+
+1. the `date_time` column is a `POSIXct` date-time column
+2. column `f` contains only the values `"low"`, `"mid"`, and `"high"`
+3. the values in column `a` are all less than `10`
+4. The strings in column `b` conform to a specified regex pattern
+5. column `d` has values in the range of `0` to `5000` (this is not entirely true!)
+
+Here is the code for the above validation logic:
+
+``` r
+agent <- 
+  small_table %>%
+  create_agent() %>%
+  col_is_posix(vars(date_time)) %>%
+  col_vals_in_set(vars(f), set = c("low", "mid", "high")) %>%
+  col_vals_lt(vars(a), value = 10) %>%
+  col_vals_regex(vars(b), regex = "^[0-9]-[a-z]{3}-[0-9]{3}$") %>%
+  col_vals_between(vars(d), left = 0, right = 5000) %>%
+  interrogate()
+```
+
+The `agent` object gives us a little bit of information about how the interrogation went:
+
+``` r
+agent
+```
+
+```
+#> pointblank agent // <agent_2020-01-13_04:14:09>
+#> 
+#> number of validation steps: 5
+#> 
+#> interrogation (2020-01-13 04:14:09) resulted in:
+#>   - 4 passing validations
+#>   - 1 failing validation   more info: `get_agent_report()`
+```
+
+The `4 passing validations` means that all of the individual validations in four validation steps passed without any errors. One validation step failed with at least one test unit failing (each cell tested is equivalent to 1 test unit). We can generate a report with more detail by using `get_agent_report()`:
+
+``` r
+get_agent_report(agent)
+```
+
+![](/post/2020-01-13-pointblank-0-3_files/agent_report.png){width=100%}
+
+The report is a **gt** table, which is printed by default if we have the **gt** package installed (use `remotes::install_github("rstudio/gt")` to install that package). The first five columns of the report are recognizable since they are names of the validation step functions and their parameters. The `preconditions?` column indicates whether the table was altered just before interrogation (for that validation step). The `Units` column shows us the total number of test units for each validation step. The `n_pass` column gives the number of passing test units while the `f_pass` column indicates the fraction of passing test units. The `W`, `S`, `N` indicators tell us whether we have entered either of the `WARN`, `STOP`, or `NOTIFY` states for these validation steps. Because we didn’t set any threshold levels for these states, they are irrelevant for this report. Finally, the `Extract` indicator tells us whether there are data extracts available for failed test units. For `step 5`, the `col_vals_between()` validation step, there is a data extract available. We can have a look at that extract with `get_data_extracts()`:
+
+``` r
+get_data_extracts(agent, i = 5)
+```
+
+```
+#> # A tibble: 1 x 8
+#>   date_time           date           a b             c      d e     f    
+#>   <dttm>              <date>     <int> <chr>     <dbl>  <dbl> <lgl> <chr>
+#> 1 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low
+```
+
+Recall that validation `step 5` asserted that all values in column `d` should be between `0` and `5000`, however, this extract of `small_table` shows that column `d` has a value that lies outside this specified range.
+
+## A Walkthrough of **pointblank** in the Pipeline-based Data Validation Workflow
+
+The second workflow, pipeline-based data validations, somewhat simplifies the process for checking data directly. There is no *agent* involved here and we instead call validation step functions directly on the data table objects. Because there isn't an agent, there won't be a report either. The idea is that the side effects are most important here (the data will pass through the validation functions unchanged). We can trigger warnings, raise errors, or write out logs when exceeding specified failure thresholds.
+
+Where would we do this? When importing data we could test that data by passing it through a few validation step functions with `warn_at` and `stop_at` threshold levels set. If we were to transform a data table, we could likewise use a set of validation step functions as a QA/QC measure. If bad data quality might be bad for a downstream data product, it’s probably better to stop the process through **pointblank** validation tests and then do root-cause analysis to fix the data quality problem.
+
+Let’s use the statements from the previous example to work within the pipeline-based data validation workflow. In this case, we'll use a simple call of the `action_levels()` function to generate the `al` object. It's passed to the `actions` argument of every validaton step function. The setting implies that the pipeline will be stopped when there is a single test unit failure (with `stop_at = 1`).
+
+``` r
+# Create an `action_levels` object, stopping the pipeline
+# if we get a single failing test unit
+al <- action_levels(stop_at = 1)
+
+small_table %>%
+  col_is_posix(vars(date_time), actions = al) %>%
+  col_vals_in_set(vars(f), set = c("low", "mid", "high"), actions = al) %>%
+  col_vals_lt(vars(a), value = 10, actions = al) %>%
+  col_vals_regex(vars(b), regex = "^[0-9]-[a-z]{3}-[0-9]{3}$", actions = al) %>%
+  col_vals_between(vars(d), left = 0, right = 5000, actions = al)
+```
+
+```
+Error: The validation (`col_vals_between()`) meets or exceeds the stop threshold
+```
+
+This is one of those times when we might be glad to see an error. The threshold setting stopped the evaluation of the pipeline and, in turn, stops the running script if it’s deployed and automatically running on the regular. The `action_levels()` function is quite powerful and it allows us to define custom functions that are evaluated when entering each of the three failure states. In this type of workflow we don’t need to define those functions, pointblank will automatically do the sensible thing and provide a stock `warning()` or `stop()` message.
+
+## Wrapping Up
+
+These short demonstrations show the main features of the two data validation workflows of **pointblank**. There are many things you can do to precisely define the validation steps and to cause the correct action to occur when entering different failure states. I hope you're inclined to try it out on your own data!
+
+</div>
+<!-- Start French Section --> 
+<div id="French" class="tabcontent">
+
+![](/post/2020-01-13-pointblank-0-3_files/pointblank-banner.svg){width=100%}
+
+La dernière version du package **pointblank** facilite la validation de vos données avec des workflows adaptés à vos besoins en matière de qualité des données. Vous pouvez installer pointblank 0.3 avec:
+
+```r
+install.packages("pointblank")
+```
+
+L'objectif de conception de pointblank est de permettre deux workflows de validation de données importants avec un ensemble commun de fonctions d'étape de validation et le code écrit devrait fonctionner de manière transparente avec les données des tables de données locales et avec les données des bases de données.
+
+Les deux workflows dominants que permet pointblank sont:
+
+1. rapports sur la qualité des données
+2. validations de données basées sur le pipeline
+
+![](/post/2020-01-13-pointblank-0-3_files/two_different_workflows.png){width=100%}
+
+Le premier workflow concerne la qualité des données de la table cible. On utiliserait des fonctions d'étape de validation pour créer un plan de validation. Ce plan entraîne une interrogation des données de la table. Enfin, nous obtenons un rapport de l'interrogation pour vérifier la qualité des données. L'idée principale est d'utiliser un grand nombre de fonctions d'étape de validation pour révéler des incohérences ou des erreurs dans le tableau de données.
+
+La deuxième méthodologie est utile dans un pipeline de transformation de données qui utilise des données tabulaires. Les fonctions de validation sont utilisées directement pour nous avertir des problèmes imprévus d'intégrité des données ou pour arrêter complètement le pipeline. L'arrêt est une bonne idée lorsque les processus dépendants et en aval (qui utiliseraient les données dans une certaine mesure) seraient compromis par de mauvaises données. Les deux méthodologies utilisent un ensemble commun de fonctions d'étape de validation, les «action levels» (c'est-à-dire les seuils d'échec) peuvent être définis par étapes. De plus, nous pouvons choisir d'utiliser nos propres fonctions **R** pour créer des effets secondaires comme la journalisation.
+
+Les deux workflows utilisent une large collection de fonctions d'étape de validation simples. Ces fonctions sont nommées de telle sorte que la fonction de validation soit évidente. Par exemple, la fonction `col_vals_gt()` teste si les valeurs de cellule dans une colonne sont supérieures à une valeur spécifiée. L'interface pour chaque fonction d'étape est cohérente mais également optimisée pour l'opération particulière.
+
+## Présentation pas à pas de **pointblank** dans le workflow de rapport sur la qualité des données
+
+Pour déterminer le niveau de qualité des données d'une table, nous utilisons ce que l'on appelle un agent. Il élabore un plan de validation, effectue l'interrogatoire et détient des informations sur cette interrogation (nous demanderions alors un rapport). La fonction `create_agent()` est utilisée pour créer l'agent. La table cible est donnée à l'agent et la table peut être un tibble ou un objet `tbl_dbi` créé via une connexion à la base de données et la fonction `dplyr::tbl()`.
+
+Nous utilisons des fonctions d'étape de validation pour construire un plan de validation. Il y en a 23 et certains vérifient l'existence ou le type de colonne (`col_exists()` ou le groupe de fonctions de la forme: `col_is_*()`) tandis que d'autres effectuent une vérification dans chaque cellule du tableau d'une colonne (par exemple, tous les `col_vals_*()` fonctions). Nous appliquons notre propre compréhension des données de la table cible lors de l'utilisation des fonctions d'étape de pointblank, et nous en utilisons autant que nécessaire pour des tests adéquats.
+
+Après avoir utilisé les fonctions de l'étape de validation pour créer un plan de validation, la fonction `interrogate()` doit ensuite être utilisée. Avec cela, la table sera interrogée et les informations de validation nécessaires seront stockées dans l'agent.
+
+Utilisons l'objet `small_table` pour des exemples:
+
+``` r
+small_table
+```
+
+```
+#> # A tibble: 13 x 8
+#>    date_time           date           a b             c      d e     f    
+#>    <dttm>              <date>     <int> <chr>     <dbl>  <dbl> <lgl> <chr>
+#>  1 2016-01-04 11:00:00 2016-01-04     2 1-bcd-345     3  3423. TRUE  high 
+#>  2 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low  
+#>  3 2016-01-05 13:32:00 2016-01-05     6 8-kdg-938     3  2343. TRUE  high 
+#>  4 2016-01-06 17:23:00 2016-01-06     2 5-jdo-903    NA  3892. FALSE mid  
+#>  5 2016-01-09 12:36:00 2016-01-09     8 3-ldm-038     7   284. TRUE  low  
+#>  6 2016-01-11 06:15:00 2016-01-11     4 2-dhe-923     4  3291. TRUE  mid  
+#>  7 2016-01-15 18:46:00 2016-01-15     7 1-knw-093     3   843. TRUE  high 
+#>  8 2016-01-17 11:27:00 2016-01-17     4 5-boe-639     2  1036. FALSE low  
+#>  9 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#> 10 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#> 11 2016-01-26 20:07:00 2016-01-26     4 2-dmx-010     7   834. TRUE  low  
+#> 12 2016-01-28 02:51:00 2016-01-28     2 7-dmx-010     8   108. FALSE low  
+#> 13 2016-01-30 11:23:00 2016-01-30     1 3-dka-303    NA  2230. TRUE  high 
+```
+
+Le plan de validation de ce tableau utilise les assertions suivantes:
+
+1. la colonne `date_time` est une colonne date-heure
+2. la colonne `f` ne contient que les valeurs  `"low"`, `"mid"`, and `"high"`
+3. les valeurs de la colonne `a` sont toutes inférieures à `10`
+4. Les valeurs de texte dans la colonne `b` sont conformes à un modèle spécifié
+5. la colonne `d` a des valeurs entre `0` et `5000` (pas entièrement vrai!)
+
+Voici le code pour la validation:
+
+``` r
+agent <- 
+  small_table %>%
+  create_agent() %>%
+  col_is_posix(vars(date_time)) %>%
+  col_vals_in_set(vars(f), set = c("low", "mid", "high")) %>%
+  col_vals_lt(vars(a), value = 10) %>%
+  col_vals_regex(vars(b), regex = "^[0-9]-[a-z]{3}-[0-9]{3}$") %>%
+  col_vals_between(vars(d), left = 0, right = 5000) %>%
+  interrogate()
+```
+
+L'objet `agent` nous donne quelques informations sur la façon dont les choses se sont passées:
+
+``` r
+agent
+```
+
+```
+#> pointblank agent // <agent_2020-01-13_04:14:09>
+#> 
+#> number of validation steps: 5
+#> 
+#> interrogation (2020-01-13 04:14:09) resulted in:
+#>   - 4 passing validations
+#>   - 1 failing validation   more info: `get_agent_report()`
+```
+
+Les «4 passing validations» signifient que toutes les validations individuelles en quatre étapes de validation ont réussi sans erreur. Une étape de validation a échoué et au moins une unité de test a échoué (chaque cellule testée équivaut à 1 unité de test). Nous pouvons générer un rapport avec plus de détails en utilisant `get_agent_report()`:
+
+``` r
+get_agent_report(agent)
+```
+
+![](/post/2020-01-13-pointblank-0-3_files/agent_report.png){width=100%}
+
+Le rapport est une table **gt**, qui est imprimée par défaut si nous avons installé le paquet **gt** (utilisez `remotes::install_github("rstudio/gt")` pour installer ce paquet). Les cinq premières colonnes du rapport sont reconnaissables car ce sont les noms des fonctions de l'étape de validation et leurs paramètres. Les `preconditions` colonne indique si la table a été modifiée juste avant l'interrogation (pour cette étape de validation). La colonne `Units` nous indique le nombre total d'unités de test pour chaque étape de validation. La colonne `n_pass` donne le nombre d'unités de test réussies tandis que la colonne `f_pass` indique la fraction d'unités de test réussies. Les indicateurs `W`, `S`, `N` nous indiquent si nous sommes entrés dans l'un des états `WARN`, `STOP` ou `NOTIFY` pour ces étapes de validation. Étant donné que nous n'avons défini aucun seuil pour ces États, ils ne sont pas pertinents pour ce rapport. Enfin, l'indicateur `Extract` nous indique si des extraits de données sont disponibles pour les unités de test ayant échoué. Pour *l'étape 5*, l'étape de validation `col_vals_between()`, un extrait de données est disponible. Nous pouvons jeter un œil à cet extrait avec `get_data_extracts()`:
+
+``` r
+get_data_extracts(agent, i = 5)
+```
+
+```
+#> # A tibble: 1 x 8
+#>   date_time           date           a b             c      d e     f    
+#>   <dttm>              <date>     <int> <chr>     <dbl>  <dbl> <lgl> <chr>
+#> 1 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low
+```
+
+Rappelons que `l'étape 5` a affirmé que toutes les valeurs de la colonne `d` doivent être comprises entre `0` et `5000`, cependant, cet extrait de `small_table` montre que la colonne `d` a une valeur qui se situe en dehors de cette plage spécifiée.
+
+## Procédure pas à pas de **pointblank** dans le workflow de validation des données basé sur le pipeline
+
+La deuxième méthodologie, la validation des données par pipeline, simplifie quelque peu le processus de vérification directe des données. Aucun *agent* n'est impliqué ici et nous appelons plutôt les fonctions d'étape de validation directement sur les objets de la table de données. Parce qu'il n'y a pas d'agent, il n'y aura pas non plus de rapport. L'idée est que les effets secondaires sont les plus importants ici (les données passeront par les fonctions de validation inchangées). Nous pouvons déclencher des avertissements, générer des erreurs ou écrire des journaux en cas de dépassement des seuils d'échec spécifiés.
+
+Où ferions-nous cela? Lors de l'importation de données, nous pourrions tester ces données en les passant par quelques fonctions d'étape de validation avec des niveaux de seuil `warn_at` et `stop_at` définis. Si nous devions transformer un tableau de données, nous pourrions également utiliser un ensemble de fonctions d'étape de validation comme mesure d'AQ et de CQ. Si la mauvaise qualité des données peut être mauvaise pour un produit de données en aval, il est probablement préférable d'arrêter le processus par le biais de tests de validation **pointblank**, puis d'effectuer une analyse des causes profondes pour résoudre le problème de qualité des données.
+
+Utilisons les instructions de l'exemple précédent pour travailler dans le workflow de validation des données basé sur le pipeline. Dans ce cas, nous utiliserons un simple appel de la fonction `action_levels()` pour générer l'objet `al`. Il est passé à l'argument `actions` de chaque fonction d'étape de validation. Le paramètre implique que le pipeline sera arrêté en cas de défaillance d'une seule unité de test (avec `stop_at = 1`).
+
+``` r
+# Create an `action_levels` object, stopping the pipeline
+# if we get a single failing test unit
+al <- action_levels(stop_at = 1)
+
+small_table %>%
+  col_is_posix(vars(date_time), actions = al) %>%
+  col_vals_in_set(vars(f), set = c("low", "mid", "high"), actions = al) %>%
+  col_vals_lt(vars(a), value = 10, actions = al) %>%
+  col_vals_regex(vars(b), regex = "^[0-9]-[a-z]{3}-[0-9]{3}$", actions = al) %>%
+  col_vals_between(vars(d), left = 0, right = 5000, actions = al)
+```
+
+```
+Error: The validation (`col_vals_between()`) meets or exceeds the stop threshold
+```
+
+C'est l'un de ces moments où nous pourrions être super heureux de voir une erreur. Le paramètre de seuil a arrêté l'évaluation du pipeline et, à son tour, arrête le script en cours d'exécution s'il est déployé et s'exécute automatiquement sur la version standard. La fonction `action_levels()` est assez puissante et elle nous permet de définir des fonctions personnalisées qui sont évaluées lors de la saisie de chacun des trois états de défaillance. Dans ce type de workflow, nous n'avons pas besoin de définir ces fonctions, **pointblank** nous aidera automatiquement à cela.
+
+## Essayez **pointblank**!
+
+Ces courtes démonstrations présentent les principales caractéristiques des deux workflows de validation des données de **pointblank**. Il existe de nombreuses choses que vous pouvez faire pour définir précisément les étapes de validation et pour que l'action correcte se produise lors de la saisie de différents états de défaillance. J'espère que vous êtes enclin à l'essayer sur vos propres données!
+
+</div>
+<!-- Start German Section --> 
+<div id="German" class="tabcontent">
+
+
+![](/post/2020-01-13-pointblank-0-3_files/pointblank-banner.svg){width=100%}
+
+Die neueste Version des **pointblank**-Pakets erleichtert die Validierung Ihrer Daten mit Workflows, die auf Ihre Datenqualitätsanforderungen abgestimmt sind. Sie können **pointblank** 0.3 von CRAN installieren mit:
+
+```r
+install.packages("pointblank")
+```
+
+Das Entwurfsziel von **pointblank** besteht darin, zwei wichtige Datenvalidierungs-Workflows mit einem gemeinsamen Satz von Validierungsschrittfunktionen zu ermöglichen. Der geschriebene Code sollte mit Daten in lokalen Datentabellen und mit Daten in Datenbanken gleichermaßen gut funktionieren.
+
+Die beiden wichtigsten Workflows, bei denen pointblank hilft, sind:
+
+1. Berichterstattung zur Datenqualität
+2. Pipeline-basierte Datenvalidierungen
+
+![](/post/2020-01-13-pointblank-0-3_files/two_different_workflows.png){width=100%}
+
+Der erste Workflow befasst sich mit der Datenqualität der Zieltabelle. Man würde Validierungsschrittfunktionen verwenden, um einen Validierungsplan zu erstellen. Dieser Plan führt zu einer Abfrage der Tabellendaten. Schließlich erhalten wir einen Bericht über die Abfrage, um die Datenqualität festzustellen. Es wird empfohlen, eine große Anzahl von Validierungsschrittfunktionen zu verwenden. Mit mehr von ihnen können wir Inkonsistenzen oder Fehler in der Tabelle besser aufdecken.
+
+Der zweite Workflow ist in einer Datentransformationspipeline nützlich, die Tabellendaten verwendet. Die Validierungsfunktionen werden direkt verwendet, um uns entweder vor unvorhergesehenen Problemen mit der Datenintegrität zu warnen oder um die Pipeline vollständig zu stoppen. Anhalten ist eine gute Idee, wenn abhängige, nachgelagerte Prozesse (die die Daten in gewissem Umfang nutzen würden) durch schlechte Daten beeinträchtigt würden. Beide Workflows verwenden einen gemeinsamen Satz von Validierungsschrittfunktionen. "Action levels" (d. H. Fehlerschwellen) können schrittweise festgelegt werden. Zusätzlich können wir unsere eigenen **R**-Funktionen verwenden, um Nebenwirkungen wie das Schreiben von Protokolldateien zu erzeugen.
+
+Beide Workflows verwenden eine große Sammlung einfacher Validierungsschrittfunktionen. Diese Funktionen werden so benannt, dass es offensichtlich ist, was die Validierung bewirkt. Beispielsweise testet die Funktion `col_vals_gt()`, ob die Zellenwerte in einer Spalte größer als ein angegebener Wert sind. Die Schnittstelle für jede Schrittfunktion ist konsistent, aber auch für die jeweilige Operation optimiert.
+
+## Exemplarische Vorgehensweise von **pointblank** im Workflow für die Berichterstellung zur Datenqualität
+
+Um die Datenqualität für eine Tabelle zu bestimmen, verwenden wir einen Agenten. Es entwickelt einen Validierungsplan, führt die Befragung durch und enthält Informationen zu dieser Befragung (wir würden dann um einen Bericht bitten). Mit der Funktion `create_agent()` wird der Agent erstellt. Die Zieltabelle wird dem Agenten übergeben, und die Tabelle kann ein tibble- oder ein `tbl_dbi`-Objekt sein, das über eine Datenbankverbindung und die Funktion `dplyr::tbl()` erstellt wurde.
+
+Wir verwenden Validierungsschrittfunktionen, um einen Validierungsplan zu erstellen. Es gibt 23 von ihnen und einige prüfen die Existenz oder den Typ der Spalte (`col_exists()` oder die Gruppe von `col_is_*()` -Funktionen), während andere eine Prüfung in jeder Tabellenzelle innerhalb einer Spalte durchführen (z. B. alle `col_vals_*()` Funktionen). Wir wenden bei der Verwendung der Pointblank-Step-Funktionen unser eigenes Verständnis der Daten in der Zieltabelle an und verwenden so viele, wie für angemessene Tests erforderlich sind.
+
+Nachdem Sie Validierungsschrittfunktionen zum Erstellen eines Validierungsplans verwendet haben, sollte die Funktion `interrogate()` verwendet werden. Damit wird die Tabelle abgefragt und die notwendigen Validierungsinformationen im Agenten gespeichert.
+
+Das **pointblank**-Paket enthält einen Datensatz mit dem Namen `small_table`. Wir werden es für alle kommenden Beispiele verwenden:
+
+``` r
+small_table
+```
+
+```
+#> # A tibble: 13 x 8
+#>    date_time           date           a b             c      d e     f    
+#>    <dttm>              <date>     <int> <chr>     <dbl>  <dbl> <lgl> <chr>
+#>  1 2016-01-04 11:00:00 2016-01-04     2 1-bcd-345     3  3423. TRUE  high 
+#>  2 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low  
+#>  3 2016-01-05 13:32:00 2016-01-05     6 8-kdg-938     3  2343. TRUE  high 
+#>  4 2016-01-06 17:23:00 2016-01-06     2 5-jdo-903    NA  3892. FALSE mid  
+#>  5 2016-01-09 12:36:00 2016-01-09     8 3-ldm-038     7   284. TRUE  low  
+#>  6 2016-01-11 06:15:00 2016-01-11     4 2-dhe-923     4  3291. TRUE  mid  
+#>  7 2016-01-15 18:46:00 2016-01-15     7 1-knw-093     3   843. TRUE  high 
+#>  8 2016-01-17 11:27:00 2016-01-17     4 5-boe-639     2  1036. FALSE low  
+#>  9 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#> 10 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#> 11 2016-01-26 20:07:00 2016-01-26     4 2-dmx-010     7   834. TRUE  low  
+#> 12 2016-01-28 02:51:00 2016-01-28     2 7-dmx-010     8   108. FALSE low  
+#> 13 2016-01-30 11:23:00 2016-01-30     1 3-dka-303    NA  2230. TRUE  high 
+```
+
+Der Validierungsplan für diese Tabelle verwendet die folgenden Zusicherungen:
+
+1. Die Spalte `date_time` ist eine Datum-Uhrzeit-Spalte
+2. Spalte `f` enthält nur die Werte `"low"`, `"mid"` und `"high"`
+3. Die Werte in Spalte `a` sind alle kleiner als `10`
+4. Die Zeichenfolgen in Spalte `b` entsprechen einem angegebenen regulären Ausdruck
+5. Spalte `d` hat Werte im Bereich von `0` bis `5000` (dies ist nicht ganz richtig!)
+
+Hier ist der Code für die obige Validierungslogik:
+
+``` r
+agent <- 
+  small_table %>%
+  create_agent() %>%
+  col_is_posix(vars(date_time)) %>%
+  col_vals_in_set(vars(f), set = c("low", "mid", "high")) %>%
+  col_vals_lt(vars(a), value = 10) %>%
+  col_vals_regex(vars(b), regex = "^[0-9]-[a-z]{3}-[0-9]{3}$") %>%
+  col_vals_between(vars(d), left = 0, right = 5000) %>%
+  interrogate()
+```
+
+Das `Agent`-Objekt gibt uns ein paar Informationen über die Befragung:
+
+``` r
+agent
+```
+
+```
+#> pointblank agent // <agent_2020-01-13_04:14:09>
+#> 
+#> number of validation steps: 5
+#> 
+#> interrogation (2020-01-13 04:14:09) resulted in:
+#>   - 4 passing validations
+#>   - 1 failing validation   more info: `get_agent_report()`
+```
+
+Die `4 passing validations` bedeuten, dass alle Einzelvalidierungen in vier Validierungsschritten fehlerfrei bestanden wurden. Ein Validierungsschritt ist fehlgeschlagen, wobei mindestens eine Testeinheit ausgefallen ist (jede getestete Zelle entspricht 1 Testeinheit). Mit `get_agent_report()` können wir einen detaillierteren Bericht erstellen:
+
+``` r
+get_agent_report(agent)
+```
+
+![](/post/2020-01-13-pointblank-0-3_files/agent_report.png){width=100%}
+
+Der Bericht ist eine **gt**-Tabelle, die standardmäßig gedruckt wird, wenn das **gt**-Paket installiert ist (verwenden Sie `remotes::install_github("rstudio/gt")`, um dieses Paket zu installieren). Die ersten fünf Spalten des Berichts sind erkennbar, da sie Namen der Validierungsschrittfunktionen und ihrer Parameter sind. Die Spalte `preconditions?` gibt an, ob die Tabelle unmittelbar vor der Abfrage geändert wurde (für diesen Validierungsschritt). In der Spalte `Units` wird die Gesamtzahl der Testeinheiten für jeden Validierungsschritt angezeigt. Die Spalte `n_pass` gibt die Anzahl der bestandenen Testeinheiten an, während die Spalte `f_pass` den Anteil der bestandenen Testeinheiten angibt. Die `W`-, `S`- und `N`-Anzeigen zeigen an, ob wir für diese Überprüfungsschritte einen der Zustände `WARN`, `STOP` oder `NOTIFY` eingegeben haben. Da wir für diese Staaten keine Schwellenwerte festgelegt haben, sind sie für diesen Bericht nicht relevant. Schließlich gibt der Indikator `Extract` Auskunft darüber, ob für fehlerhafte Testeinheiten Datenextrakte verfügbar sind. Für `step 5`, den Validierungsschritt `col_vals_between()`, steht ein Datenextrakt zur Verfügung. Wir können uns diesen Auszug mit `get_data_extracts()` ansehen:
+
+``` r
+get_data_extracts(agent, i = 5)
+```
+
+```
+#> # A tibble: 1 x 8
+#>   date_time           date           a b             c      d e     f    
+#>   <dttm>              <date>     <int> <chr>     <dbl>  <dbl> <lgl> <chr>
+#> 1 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low
+```
+
+Denken Sie daran, dass bei der Validierung in `step 5` festgestellt wurde, dass alle Werte in Spalte `d` zwischen `0` und `5000` liegen sollten. Dieser Auszug aus `small_table` zeigt jedoch, dass Spalte `d` einen Wert hat, der außerhalb des angegebenen Bereichs liegt.
+
+## Eine exemplarische Vorgehensweise für **pointblank** im Pipeline-basierten Datenüberprüfungs-Workflow
+
+Der zweite Workflow, die pipelinebasierte Datenüberprüfung, vereinfacht die direkte Überprüfung der Daten ein wenig. Hier ist kein *Agent* beteiligt. Stattdessen rufen wir Validierungsschrittfunktionen direkt auf den Datentabellenobjekten auf. Da es keinen Agenten gibt, wird es auch keinen Bericht geben. Die Idee ist, dass die Nebenwirkungen hier am wichtigsten sind (die Daten durchlaufen die Validierungsfunktionen unverändert). Wir können Warnungen auslösen, Fehler auslösen oder Protokolle ausschreiben, wenn bestimmte Fehlerschwellen überschritten werden.
+
+Wo würden wir das machen? Beim Importieren von Daten konnten wir diese Daten testen, indem wir einige Validierungsschrittfunktionen mit festgelegten Schwellenwerten für `warn_at` und `stop_at` durchliefen. Wenn wir eine Datentabelle transformieren würden, könnten wir ebenfalls eine Reihe von Validierungsschrittfunktionen als QA / QC-Maß verwenden. Wenn eine schlechte Datenqualität für ein nachgeschaltetes Datenprodukt schlecht sein könnte, ist es wahrscheinlich besser, den Prozess durch **pointblank**-Validierungstests zu stoppen und anschließend eine Ursachenanalyse durchzuführen, um das Datenqualitätsproblem zu beheben.
+
+Verwenden Sie die Anweisungen aus dem vorherigen Beispiel, um im Workflow für die pipelinebasierte Datenüberprüfung zu arbeiten. In diesem Fall verwenden wir einen einfachen Aufruf der `action_levels()` -Funktion, um das al-Objekt zu generieren. Es wird an das Argument `actions` jeder Validierungsschrittfunktion übergeben. Die Einstellung impliziert, dass die Pipeline gestoppt wird, wenn eine einzelne Testeinheit ausfällt (mit `stop_at = 1`).
+
+``` r
+# Create an `action_levels` object, stopping the pipeline
+# if we get a single failing test unit
+al <- action_levels(stop_at = 1)
+
+small_table %>%
+  col_is_posix(vars(date_time), actions = al) %>%
+  col_vals_in_set(vars(f), set = c("low", "mid", "high"), actions = al) %>%
+  col_vals_lt(vars(a), value = 10, actions = al) %>%
+  col_vals_regex(vars(b), regex = "^[0-9]-[a-z]{3}-[0-9]{3}$", actions = al) %>%
+  col_vals_between(vars(d), left = 0, right = 5000, actions = al)
+```
+
+```
+Error: The validation (`col_vals_between()`) meets or exceeds the stop threshold
+```
+
+Dies ist eine der Situationen, in denen wir uns möglicherweise über einen Fehler freuen. Die Schwellenwerteinstellung hat die Auswertung der Pipeline gestoppt und stoppt das ausgeführte Skript, wenn es bereitgestellt wird und automatisch regelmäßig ausgeführt wird. Die `action_levels()`-Funktion ist sehr leistungsfähig und ermöglicht es uns, benutzerdefinierte Funktionen zu definieren, die beim Eingeben der drei Fehlerzustände ausgewertet werden. In dieser Art von Workflow müssen diese Funktionen nicht definiert werden. Pointblank erledigt automatisch die sinnvolle Aufgabe und gibt eine `warning()` oder eine `stop()`-Meldung aus.
+
+## Bitte testen Sie das **pointblank**-Paket
+
+Diese kurzen Demonstrationen zeigen die Hauptmerkmale der beiden Datenvalidierungs-Workflows von **pointblank**. Es gibt viele Möglichkeiten, um die Überprüfungsschritte genau zu definieren und die richtige Aktion auszulösen, wenn verschiedene Fehlerzustände eingegeben werden. Ich hoffe, Sie sind geneigt, es an Ihren eigenen Daten auszuprobieren!
+
+</div>
+<script>
+function openLang(evt, cityName) {
+var i, tabcontent, tablinks;
+tabcontent = document.getElementsByClassName("tabcontent");
+for (i = 0; i < tabcontent.length; i++) {
+tabcontent[i].style.display = "none";
+}
+tablinks = document.getElementsByClassName("tablinks");
+for (i = 0; i < tablinks.length; i++) {
+tablinks[i].className = tablinks[i].className.replace(" active", "");
+}
+document.getElementById(cityName).style.display = "block";
+evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
+

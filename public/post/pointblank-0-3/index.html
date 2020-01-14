@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.5.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Richard Iannone">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="There is a new release of the **pointblank** package. It tries to prove that assessing data quality does *not* have to be difficult.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/post/pointblank-0-3/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.css">
+
+  
+
+
+
+
+  
+
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon-32.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="/post/pointblank-0-3/">
+
+  
+  
+  
+  
+    
+  
+  
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="twitter:site" content="@riannone">
+  <meta property="twitter:creator" content="@riannone">
+  
+  <meta property="og:site_name" content="R &amp; R">
+  <meta property="og:url" content="/post/pointblank-0-3/">
+  <meta property="og:title" content="pointblank v0.3 | R &amp; R">
+  <meta property="og:description" content="There is a new release of the **pointblank** package. It tries to prove that assessing data quality does *not* have to be difficult."><meta property="og:image" content="/img/R_and_R_share.png">
+  <meta property="twitter:image" content="/img/R_and_R_share.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2020-01-13T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2020-01-13T00:41:23-05:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/post/pointblank-0-3/"
+  },
+  "headline": "pointblank v0.3",
+  
+  "datePublished": "2020-01-13T00:00:00Z",
+  "dateModified": "2020-01-13T00:41:23-05:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Richard Iannone"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "R \u0026 R",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/img/icon-512.png"
+    }
+  },
+  "description": "There is a new release of the **pointblank** package. It tries to prove that assessing data quality does *not* have to be difficult."
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>pointblank v0.3 | R &amp; R</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0 compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">R &amp; R</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav mr-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#contact"><span>Contact</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/blogroll/"><span>Blogroll</span></a>
+        </li>
+
+        
+        
+
+      
+      </ul>
+      <ul class="navbar-nav ml-auto">
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+        </li>
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+  <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>pointblank v0.3</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Last updated on
+      
+    
+    January 13, 2020
+  </span>
+  
+
+  
+
+  
+
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+
+
+<html>
+<link rel="stylesheet" href="/post/css/style.css" />
+</html>
+<html>
+<div class="tab">
+<button class="tablinks" onclick="openLang(event, &#39;English&#39;)" id="defaultOpen">
+English
+</button>
+<button class="tablinks" onclick="openLang(event, &#39;French&#39;)">
+French
+</button>
+<button class="tablinks" onclick="openLang(event, &#39;German&#39;)">
+German
+</button>
+</div>
+</html>
+<!-- Start English Section -->
+<div id="English" class="tabcontent">
+<p><img src="/post/2020-01-13-pointblank-0-3_files/pointblank-banner.svg" style="width:100.0%" /></p>
+<p>The newest release of the <strong>pointblank</strong> package makes it really easy to validate your data with workflows attuned to your data quality needs. You can install <strong>pointblank</strong> 0.3 from CRAN with:</p>
+<pre class="r"><code>install.packages(&quot;pointblank&quot;)</code></pre>
+<p>The design goals of <strong>pointblank</strong> are to enable two important data validation workflows with a common set of validation step functions, and, to have the code work seamlessly with data in local data tables and with database tables.</p>
+<p>The two dominant workflows that pointblank enables are:</p>
+<ol style="list-style-type: decimal">
+<li>data quality reporting</li>
+<li>pipeline-based data validation</li>
+</ol>
+<p><img src="/post/2020-01-13-pointblank-0-3_files/two_different_workflows.png" style="width:100.0%" /></p>
+<p>The first workflow is concerned with the data quality of the target table. One would use validation step functions to create a validation plan. That plan results in an interrogation of the table data. Finally, we get a report of the interrogation to ascertain data quality. The key is to use a large number of validation step functions to reveal inconsistencies or errors in the table.</p>
+<p>The second workflow is useful in a data-transformation pipeline that uses tabular data. The validation functions are used directly with data to either warn us of unforeseen data integrity problems or to completely stop the pipeline. Stopping is a good idea when dependent, downstream processes (that would use the data to some extent) would be compromised by bad data. Both workflows use a common set of validation step functions, ‘action levels’ (i.e., failure thresholds) can be set in a stepwise manner. Additionally, we can choose to use our own <strong>R</strong> functions to create side effects like logging.</p>
+<p>Both workflows make use of a large collection of simple validation step functions. These functions are named such that it’s obvious what the validation does. For example, the <code>col_vals_gt()</code> function tests whether cell values in a column are greater than a specified value. The interface for each step function is consistent but also optimized for the particular operation.</p>
+<h2 id="a-walkthrough-of-pointblank-in-the-data-quality-reporting-workflow">A Walkthrough of <strong>pointblank</strong> in the Data Quality Reporting Workflow</h2>
+<p>To determine the level of data quality for a table we use something called an <em>agent</em>. It develops a validation plan, performs the interrogation, and holds information about that interrogation (we would then ask for a report). The <code>create_agent()</code> function is used to create the <em>agent</em>. The target table is given to the <em>agent</em> and the table can be a tibble or a <code>tbl_dbi</code> object that’s made through a database connection and the <code>dplyr::tbl()</code> function.</p>
+<p>We use validation step functions to build a validation plan. There are 23 of them and some check for the existence or the type of column (<code>col_exists()</code> or the group of <code>col_is_*()</code> functions) whereas others perform a check in each table cell within a column (e.g., all of the <code>col_vals_*()</code> functions). We apply our own understanding of the data in the target table when using the <strong>pointblank</strong> step functions, and, we use as many as is necessary for adequate testing.</p>
+<p>After using validation step functions to create a validation plan, the <code>interrogate()</code> function should then be used. With that, the table will be interrogated and the necessary validation information will be stored in the <em>agent</em>.</p>
+<p>The <strong>pointblank</strong> package contains a dataset called <code>small_table</code> which is indeed small but ideal for simple examples:</p>
+<pre class="r"><code>small_table</code></pre>
+<pre><code>#&gt; # A tibble: 13 x 8
+#&gt;    date_time           date           a b             c      d e     f    
+#&gt;    &lt;dttm&gt;              &lt;date&gt;     &lt;int&gt; &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;lgl&gt; &lt;chr&gt;
+#&gt;  1 2016-01-04 11:00:00 2016-01-04     2 1-bcd-345     3  3423. TRUE  high 
+#&gt;  2 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low  
+#&gt;  3 2016-01-05 13:32:00 2016-01-05     6 8-kdg-938     3  2343. TRUE  high 
+#&gt;  4 2016-01-06 17:23:00 2016-01-06     2 5-jdo-903    NA  3892. FALSE mid  
+#&gt;  5 2016-01-09 12:36:00 2016-01-09     8 3-ldm-038     7   284. TRUE  low  
+#&gt;  6 2016-01-11 06:15:00 2016-01-11     4 2-dhe-923     4  3291. TRUE  mid  
+#&gt;  7 2016-01-15 18:46:00 2016-01-15     7 1-knw-093     3   843. TRUE  high 
+#&gt;  8 2016-01-17 11:27:00 2016-01-17     4 5-boe-639     2  1036. FALSE low  
+#&gt;  9 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&gt; 10 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&gt; 11 2016-01-26 20:07:00 2016-01-26     4 2-dmx-010     7   834. TRUE  low  
+#&gt; 12 2016-01-28 02:51:00 2016-01-28     2 7-dmx-010     8   108. FALSE low  
+#&gt; 13 2016-01-30 11:23:00 2016-01-30     1 3-dka-303    NA  2230. TRUE  high </code></pre>
+<p>The validation plan for this table uses the following assertions:</p>
+<ol style="list-style-type: decimal">
+<li>the <code>date_time</code> column is a <code>POSIXct</code> date-time column</li>
+<li>column <code>f</code> contains only the values <code>"low"</code>, <code>"mid"</code>, and <code>"high"</code></li>
+<li>the values in column <code>a</code> are all less than <code>10</code></li>
+<li>The strings in column <code>b</code> conform to a specified regex pattern</li>
+<li>column <code>d</code> has values in the range of <code>0</code> to <code>5000</code> (this is not entirely true!)</li>
+</ol>
+<p>Here is the code for the above validation logic:</p>
+<pre class="r"><code>agent &lt;- 
+  small_table %&gt;%
+  create_agent() %&gt;%
+  col_is_posix(vars(date_time)) %&gt;%
+  col_vals_in_set(vars(f), set = c(&quot;low&quot;, &quot;mid&quot;, &quot;high&quot;)) %&gt;%
+  col_vals_lt(vars(a), value = 10) %&gt;%
+  col_vals_regex(vars(b), regex = &quot;^[0-9]-[a-z]{3}-[0-9]{3}$&quot;) %&gt;%
+  col_vals_between(vars(d), left = 0, right = 5000) %&gt;%
+  interrogate()</code></pre>
+<p>The <code>agent</code> object gives us a little bit of information about how the interrogation went:</p>
+<pre class="r"><code>agent</code></pre>
+<pre><code>#&gt; pointblank agent // &lt;agent_2020-01-13_04:14:09&gt;
+#&gt; 
+#&gt; number of validation steps: 5
+#&gt; 
+#&gt; interrogation (2020-01-13 04:14:09) resulted in:
+#&gt;   - 4 passing validations
+#&gt;   - 1 failing validation   more info: `get_agent_report()`</code></pre>
+<p>The <code>4 passing validations</code> means that all of the individual validations in four validation steps passed without any errors. One validation step failed with at least one test unit failing (each cell tested is equivalent to 1 test unit). We can generate a report with more detail by using <code>get_agent_report()</code>:</p>
+<pre class="r"><code>get_agent_report(agent)</code></pre>
+<p><img src="/post/2020-01-13-pointblank-0-3_files/agent_report.png" style="width:100.0%" /></p>
+<p>The report is a <strong>gt</strong> table, which is printed by default if we have the <strong>gt</strong> package installed (use <code>remotes::install_github("rstudio/gt")</code> to install that package). The first five columns of the report are recognizable since they are names of the validation step functions and their parameters. The <code>preconditions?</code> column indicates whether the table was altered just before interrogation (for that validation step). The <code>Units</code> column shows us the total number of test units for each validation step. The <code>n_pass</code> column gives the number of passing test units while the <code>f_pass</code> column indicates the fraction of passing test units. The <code>W</code>, <code>S</code>, <code>N</code> indicators tell us whether we have entered either of the <code>WARN</code>, <code>STOP</code>, or <code>NOTIFY</code> states for these validation steps. Because we didn’t set any threshold levels for these states, they are irrelevant for this report. Finally, the <code>Extract</code> indicator tells us whether there are data extracts available for failed test units. For <code>step 5</code>, the <code>col_vals_between()</code> validation step, there is a data extract available. We can have a look at that extract with <code>get_data_extracts()</code>:</p>
+<pre class="r"><code>get_data_extracts(agent, i = 5)</code></pre>
+<pre><code>#&gt; # A tibble: 1 x 8
+#&gt;   date_time           date           a b             c      d e     f    
+#&gt;   &lt;dttm&gt;              &lt;date&gt;     &lt;int&gt; &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;lgl&gt; &lt;chr&gt;
+#&gt; 1 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low</code></pre>
+<p>Recall that validation <code>step 5</code> asserted that all values in column <code>d</code> should be between <code>0</code> and <code>5000</code>, however, this extract of <code>small_table</code> shows that column <code>d</code> has a value that lies outside this specified range.</p>
+<h2 id="a-walkthrough-of-pointblank-in-the-pipeline-based-data-validation-workflow">A Walkthrough of <strong>pointblank</strong> in the Pipeline-based Data Validation Workflow</h2>
+<p>The second workflow, pipeline-based data validations, somewhat simplifies the process for checking data directly. There is no <em>agent</em> involved here and we instead call validation step functions directly on the data table objects. Because there isn’t an agent, there won’t be a report either. The idea is that the side effects are most important here (the data will pass through the validation functions unchanged). We can trigger warnings, raise errors, or write out logs when exceeding specified failure thresholds.</p>
+<p>Where would we do this? When importing data we could test that data by passing it through a few validation step functions with <code>warn_at</code> and <code>stop_at</code> threshold levels set. If we were to transform a data table, we could likewise use a set of validation step functions as a QA/QC measure. If bad data quality might be bad for a downstream data product, it’s probably better to stop the process through <strong>pointblank</strong> validation tests and then do root-cause analysis to fix the data quality problem.</p>
+<p>Let’s use the statements from the previous example to work within the pipeline-based data validation workflow. In this case, we’ll use a simple call of the <code>action_levels()</code> function to generate the <code>al</code> object. It’s passed to the <code>actions</code> argument of every validaton step function. The setting implies that the pipeline will be stopped when there is a single test unit failure (with <code>stop_at = 1</code>).</p>
+<pre class="r"><code># Create an `action_levels` object, stopping the pipeline
+# if we get a single failing test unit
+al &lt;- action_levels(stop_at = 1)
+
+small_table %&gt;%
+  col_is_posix(vars(date_time), actions = al) %&gt;%
+  col_vals_in_set(vars(f), set = c(&quot;low&quot;, &quot;mid&quot;, &quot;high&quot;), actions = al) %&gt;%
+  col_vals_lt(vars(a), value = 10, actions = al) %&gt;%
+  col_vals_regex(vars(b), regex = &quot;^[0-9]-[a-z]{3}-[0-9]{3}$&quot;, actions = al) %&gt;%
+  col_vals_between(vars(d), left = 0, right = 5000, actions = al)</code></pre>
+<pre><code>Error: The validation (`col_vals_between()`) meets or exceeds the stop threshold</code></pre>
+<p>This is one of those times when we might be glad to see an error. The threshold setting stopped the evaluation of the pipeline and, in turn, stops the running script if it’s deployed and automatically running on the regular. The <code>action_levels()</code> function is quite powerful and it allows us to define custom functions that are evaluated when entering each of the three failure states. In this type of workflow we don’t need to define those functions, pointblank will automatically do the sensible thing and provide a stock <code>warning()</code> or <code>stop()</code> message.</p>
+<h2 id="wrapping-up">Wrapping Up</h2>
+<p>These short demonstrations show the main features of the two data validation workflows of <strong>pointblank</strong>. There are many things you can do to precisely define the validation steps and to cause the correct action to occur when entering different failure states. I hope you’re inclined to try it out on your own data!</p>
+</div>
+<!-- Start French Section -->
+<div id="French" class="tabcontent">
+<p><img src="/post/2020-01-13-pointblank-0-3_files/pointblank-banner.svg" style="width:100.0%" /></p>
+<p>La dernière version du package <strong>pointblank</strong> facilite la validation de vos données avec des workflows adaptés à vos besoins en matière de qualité des données. Vous pouvez installer pointblank 0.3 avec:</p>
+<pre class="r"><code>install.packages(&quot;pointblank&quot;)</code></pre>
+<p>L’objectif de conception de pointblank est de permettre deux workflows de validation de données importants avec un ensemble commun de fonctions d’étape de validation et le code écrit devrait fonctionner de manière transparente avec les données des tables de données locales et avec les données des bases de données.</p>
+<p>Les deux workflows dominants que permet pointblank sont:</p>
+<ol style="list-style-type: decimal">
+<li>rapports sur la qualité des données</li>
+<li>validations de données basées sur le pipeline</li>
+</ol>
+<p><img src="/post/2020-01-13-pointblank-0-3_files/two_different_workflows.png" style="width:100.0%" /></p>
+<p>Le premier workflow concerne la qualité des données de la table cible. On utiliserait des fonctions d’étape de validation pour créer un plan de validation. Ce plan entraîne une interrogation des données de la table. Enfin, nous obtenons un rapport de l’interrogation pour vérifier la qualité des données. L’idée principale est d’utiliser un grand nombre de fonctions d’étape de validation pour révéler des incohérences ou des erreurs dans le tableau de données.</p>
+<p>La deuxième méthodologie est utile dans un pipeline de transformation de données qui utilise des données tabulaires. Les fonctions de validation sont utilisées directement pour nous avertir des problèmes imprévus d’intégrité des données ou pour arrêter complètement le pipeline. L’arrêt est une bonne idée lorsque les processus dépendants et en aval (qui utiliseraient les données dans une certaine mesure) seraient compromis par de mauvaises données. Les deux méthodologies utilisent un ensemble commun de fonctions d’étape de validation, les «action levels» (c’est-à-dire les seuils d’échec) peuvent être définis par étapes. De plus, nous pouvons choisir d’utiliser nos propres fonctions <strong>R</strong> pour créer des effets secondaires comme la journalisation.</p>
+<p>Les deux workflows utilisent une large collection de fonctions d’étape de validation simples. Ces fonctions sont nommées de telle sorte que la fonction de validation soit évidente. Par exemple, la fonction <code>col_vals_gt()</code> teste si les valeurs de cellule dans une colonne sont supérieures à une valeur spécifiée. L’interface pour chaque fonction d’étape est cohérente mais également optimisée pour l’opération particulière.</p>
+<h2 id="présentation-pas-à-pas-de-pointblank-dans-le-workflow-de-rapport-sur-la-qualité-des-données">Présentation pas à pas de <strong>pointblank</strong> dans le workflow de rapport sur la qualité des données</h2>
+<p>Pour déterminer le niveau de qualité des données d’une table, nous utilisons ce que l’on appelle un agent. Il élabore un plan de validation, effectue l’interrogatoire et détient des informations sur cette interrogation (nous demanderions alors un rapport). La fonction <code>create_agent()</code> est utilisée pour créer l’agent. La table cible est donnée à l’agent et la table peut être un tibble ou un objet <code>tbl_dbi</code> créé via une connexion à la base de données et la fonction <code>dplyr::tbl()</code>.</p>
+<p>Nous utilisons des fonctions d’étape de validation pour construire un plan de validation. Il y en a 23 et certains vérifient l’existence ou le type de colonne (<code>col_exists()</code> ou le groupe de fonctions de la forme: <code>col_is_*()</code>) tandis que d’autres effectuent une vérification dans chaque cellule du tableau d’une colonne (par exemple, tous les <code>col_vals_*()</code> fonctions). Nous appliquons notre propre compréhension des données de la table cible lors de l’utilisation des fonctions d’étape de pointblank, et nous en utilisons autant que nécessaire pour des tests adéquats.</p>
+<p>Après avoir utilisé les fonctions de l’étape de validation pour créer un plan de validation, la fonction <code>interrogate()</code> doit ensuite être utilisée. Avec cela, la table sera interrogée et les informations de validation nécessaires seront stockées dans l’agent.</p>
+<p>Utilisons l’objet <code>small_table</code> pour des exemples:</p>
+<pre class="r"><code>small_table</code></pre>
+<pre><code>#&gt; # A tibble: 13 x 8
+#&gt;    date_time           date           a b             c      d e     f    
+#&gt;    &lt;dttm&gt;              &lt;date&gt;     &lt;int&gt; &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;lgl&gt; &lt;chr&gt;
+#&gt;  1 2016-01-04 11:00:00 2016-01-04     2 1-bcd-345     3  3423. TRUE  high 
+#&gt;  2 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low  
+#&gt;  3 2016-01-05 13:32:00 2016-01-05     6 8-kdg-938     3  2343. TRUE  high 
+#&gt;  4 2016-01-06 17:23:00 2016-01-06     2 5-jdo-903    NA  3892. FALSE mid  
+#&gt;  5 2016-01-09 12:36:00 2016-01-09     8 3-ldm-038     7   284. TRUE  low  
+#&gt;  6 2016-01-11 06:15:00 2016-01-11     4 2-dhe-923     4  3291. TRUE  mid  
+#&gt;  7 2016-01-15 18:46:00 2016-01-15     7 1-knw-093     3   843. TRUE  high 
+#&gt;  8 2016-01-17 11:27:00 2016-01-17     4 5-boe-639     2  1036. FALSE low  
+#&gt;  9 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&gt; 10 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&gt; 11 2016-01-26 20:07:00 2016-01-26     4 2-dmx-010     7   834. TRUE  low  
+#&gt; 12 2016-01-28 02:51:00 2016-01-28     2 7-dmx-010     8   108. FALSE low  
+#&gt; 13 2016-01-30 11:23:00 2016-01-30     1 3-dka-303    NA  2230. TRUE  high </code></pre>
+<p>Le plan de validation de ce tableau utilise les assertions suivantes:</p>
+<ol style="list-style-type: decimal">
+<li>la colonne <code>date_time</code> est une colonne date-heure</li>
+<li>la colonne <code>f</code> ne contient que les valeurs <code>"low"</code>, <code>"mid"</code>, and <code>"high"</code></li>
+<li>les valeurs de la colonne <code>a</code> sont toutes inférieures à <code>10</code></li>
+<li>Les valeurs de texte dans la colonne <code>b</code> sont conformes à un modèle spécifié</li>
+<li>la colonne <code>d</code> a des valeurs entre <code>0</code> et <code>5000</code> (pas entièrement vrai!)</li>
+</ol>
+<p>Voici le code pour la validation:</p>
+<pre class="r"><code>agent &lt;- 
+  small_table %&gt;%
+  create_agent() %&gt;%
+  col_is_posix(vars(date_time)) %&gt;%
+  col_vals_in_set(vars(f), set = c(&quot;low&quot;, &quot;mid&quot;, &quot;high&quot;)) %&gt;%
+  col_vals_lt(vars(a), value = 10) %&gt;%
+  col_vals_regex(vars(b), regex = &quot;^[0-9]-[a-z]{3}-[0-9]{3}$&quot;) %&gt;%
+  col_vals_between(vars(d), left = 0, right = 5000) %&gt;%
+  interrogate()</code></pre>
+<p>L’objet <code>agent</code> nous donne quelques informations sur la façon dont les choses se sont passées:</p>
+<pre class="r"><code>agent</code></pre>
+<pre><code>#&gt; pointblank agent // &lt;agent_2020-01-13_04:14:09&gt;
+#&gt; 
+#&gt; number of validation steps: 5
+#&gt; 
+#&gt; interrogation (2020-01-13 04:14:09) resulted in:
+#&gt;   - 4 passing validations
+#&gt;   - 1 failing validation   more info: `get_agent_report()`</code></pre>
+<p>Les «4 passing validations» signifient que toutes les validations individuelles en quatre étapes de validation ont réussi sans erreur. Une étape de validation a échoué et au moins une unité de test a échoué (chaque cellule testée équivaut à 1 unité de test). Nous pouvons générer un rapport avec plus de détails en utilisant <code>get_agent_report()</code>:</p>
+<pre class="r"><code>get_agent_report(agent)</code></pre>
+<p><img src="/post/2020-01-13-pointblank-0-3_files/agent_report.png" style="width:100.0%" /></p>
+<p>Le rapport est une table <strong>gt</strong>, qui est imprimée par défaut si nous avons installé le paquet <strong>gt</strong> (utilisez <code>remotes::install_github("rstudio/gt")</code> pour installer ce paquet). Les cinq premières colonnes du rapport sont reconnaissables car ce sont les noms des fonctions de l’étape de validation et leurs paramètres. Les <code>preconditions</code> colonne indique si la table a été modifiée juste avant l’interrogation (pour cette étape de validation). La colonne <code>Units</code> nous indique le nombre total d’unités de test pour chaque étape de validation. La colonne <code>n_pass</code> donne le nombre d’unités de test réussies tandis que la colonne <code>f_pass</code> indique la fraction d’unités de test réussies. Les indicateurs <code>W</code>, <code>S</code>, <code>N</code> nous indiquent si nous sommes entrés dans l’un des états <code>WARN</code>, <code>STOP</code> ou <code>NOTIFY</code> pour ces étapes de validation. Étant donné que nous n’avons défini aucun seuil pour ces États, ils ne sont pas pertinents pour ce rapport. Enfin, l’indicateur <code>Extract</code> nous indique si des extraits de données sont disponibles pour les unités de test ayant échoué. Pour <em>l’étape 5</em>, l’étape de validation <code>col_vals_between()</code>, un extrait de données est disponible. Nous pouvons jeter un œil à cet extrait avec <code>get_data_extracts()</code>:</p>
+<pre class="r"><code>get_data_extracts(agent, i = 5)</code></pre>
+<pre><code>#&gt; # A tibble: 1 x 8
+#&gt;   date_time           date           a b             c      d e     f    
+#&gt;   &lt;dttm&gt;              &lt;date&gt;     &lt;int&gt; &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;lgl&gt; &lt;chr&gt;
+#&gt; 1 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low</code></pre>
+<p>Rappelons que <code>l'étape 5</code> a affirmé que toutes les valeurs de la colonne <code>d</code> doivent être comprises entre <code>0</code> et <code>5000</code>, cependant, cet extrait de <code>small_table</code> montre que la colonne <code>d</code> a une valeur qui se situe en dehors de cette plage spécifiée.</p>
+<h2 id="procédure-pas-à-pas-de-pointblank-dans-le-workflow-de-validation-des-données-basé-sur-le-pipeline">Procédure pas à pas de <strong>pointblank</strong> dans le workflow de validation des données basé sur le pipeline</h2>
+<p>La deuxième méthodologie, la validation des données par pipeline, simplifie quelque peu le processus de vérification directe des données. Aucun <em>agent</em> n’est impliqué ici et nous appelons plutôt les fonctions d’étape de validation directement sur les objets de la table de données. Parce qu’il n’y a pas d’agent, il n’y aura pas non plus de rapport. L’idée est que les effets secondaires sont les plus importants ici (les données passeront par les fonctions de validation inchangées). Nous pouvons déclencher des avertissements, générer des erreurs ou écrire des journaux en cas de dépassement des seuils d’échec spécifiés.</p>
+<p>Où ferions-nous cela? Lors de l’importation de données, nous pourrions tester ces données en les passant par quelques fonctions d’étape de validation avec des niveaux de seuil <code>warn_at</code> et <code>stop_at</code> définis. Si nous devions transformer un tableau de données, nous pourrions également utiliser un ensemble de fonctions d’étape de validation comme mesure d’AQ et de CQ. Si la mauvaise qualité des données peut être mauvaise pour un produit de données en aval, il est probablement préférable d’arrêter le processus par le biais de tests de validation <strong>pointblank</strong>, puis d’effectuer une analyse des causes profondes pour résoudre le problème de qualité des données.</p>
+<p>Utilisons les instructions de l’exemple précédent pour travailler dans le workflow de validation des données basé sur le pipeline. Dans ce cas, nous utiliserons un simple appel de la fonction <code>action_levels()</code> pour générer l’objet <code>al</code>. Il est passé à l’argument <code>actions</code> de chaque fonction d’étape de validation. Le paramètre implique que le pipeline sera arrêté en cas de défaillance d’une seule unité de test (avec <code>stop_at = 1</code>).</p>
+<pre class="r"><code># Create an `action_levels` object, stopping the pipeline
+# if we get a single failing test unit
+al &lt;- action_levels(stop_at = 1)
+
+small_table %&gt;%
+  col_is_posix(vars(date_time), actions = al) %&gt;%
+  col_vals_in_set(vars(f), set = c(&quot;low&quot;, &quot;mid&quot;, &quot;high&quot;), actions = al) %&gt;%
+  col_vals_lt(vars(a), value = 10, actions = al) %&gt;%
+  col_vals_regex(vars(b), regex = &quot;^[0-9]-[a-z]{3}-[0-9]{3}$&quot;, actions = al) %&gt;%
+  col_vals_between(vars(d), left = 0, right = 5000, actions = al)</code></pre>
+<pre><code>Error: The validation (`col_vals_between()`) meets or exceeds the stop threshold</code></pre>
+<p>C’est l’un de ces moments où nous pourrions être super heureux de voir une erreur. Le paramètre de seuil a arrêté l’évaluation du pipeline et, à son tour, arrête le script en cours d’exécution s’il est déployé et s’exécute automatiquement sur la version standard. La fonction <code>action_levels()</code> est assez puissante et elle nous permet de définir des fonctions personnalisées qui sont évaluées lors de la saisie de chacun des trois états de défaillance. Dans ce type de workflow, nous n’avons pas besoin de définir ces fonctions, <strong>pointblank</strong> nous aidera automatiquement à cela.</p>
+<h2 id="essayez-pointblank">Essayez <strong>pointblank</strong>!</h2>
+<p>Ces courtes démonstrations présentent les principales caractéristiques des deux workflows de validation des données de <strong>pointblank</strong>. Il existe de nombreuses choses que vous pouvez faire pour définir précisément les étapes de validation et pour que l’action correcte se produise lors de la saisie de différents états de défaillance. J’espère que vous êtes enclin à l’essayer sur vos propres données!</p>
+</div>
+<!-- Start German Section -->
+<div id="German" class="tabcontent">
+<p><img src="/post/2020-01-13-pointblank-0-3_files/pointblank-banner.svg" style="width:100.0%" /></p>
+<p>Die neueste Version des <strong>pointblank</strong>-Pakets erleichtert die Validierung Ihrer Daten mit Workflows, die auf Ihre Datenqualitätsanforderungen abgestimmt sind. Sie können <strong>pointblank</strong> 0.3 von CRAN installieren mit:</p>
+<pre class="r"><code>install.packages(&quot;pointblank&quot;)</code></pre>
+<p>Das Entwurfsziel von <strong>pointblank</strong> besteht darin, zwei wichtige Datenvalidierungs-Workflows mit einem gemeinsamen Satz von Validierungsschrittfunktionen zu ermöglichen. Der geschriebene Code sollte mit Daten in lokalen Datentabellen und mit Daten in Datenbanken gleichermaßen gut funktionieren.</p>
+<p>Die beiden wichtigsten Workflows, bei denen pointblank hilft, sind:</p>
+<ol style="list-style-type: decimal">
+<li>Berichterstattung zur Datenqualität</li>
+<li>Pipeline-basierte Datenvalidierungen</li>
+</ol>
+<p><img src="/post/2020-01-13-pointblank-0-3_files/two_different_workflows.png" style="width:100.0%" /></p>
+<p>Der erste Workflow befasst sich mit der Datenqualität der Zieltabelle. Man würde Validierungsschrittfunktionen verwenden, um einen Validierungsplan zu erstellen. Dieser Plan führt zu einer Abfrage der Tabellendaten. Schließlich erhalten wir einen Bericht über die Abfrage, um die Datenqualität festzustellen. Es wird empfohlen, eine große Anzahl von Validierungsschrittfunktionen zu verwenden. Mit mehr von ihnen können wir Inkonsistenzen oder Fehler in der Tabelle besser aufdecken.</p>
+<p>Der zweite Workflow ist in einer Datentransformationspipeline nützlich, die Tabellendaten verwendet. Die Validierungsfunktionen werden direkt verwendet, um uns entweder vor unvorhergesehenen Problemen mit der Datenintegrität zu warnen oder um die Pipeline vollständig zu stoppen. Anhalten ist eine gute Idee, wenn abhängige, nachgelagerte Prozesse (die die Daten in gewissem Umfang nutzen würden) durch schlechte Daten beeinträchtigt würden. Beide Workflows verwenden einen gemeinsamen Satz von Validierungsschrittfunktionen. “Action levels” (d. H. Fehlerschwellen) können schrittweise festgelegt werden. Zusätzlich können wir unsere eigenen <strong>R</strong>-Funktionen verwenden, um Nebenwirkungen wie das Schreiben von Protokolldateien zu erzeugen.</p>
+<p>Beide Workflows verwenden eine große Sammlung einfacher Validierungsschrittfunktionen. Diese Funktionen werden so benannt, dass es offensichtlich ist, was die Validierung bewirkt. Beispielsweise testet die Funktion <code>col_vals_gt()</code>, ob die Zellenwerte in einer Spalte größer als ein angegebener Wert sind. Die Schnittstelle für jede Schrittfunktion ist konsistent, aber auch für die jeweilige Operation optimiert.</p>
+<h2 id="exemplarische-vorgehensweise-von-pointblank-im-workflow-für-die-berichterstellung-zur-datenqualität">Exemplarische Vorgehensweise von <strong>pointblank</strong> im Workflow für die Berichterstellung zur Datenqualität</h2>
+<p>Um die Datenqualität für eine Tabelle zu bestimmen, verwenden wir einen Agenten. Es entwickelt einen Validierungsplan, führt die Befragung durch und enthält Informationen zu dieser Befragung (wir würden dann um einen Bericht bitten). Mit der Funktion <code>create_agent()</code> wird der Agent erstellt. Die Zieltabelle wird dem Agenten übergeben, und die Tabelle kann ein tibble- oder ein <code>tbl_dbi</code>-Objekt sein, das über eine Datenbankverbindung und die Funktion <code>dplyr::tbl()</code> erstellt wurde.</p>
+<p>Wir verwenden Validierungsschrittfunktionen, um einen Validierungsplan zu erstellen. Es gibt 23 von ihnen und einige prüfen die Existenz oder den Typ der Spalte (<code>col_exists()</code> oder die Gruppe von <code>col_is_*()</code> -Funktionen), während andere eine Prüfung in jeder Tabellenzelle innerhalb einer Spalte durchführen (z. B. alle <code>col_vals_*()</code> Funktionen). Wir wenden bei der Verwendung der Pointblank-Step-Funktionen unser eigenes Verständnis der Daten in der Zieltabelle an und verwenden so viele, wie für angemessene Tests erforderlich sind.</p>
+<p>Nachdem Sie Validierungsschrittfunktionen zum Erstellen eines Validierungsplans verwendet haben, sollte die Funktion <code>interrogate()</code> verwendet werden. Damit wird die Tabelle abgefragt und die notwendigen Validierungsinformationen im Agenten gespeichert.</p>
+<p>Das <strong>pointblank</strong>-Paket enthält einen Datensatz mit dem Namen <code>small_table</code>. Wir werden es für alle kommenden Beispiele verwenden:</p>
+<pre class="r"><code>small_table</code></pre>
+<pre><code>#&gt; # A tibble: 13 x 8
+#&gt;    date_time           date           a b             c      d e     f    
+#&gt;    &lt;dttm&gt;              &lt;date&gt;     &lt;int&gt; &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;lgl&gt; &lt;chr&gt;
+#&gt;  1 2016-01-04 11:00:00 2016-01-04     2 1-bcd-345     3  3423. TRUE  high 
+#&gt;  2 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low  
+#&gt;  3 2016-01-05 13:32:00 2016-01-05     6 8-kdg-938     3  2343. TRUE  high 
+#&gt;  4 2016-01-06 17:23:00 2016-01-06     2 5-jdo-903    NA  3892. FALSE mid  
+#&gt;  5 2016-01-09 12:36:00 2016-01-09     8 3-ldm-038     7   284. TRUE  low  
+#&gt;  6 2016-01-11 06:15:00 2016-01-11     4 2-dhe-923     4  3291. TRUE  mid  
+#&gt;  7 2016-01-15 18:46:00 2016-01-15     7 1-knw-093     3   843. TRUE  high 
+#&gt;  8 2016-01-17 11:27:00 2016-01-17     4 5-boe-639     2  1036. FALSE low  
+#&gt;  9 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&gt; 10 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&gt; 11 2016-01-26 20:07:00 2016-01-26     4 2-dmx-010     7   834. TRUE  low  
+#&gt; 12 2016-01-28 02:51:00 2016-01-28     2 7-dmx-010     8   108. FALSE low  
+#&gt; 13 2016-01-30 11:23:00 2016-01-30     1 3-dka-303    NA  2230. TRUE  high </code></pre>
+<p>Der Validierungsplan für diese Tabelle verwendet die folgenden Zusicherungen:</p>
+<ol style="list-style-type: decimal">
+<li>Die Spalte <code>date_time</code> ist eine Datum-Uhrzeit-Spalte</li>
+<li>Spalte <code>f</code> enthält nur die Werte <code>"low"</code>, <code>"mid"</code> und <code>"high"</code></li>
+<li>Die Werte in Spalte <code>a</code> sind alle kleiner als <code>10</code></li>
+<li>Die Zeichenfolgen in Spalte <code>b</code> entsprechen einem angegebenen regulären Ausdruck</li>
+<li>Spalte <code>d</code> hat Werte im Bereich von <code>0</code> bis <code>5000</code> (dies ist nicht ganz richtig!)</li>
+</ol>
+<p>Hier ist der Code für die obige Validierungslogik:</p>
+<pre class="r"><code>agent &lt;- 
+  small_table %&gt;%
+  create_agent() %&gt;%
+  col_is_posix(vars(date_time)) %&gt;%
+  col_vals_in_set(vars(f), set = c(&quot;low&quot;, &quot;mid&quot;, &quot;high&quot;)) %&gt;%
+  col_vals_lt(vars(a), value = 10) %&gt;%
+  col_vals_regex(vars(b), regex = &quot;^[0-9]-[a-z]{3}-[0-9]{3}$&quot;) %&gt;%
+  col_vals_between(vars(d), left = 0, right = 5000) %&gt;%
+  interrogate()</code></pre>
+<p>Das <code>Agent</code>-Objekt gibt uns ein paar Informationen über die Befragung:</p>
+<pre class="r"><code>agent</code></pre>
+<pre><code>#&gt; pointblank agent // &lt;agent_2020-01-13_04:14:09&gt;
+#&gt; 
+#&gt; number of validation steps: 5
+#&gt; 
+#&gt; interrogation (2020-01-13 04:14:09) resulted in:
+#&gt;   - 4 passing validations
+#&gt;   - 1 failing validation   more info: `get_agent_report()`</code></pre>
+<p>Die <code>4 passing validations</code> bedeuten, dass alle Einzelvalidierungen in vier Validierungsschritten fehlerfrei bestanden wurden. Ein Validierungsschritt ist fehlgeschlagen, wobei mindestens eine Testeinheit ausgefallen ist (jede getestete Zelle entspricht 1 Testeinheit). Mit <code>get_agent_report()</code> können wir einen detaillierteren Bericht erstellen:</p>
+<pre class="r"><code>get_agent_report(agent)</code></pre>
+<p><img src="/post/2020-01-13-pointblank-0-3_files/agent_report.png" style="width:100.0%" /></p>
+<p>Der Bericht ist eine <strong>gt</strong>-Tabelle, die standardmäßig gedruckt wird, wenn das <strong>gt</strong>-Paket installiert ist (verwenden Sie <code>remotes::install_github("rstudio/gt")</code>, um dieses Paket zu installieren). Die ersten fünf Spalten des Berichts sind erkennbar, da sie Namen der Validierungsschrittfunktionen und ihrer Parameter sind. Die Spalte <code>preconditions?</code> gibt an, ob die Tabelle unmittelbar vor der Abfrage geändert wurde (für diesen Validierungsschritt). In der Spalte <code>Units</code> wird die Gesamtzahl der Testeinheiten für jeden Validierungsschritt angezeigt. Die Spalte <code>n_pass</code> gibt die Anzahl der bestandenen Testeinheiten an, während die Spalte <code>f_pass</code> den Anteil der bestandenen Testeinheiten angibt. Die <code>W</code>-, <code>S</code>- und <code>N</code>-Anzeigen zeigen an, ob wir für diese Überprüfungsschritte einen der Zustände <code>WARN</code>, <code>STOP</code> oder <code>NOTIFY</code> eingegeben haben. Da wir für diese Staaten keine Schwellenwerte festgelegt haben, sind sie für diesen Bericht nicht relevant. Schließlich gibt der Indikator <code>Extract</code> Auskunft darüber, ob für fehlerhafte Testeinheiten Datenextrakte verfügbar sind. Für <code>step 5</code>, den Validierungsschritt <code>col_vals_between()</code>, steht ein Datenextrakt zur Verfügung. Wir können uns diesen Auszug mit <code>get_data_extracts()</code> ansehen:</p>
+<pre class="r"><code>get_data_extracts(agent, i = 5)</code></pre>
+<pre><code>#&gt; # A tibble: 1 x 8
+#&gt;   date_time           date           a b             c      d e     f    
+#&gt;   &lt;dttm&gt;              &lt;date&gt;     &lt;int&gt; &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;lgl&gt; &lt;chr&gt;
+#&gt; 1 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low</code></pre>
+<p>Denken Sie daran, dass bei der Validierung in <code>step 5</code> festgestellt wurde, dass alle Werte in Spalte <code>d</code> zwischen <code>0</code> und <code>5000</code> liegen sollten. Dieser Auszug aus <code>small_table</code> zeigt jedoch, dass Spalte <code>d</code> einen Wert hat, der außerhalb des angegebenen Bereichs liegt.</p>
+<h2 id="eine-exemplarische-vorgehensweise-für-pointblank-im-pipeline-basierten-datenüberprüfungs-workflow">Eine exemplarische Vorgehensweise für <strong>pointblank</strong> im Pipeline-basierten Datenüberprüfungs-Workflow</h2>
+<p>Der zweite Workflow, die pipelinebasierte Datenüberprüfung, vereinfacht die direkte Überprüfung der Daten ein wenig. Hier ist kein <em>Agent</em> beteiligt. Stattdessen rufen wir Validierungsschrittfunktionen direkt auf den Datentabellenobjekten auf. Da es keinen Agenten gibt, wird es auch keinen Bericht geben. Die Idee ist, dass die Nebenwirkungen hier am wichtigsten sind (die Daten durchlaufen die Validierungsfunktionen unverändert). Wir können Warnungen auslösen, Fehler auslösen oder Protokolle ausschreiben, wenn bestimmte Fehlerschwellen überschritten werden.</p>
+<p>Wo würden wir das machen? Beim Importieren von Daten konnten wir diese Daten testen, indem wir einige Validierungsschrittfunktionen mit festgelegten Schwellenwerten für <code>warn_at</code> und <code>stop_at</code> durchliefen. Wenn wir eine Datentabelle transformieren würden, könnten wir ebenfalls eine Reihe von Validierungsschrittfunktionen als QA / QC-Maß verwenden. Wenn eine schlechte Datenqualität für ein nachgeschaltetes Datenprodukt schlecht sein könnte, ist es wahrscheinlich besser, den Prozess durch <strong>pointblank</strong>-Validierungstests zu stoppen und anschließend eine Ursachenanalyse durchzuführen, um das Datenqualitätsproblem zu beheben.</p>
+<p>Verwenden Sie die Anweisungen aus dem vorherigen Beispiel, um im Workflow für die pipelinebasierte Datenüberprüfung zu arbeiten. In diesem Fall verwenden wir einen einfachen Aufruf der <code>action_levels()</code> -Funktion, um das al-Objekt zu generieren. Es wird an das Argument <code>actions</code> jeder Validierungsschrittfunktion übergeben. Die Einstellung impliziert, dass die Pipeline gestoppt wird, wenn eine einzelne Testeinheit ausfällt (mit <code>stop_at = 1</code>).</p>
+<pre class="r"><code># Create an `action_levels` object, stopping the pipeline
+# if we get a single failing test unit
+al &lt;- action_levels(stop_at = 1)
+
+small_table %&gt;%
+  col_is_posix(vars(date_time), actions = al) %&gt;%
+  col_vals_in_set(vars(f), set = c(&quot;low&quot;, &quot;mid&quot;, &quot;high&quot;), actions = al) %&gt;%
+  col_vals_lt(vars(a), value = 10, actions = al) %&gt;%
+  col_vals_regex(vars(b), regex = &quot;^[0-9]-[a-z]{3}-[0-9]{3}$&quot;, actions = al) %&gt;%
+  col_vals_between(vars(d), left = 0, right = 5000, actions = al)</code></pre>
+<pre><code>Error: The validation (`col_vals_between()`) meets or exceeds the stop threshold</code></pre>
+<p>Dies ist eine der Situationen, in denen wir uns möglicherweise über einen Fehler freuen. Die Schwellenwerteinstellung hat die Auswertung der Pipeline gestoppt und stoppt das ausgeführte Skript, wenn es bereitgestellt wird und automatisch regelmäßig ausgeführt wird. Die <code>action_levels()</code>-Funktion ist sehr leistungsfähig und ermöglicht es uns, benutzerdefinierte Funktionen zu definieren, die beim Eingeben der drei Fehlerzustände ausgewertet werden. In dieser Art von Workflow müssen diese Funktionen nicht definiert werden. Pointblank erledigt automatisch die sinnvolle Aufgabe und gibt eine <code>warning()</code> oder eine <code>stop()</code>-Meldung aus.</p>
+<h2 id="bitte-testen-sie-das-pointblank-paket">Bitte testen Sie das <strong>pointblank</strong>-Paket</h2>
+<p>Diese kurzen Demonstrationen zeigen die Hauptmerkmale der beiden Datenvalidierungs-Workflows von <strong>pointblank</strong>. Es gibt viele Möglichkeiten, um die Überprüfungsschritte genau zu definieren und die richtige Aktion auszulösen, wenn verschiedene Fehlerzustände eingegeben werden. Ich hoffe, Sie sind geneigt, es an Ihren eigenen Daten auszuprobieren!</p>
+</div>
+<script>
+function openLang(evt, cityName) {
+var i, tabcontent, tablinks;
+tabcontent = document.getElementsByClassName("tabcontent");
+for (i = 0; i < tabcontent.length; i++) {
+tabcontent[i].style.display = "none";
+}
+tablinks = document.getElementsByClassName("tablinks");
+for (i = 0; i < tablinks.length; i++) {
+tablinks[i].className = tablinks[i].className.replace(" active", "");
+}
+document.getElementById(cityName).style.display = "block";
+evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
+
+    </div>
+
+    
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/r-packages/">R Packages</a>
+  
+</div>
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=pointblank%20v0.3&amp;body=/post/pointblank-0-3/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/post/pointblank-0-3/&amp;text=pointblank%20v0.3" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/post/pointblank-0-3/&amp;title=pointblank%20v0.3" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/post/pointblank-0-3/&amp;title=pointblank%20v0.3" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://reddit.com/submit?url=/post/pointblank-0-3/&amp;title=pointblank%20v0.3" target="_blank" rel="noopener" class="share-btn-reddit">
+          <i class="fab fa-reddit-alien"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://pinterest.com/pin/create/link/?url=/post/pointblank-0-3/&amp;description=pointblank%20v0.3" target="_blank" rel="noopener" class="share-btn-pinterest">
+          <i class="fab fa-pinterest"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <img class="portrait mr-3" src="/authors/admin/avatar_hu7fba9da1679ce4a56c592454604cb9c1_170620_250x250_fill_q90_lanczos_center.jpg" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="/">Richard Iannone</a></h5>
+      <h6 class="card-subtitle">Software Engineer</h6>
+      <p class="card-text">I enjoy making things with R and showing people how to be successful with R.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.linkedin.com/in/richard-iannone-a5640017/" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/riannone" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/rich-iannone" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/post/blastula-0-3/">blastula v0.3</a></li>
+      
+      <li><a href="/projects/gt-pkg/">[R package] gt</a></li>
+      
+      <li><a href="/projects/blastula-pkg/">[R package] blastula</a></li>
+      
+      <li><a href="/projects/pointblank-pkg/">[R package] pointblank</a></li>
+      
+      <li><a href="/projects/diagrammer-pkg/">[R package] DiagrammeR</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js" integrity="sha256-1zu+3BnLYV9LdiY85uXMzii3bdrkelyp37e0ZyTAQh0=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/r.min.js"></script>
+        
+      
+
+      
+      
+    
+
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.d6bd04fdad2ad213aa8111c5a3b72fc5.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms</a>
+    
+  </p>
+  
+
+  <p class="powered-by">
+    &copy; 2020 Richard Iannone &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

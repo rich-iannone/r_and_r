@@ -5,12 +5,336 @@
     <link>/post/</link>
       <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2020 Richard Iannone</copyright><lastBuildDate>Fri, 22 Nov 2019 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2020 Richard Iannone</copyright><lastBuildDate>Mon, 13 Jan 2020 00:00:00 +0000</lastBuildDate>
     <image>
       <url>/img/R_and_R_share.png</url>
       <title>Posts</title>
       <link>/post/</link>
     </image>
+    
+    <item>
+      <title>pointblank v0.3</title>
+      <link>/post/pointblank-0-3/</link>
+      <pubDate>Mon, 13 Jan 2020 00:00:00 +0000</pubDate>
+      <guid>/post/pointblank-0-3/</guid>
+      <description>
+
+
+&lt;html&gt;
+&lt;link rel=&#34;stylesheet&#34; href=&#34;/post/css/style.css&#34; /&gt;
+&lt;/html&gt;
+&lt;html&gt;
+&lt;div class=&#34;tab&#34;&gt;
+&lt;button class=&#34;tablinks&#34; onclick=&#34;openLang(event, &amp;#39;English&amp;#39;)&#34; id=&#34;defaultOpen&#34;&gt;
+English
+&lt;/button&gt;
+&lt;button class=&#34;tablinks&#34; onclick=&#34;openLang(event, &amp;#39;French&amp;#39;)&#34;&gt;
+French
+&lt;/button&gt;
+&lt;button class=&#34;tablinks&#34; onclick=&#34;openLang(event, &amp;#39;German&amp;#39;)&#34;&gt;
+German
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/html&gt;
+&lt;!-- Start English Section --&gt;
+&lt;div id=&#34;English&#34; class=&#34;tabcontent&#34;&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-01-13-pointblank-0-3_files/pointblank-banner.svg&#34; style=&#34;width:100.0%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The newest release of the &lt;strong&gt;pointblank&lt;/strong&gt; package makes it really easy to validate your data with workflows attuned to your data quality needs. You can install &lt;strong&gt;pointblank&lt;/strong&gt; 0.3 from CRAN with:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;install.packages(&amp;quot;pointblank&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The design goals of &lt;strong&gt;pointblank&lt;/strong&gt; are to enable two important data validation workflows with a common set of validation step functions, and, to have the code work seamlessly with data in local data tables and with database tables.&lt;/p&gt;
+&lt;p&gt;The two dominant workflows that pointblank enables are:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;data quality reporting&lt;/li&gt;
+&lt;li&gt;pipeline-based data validation&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-01-13-pointblank-0-3_files/two_different_workflows.png&#34; style=&#34;width:100.0%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The first workflow is concerned with the data quality of the target table. One would use validation step functions to create a validation plan. That plan results in an interrogation of the table data. Finally, we get a report of the interrogation to ascertain data quality. The key is to use a large number of validation step functions to reveal inconsistencies or errors in the table.&lt;/p&gt;
+&lt;p&gt;The second workflow is useful in a data-transformation pipeline that uses tabular data. The validation functions are used directly with data to either warn us of unforeseen data integrity problems or to completely stop the pipeline. Stopping is a good idea when dependent, downstream processes (that would use the data to some extent) would be compromised by bad data. Both workflows use a common set of validation step functions, ‘action levels’ (i.e., failure thresholds) can be set in a stepwise manner. Additionally, we can choose to use our own &lt;strong&gt;R&lt;/strong&gt; functions to create side effects like logging.&lt;/p&gt;
+&lt;p&gt;Both workflows make use of a large collection of simple validation step functions. These functions are named such that it’s obvious what the validation does. For example, the &lt;code&gt;col_vals_gt()&lt;/code&gt; function tests whether cell values in a column are greater than a specified value. The interface for each step function is consistent but also optimized for the particular operation.&lt;/p&gt;
+&lt;h2 id=&#34;a-walkthrough-of-pointblank-in-the-data-quality-reporting-workflow&#34;&gt;A Walkthrough of &lt;strong&gt;pointblank&lt;/strong&gt; in the Data Quality Reporting Workflow&lt;/h2&gt;
+&lt;p&gt;To determine the level of data quality for a table we use something called an &lt;em&gt;agent&lt;/em&gt;. It develops a validation plan, performs the interrogation, and holds information about that interrogation (we would then ask for a report). The &lt;code&gt;create_agent()&lt;/code&gt; function is used to create the &lt;em&gt;agent&lt;/em&gt;. The target table is given to the &lt;em&gt;agent&lt;/em&gt; and the table can be a tibble or a &lt;code&gt;tbl_dbi&lt;/code&gt; object that’s made through a database connection and the &lt;code&gt;dplyr::tbl()&lt;/code&gt; function.&lt;/p&gt;
+&lt;p&gt;We use validation step functions to build a validation plan. There are 23 of them and some check for the existence or the type of column (&lt;code&gt;col_exists()&lt;/code&gt; or the group of &lt;code&gt;col_is_*()&lt;/code&gt; functions) whereas others perform a check in each table cell within a column (e.g., all of the &lt;code&gt;col_vals_*()&lt;/code&gt; functions). We apply our own understanding of the data in the target table when using the &lt;strong&gt;pointblank&lt;/strong&gt; step functions, and, we use as many as is necessary for adequate testing.&lt;/p&gt;
+&lt;p&gt;After using validation step functions to create a validation plan, the &lt;code&gt;interrogate()&lt;/code&gt; function should then be used. With that, the table will be interrogated and the necessary validation information will be stored in the &lt;em&gt;agent&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;The &lt;strong&gt;pointblank&lt;/strong&gt; package contains a dataset called &lt;code&gt;small_table&lt;/code&gt; which is indeed small but ideal for simple examples:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;small_table&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;#&amp;gt; # A tibble: 13 x 8
+#&amp;gt;    date_time           date           a b             c      d e     f    
+#&amp;gt;    &amp;lt;dttm&amp;gt;              &amp;lt;date&amp;gt;     &amp;lt;int&amp;gt; &amp;lt;chr&amp;gt;     &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt; &amp;lt;lgl&amp;gt; &amp;lt;chr&amp;gt;
+#&amp;gt;  1 2016-01-04 11:00:00 2016-01-04     2 1-bcd-345     3  3423. TRUE  high 
+#&amp;gt;  2 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low  
+#&amp;gt;  3 2016-01-05 13:32:00 2016-01-05     6 8-kdg-938     3  2343. TRUE  high 
+#&amp;gt;  4 2016-01-06 17:23:00 2016-01-06     2 5-jdo-903    NA  3892. FALSE mid  
+#&amp;gt;  5 2016-01-09 12:36:00 2016-01-09     8 3-ldm-038     7   284. TRUE  low  
+#&amp;gt;  6 2016-01-11 06:15:00 2016-01-11     4 2-dhe-923     4  3291. TRUE  mid  
+#&amp;gt;  7 2016-01-15 18:46:00 2016-01-15     7 1-knw-093     3   843. TRUE  high 
+#&amp;gt;  8 2016-01-17 11:27:00 2016-01-17     4 5-boe-639     2  1036. FALSE low  
+#&amp;gt;  9 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&amp;gt; 10 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&amp;gt; 11 2016-01-26 20:07:00 2016-01-26     4 2-dmx-010     7   834. TRUE  low  
+#&amp;gt; 12 2016-01-28 02:51:00 2016-01-28     2 7-dmx-010     8   108. FALSE low  
+#&amp;gt; 13 2016-01-30 11:23:00 2016-01-30     1 3-dka-303    NA  2230. TRUE  high &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The validation plan for this table uses the following assertions:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;the &lt;code&gt;date_time&lt;/code&gt; column is a &lt;code&gt;POSIXct&lt;/code&gt; date-time column&lt;/li&gt;
+&lt;li&gt;column &lt;code&gt;f&lt;/code&gt; contains only the values &lt;code&gt;&#34;low&#34;&lt;/code&gt;, &lt;code&gt;&#34;mid&#34;&lt;/code&gt;, and &lt;code&gt;&#34;high&#34;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;the values in column &lt;code&gt;a&lt;/code&gt; are all less than &lt;code&gt;10&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;The strings in column &lt;code&gt;b&lt;/code&gt; conform to a specified regex pattern&lt;/li&gt;
+&lt;li&gt;column &lt;code&gt;d&lt;/code&gt; has values in the range of &lt;code&gt;0&lt;/code&gt; to &lt;code&gt;5000&lt;/code&gt; (this is not entirely true!)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Here is the code for the above validation logic:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;agent &amp;lt;- 
+  small_table %&amp;gt;%
+  create_agent() %&amp;gt;%
+  col_is_posix(vars(date_time)) %&amp;gt;%
+  col_vals_in_set(vars(f), set = c(&amp;quot;low&amp;quot;, &amp;quot;mid&amp;quot;, &amp;quot;high&amp;quot;)) %&amp;gt;%
+  col_vals_lt(vars(a), value = 10) %&amp;gt;%
+  col_vals_regex(vars(b), regex = &amp;quot;^[0-9]-[a-z]{3}-[0-9]{3}$&amp;quot;) %&amp;gt;%
+  col_vals_between(vars(d), left = 0, right = 5000) %&amp;gt;%
+  interrogate()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;code&gt;agent&lt;/code&gt; object gives us a little bit of information about how the interrogation went:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;agent&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;#&amp;gt; pointblank agent // &amp;lt;agent_2020-01-13_04:14:09&amp;gt;
+#&amp;gt; 
+#&amp;gt; number of validation steps: 5
+#&amp;gt; 
+#&amp;gt; interrogation (2020-01-13 04:14:09) resulted in:
+#&amp;gt;   - 4 passing validations
+#&amp;gt;   - 1 failing validation   more info: `get_agent_report()`&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;code&gt;4 passing validations&lt;/code&gt; means that all of the individual validations in four validation steps passed without any errors. One validation step failed with at least one test unit failing (each cell tested is equivalent to 1 test unit). We can generate a report with more detail by using &lt;code&gt;get_agent_report()&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;get_agent_report(agent)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-01-13-pointblank-0-3_files/agent_report.png&#34; style=&#34;width:100.0%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The report is a &lt;strong&gt;gt&lt;/strong&gt; table, which is printed by default if we have the &lt;strong&gt;gt&lt;/strong&gt; package installed (use &lt;code&gt;remotes::install_github(&#34;rstudio/gt&#34;)&lt;/code&gt; to install that package). The first five columns of the report are recognizable since they are names of the validation step functions and their parameters. The &lt;code&gt;preconditions?&lt;/code&gt; column indicates whether the table was altered just before interrogation (for that validation step). The &lt;code&gt;Units&lt;/code&gt; column shows us the total number of test units for each validation step. The &lt;code&gt;n_pass&lt;/code&gt; column gives the number of passing test units while the &lt;code&gt;f_pass&lt;/code&gt; column indicates the fraction of passing test units. The &lt;code&gt;W&lt;/code&gt;, &lt;code&gt;S&lt;/code&gt;, &lt;code&gt;N&lt;/code&gt; indicators tell us whether we have entered either of the &lt;code&gt;WARN&lt;/code&gt;, &lt;code&gt;STOP&lt;/code&gt;, or &lt;code&gt;NOTIFY&lt;/code&gt; states for these validation steps. Because we didn’t set any threshold levels for these states, they are irrelevant for this report. Finally, the &lt;code&gt;Extract&lt;/code&gt; indicator tells us whether there are data extracts available for failed test units. For &lt;code&gt;step 5&lt;/code&gt;, the &lt;code&gt;col_vals_between()&lt;/code&gt; validation step, there is a data extract available. We can have a look at that extract with &lt;code&gt;get_data_extracts()&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;get_data_extracts(agent, i = 5)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;#&amp;gt; # A tibble: 1 x 8
+#&amp;gt;   date_time           date           a b             c      d e     f    
+#&amp;gt;   &amp;lt;dttm&amp;gt;              &amp;lt;date&amp;gt;     &amp;lt;int&amp;gt; &amp;lt;chr&amp;gt;     &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt; &amp;lt;lgl&amp;gt; &amp;lt;chr&amp;gt;
+#&amp;gt; 1 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Recall that validation &lt;code&gt;step 5&lt;/code&gt; asserted that all values in column &lt;code&gt;d&lt;/code&gt; should be between &lt;code&gt;0&lt;/code&gt; and &lt;code&gt;5000&lt;/code&gt;, however, this extract of &lt;code&gt;small_table&lt;/code&gt; shows that column &lt;code&gt;d&lt;/code&gt; has a value that lies outside this specified range.&lt;/p&gt;
+&lt;h2 id=&#34;a-walkthrough-of-pointblank-in-the-pipeline-based-data-validation-workflow&#34;&gt;A Walkthrough of &lt;strong&gt;pointblank&lt;/strong&gt; in the Pipeline-based Data Validation Workflow&lt;/h2&gt;
+&lt;p&gt;The second workflow, pipeline-based data validations, somewhat simplifies the process for checking data directly. There is no &lt;em&gt;agent&lt;/em&gt; involved here and we instead call validation step functions directly on the data table objects. Because there isn’t an agent, there won’t be a report either. The idea is that the side effects are most important here (the data will pass through the validation functions unchanged). We can trigger warnings, raise errors, or write out logs when exceeding specified failure thresholds.&lt;/p&gt;
+&lt;p&gt;Where would we do this? When importing data we could test that data by passing it through a few validation step functions with &lt;code&gt;warn_at&lt;/code&gt; and &lt;code&gt;stop_at&lt;/code&gt; threshold levels set. If we were to transform a data table, we could likewise use a set of validation step functions as a QA/QC measure. If bad data quality might be bad for a downstream data product, it’s probably better to stop the process through &lt;strong&gt;pointblank&lt;/strong&gt; validation tests and then do root-cause analysis to fix the data quality problem.&lt;/p&gt;
+&lt;p&gt;Let’s use the statements from the previous example to work within the pipeline-based data validation workflow. In this case, we’ll use a simple call of the &lt;code&gt;action_levels()&lt;/code&gt; function to generate the &lt;code&gt;al&lt;/code&gt; object. It’s passed to the &lt;code&gt;actions&lt;/code&gt; argument of every validaton step function. The setting implies that the pipeline will be stopped when there is a single test unit failure (with &lt;code&gt;stop_at = 1&lt;/code&gt;).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Create an `action_levels` object, stopping the pipeline
+# if we get a single failing test unit
+al &amp;lt;- action_levels(stop_at = 1)
+
+small_table %&amp;gt;%
+  col_is_posix(vars(date_time), actions = al) %&amp;gt;%
+  col_vals_in_set(vars(f), set = c(&amp;quot;low&amp;quot;, &amp;quot;mid&amp;quot;, &amp;quot;high&amp;quot;), actions = al) %&amp;gt;%
+  col_vals_lt(vars(a), value = 10, actions = al) %&amp;gt;%
+  col_vals_regex(vars(b), regex = &amp;quot;^[0-9]-[a-z]{3}-[0-9]{3}$&amp;quot;, actions = al) %&amp;gt;%
+  col_vals_between(vars(d), left = 0, right = 5000, actions = al)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Error: The validation (`col_vals_between()`) meets or exceeds the stop threshold&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This is one of those times when we might be glad to see an error. The threshold setting stopped the evaluation of the pipeline and, in turn, stops the running script if it’s deployed and automatically running on the regular. The &lt;code&gt;action_levels()&lt;/code&gt; function is quite powerful and it allows us to define custom functions that are evaluated when entering each of the three failure states. In this type of workflow we don’t need to define those functions, pointblank will automatically do the sensible thing and provide a stock &lt;code&gt;warning()&lt;/code&gt; or &lt;code&gt;stop()&lt;/code&gt; message.&lt;/p&gt;
+&lt;h2 id=&#34;wrapping-up&#34;&gt;Wrapping Up&lt;/h2&gt;
+&lt;p&gt;These short demonstrations show the main features of the two data validation workflows of &lt;strong&gt;pointblank&lt;/strong&gt;. There are many things you can do to precisely define the validation steps and to cause the correct action to occur when entering different failure states. I hope you’re inclined to try it out on your own data!&lt;/p&gt;
+&lt;/div&gt;
+&lt;!-- Start French Section --&gt;
+&lt;div id=&#34;French&#34; class=&#34;tabcontent&#34;&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-01-13-pointblank-0-3_files/pointblank-banner.svg&#34; style=&#34;width:100.0%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;La dernière version du package &lt;strong&gt;pointblank&lt;/strong&gt; facilite la validation de vos données avec des workflows adaptés à vos besoins en matière de qualité des données. Vous pouvez installer pointblank 0.3 avec:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;install.packages(&amp;quot;pointblank&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;L’objectif de conception de pointblank est de permettre deux workflows de validation de données importants avec un ensemble commun de fonctions d’étape de validation et le code écrit devrait fonctionner de manière transparente avec les données des tables de données locales et avec les données des bases de données.&lt;/p&gt;
+&lt;p&gt;Les deux workflows dominants que permet pointblank sont:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;rapports sur la qualité des données&lt;/li&gt;
+&lt;li&gt;validations de données basées sur le pipeline&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-01-13-pointblank-0-3_files/two_different_workflows.png&#34; style=&#34;width:100.0%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Le premier workflow concerne la qualité des données de la table cible. On utiliserait des fonctions d’étape de validation pour créer un plan de validation. Ce plan entraîne une interrogation des données de la table. Enfin, nous obtenons un rapport de l’interrogation pour vérifier la qualité des données. L’idée principale est d’utiliser un grand nombre de fonctions d’étape de validation pour révéler des incohérences ou des erreurs dans le tableau de données.&lt;/p&gt;
+&lt;p&gt;La deuxième méthodologie est utile dans un pipeline de transformation de données qui utilise des données tabulaires. Les fonctions de validation sont utilisées directement pour nous avertir des problèmes imprévus d’intégrité des données ou pour arrêter complètement le pipeline. L’arrêt est une bonne idée lorsque les processus dépendants et en aval (qui utiliseraient les données dans une certaine mesure) seraient compromis par de mauvaises données. Les deux méthodologies utilisent un ensemble commun de fonctions d’étape de validation, les «action levels» (c’est-à-dire les seuils d’échec) peuvent être définis par étapes. De plus, nous pouvons choisir d’utiliser nos propres fonctions &lt;strong&gt;R&lt;/strong&gt; pour créer des effets secondaires comme la journalisation.&lt;/p&gt;
+&lt;p&gt;Les deux workflows utilisent une large collection de fonctions d’étape de validation simples. Ces fonctions sont nommées de telle sorte que la fonction de validation soit évidente. Par exemple, la fonction &lt;code&gt;col_vals_gt()&lt;/code&gt; teste si les valeurs de cellule dans une colonne sont supérieures à une valeur spécifiée. L’interface pour chaque fonction d’étape est cohérente mais également optimisée pour l’opération particulière.&lt;/p&gt;
+&lt;h2 id=&#34;présentation-pas-à-pas-de-pointblank-dans-le-workflow-de-rapport-sur-la-qualité-des-données&#34;&gt;Présentation pas à pas de &lt;strong&gt;pointblank&lt;/strong&gt; dans le workflow de rapport sur la qualité des données&lt;/h2&gt;
+&lt;p&gt;Pour déterminer le niveau de qualité des données d’une table, nous utilisons ce que l’on appelle un agent. Il élabore un plan de validation, effectue l’interrogatoire et détient des informations sur cette interrogation (nous demanderions alors un rapport). La fonction &lt;code&gt;create_agent()&lt;/code&gt; est utilisée pour créer l’agent. La table cible est donnée à l’agent et la table peut être un tibble ou un objet &lt;code&gt;tbl_dbi&lt;/code&gt; créé via une connexion à la base de données et la fonction &lt;code&gt;dplyr::tbl()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Nous utilisons des fonctions d’étape de validation pour construire un plan de validation. Il y en a 23 et certains vérifient l’existence ou le type de colonne (&lt;code&gt;col_exists()&lt;/code&gt; ou le groupe de fonctions de la forme: &lt;code&gt;col_is_*()&lt;/code&gt;) tandis que d’autres effectuent une vérification dans chaque cellule du tableau d’une colonne (par exemple, tous les &lt;code&gt;col_vals_*()&lt;/code&gt; fonctions). Nous appliquons notre propre compréhension des données de la table cible lors de l’utilisation des fonctions d’étape de pointblank, et nous en utilisons autant que nécessaire pour des tests adéquats.&lt;/p&gt;
+&lt;p&gt;Après avoir utilisé les fonctions de l’étape de validation pour créer un plan de validation, la fonction &lt;code&gt;interrogate()&lt;/code&gt; doit ensuite être utilisée. Avec cela, la table sera interrogée et les informations de validation nécessaires seront stockées dans l’agent.&lt;/p&gt;
+&lt;p&gt;Utilisons l’objet &lt;code&gt;small_table&lt;/code&gt; pour des exemples:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;small_table&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;#&amp;gt; # A tibble: 13 x 8
+#&amp;gt;    date_time           date           a b             c      d e     f    
+#&amp;gt;    &amp;lt;dttm&amp;gt;              &amp;lt;date&amp;gt;     &amp;lt;int&amp;gt; &amp;lt;chr&amp;gt;     &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt; &amp;lt;lgl&amp;gt; &amp;lt;chr&amp;gt;
+#&amp;gt;  1 2016-01-04 11:00:00 2016-01-04     2 1-bcd-345     3  3423. TRUE  high 
+#&amp;gt;  2 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low  
+#&amp;gt;  3 2016-01-05 13:32:00 2016-01-05     6 8-kdg-938     3  2343. TRUE  high 
+#&amp;gt;  4 2016-01-06 17:23:00 2016-01-06     2 5-jdo-903    NA  3892. FALSE mid  
+#&amp;gt;  5 2016-01-09 12:36:00 2016-01-09     8 3-ldm-038     7   284. TRUE  low  
+#&amp;gt;  6 2016-01-11 06:15:00 2016-01-11     4 2-dhe-923     4  3291. TRUE  mid  
+#&amp;gt;  7 2016-01-15 18:46:00 2016-01-15     7 1-knw-093     3   843. TRUE  high 
+#&amp;gt;  8 2016-01-17 11:27:00 2016-01-17     4 5-boe-639     2  1036. FALSE low  
+#&amp;gt;  9 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&amp;gt; 10 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&amp;gt; 11 2016-01-26 20:07:00 2016-01-26     4 2-dmx-010     7   834. TRUE  low  
+#&amp;gt; 12 2016-01-28 02:51:00 2016-01-28     2 7-dmx-010     8   108. FALSE low  
+#&amp;gt; 13 2016-01-30 11:23:00 2016-01-30     1 3-dka-303    NA  2230. TRUE  high &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Le plan de validation de ce tableau utilise les assertions suivantes:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;la colonne &lt;code&gt;date_time&lt;/code&gt; est une colonne date-heure&lt;/li&gt;
+&lt;li&gt;la colonne &lt;code&gt;f&lt;/code&gt; ne contient que les valeurs &lt;code&gt;&#34;low&#34;&lt;/code&gt;, &lt;code&gt;&#34;mid&#34;&lt;/code&gt;, and &lt;code&gt;&#34;high&#34;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;les valeurs de la colonne &lt;code&gt;a&lt;/code&gt; sont toutes inférieures à &lt;code&gt;10&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Les valeurs de texte dans la colonne &lt;code&gt;b&lt;/code&gt; sont conformes à un modèle spécifié&lt;/li&gt;
+&lt;li&gt;la colonne &lt;code&gt;d&lt;/code&gt; a des valeurs entre &lt;code&gt;0&lt;/code&gt; et &lt;code&gt;5000&lt;/code&gt; (pas entièrement vrai!)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Voici le code pour la validation:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;agent &amp;lt;- 
+  small_table %&amp;gt;%
+  create_agent() %&amp;gt;%
+  col_is_posix(vars(date_time)) %&amp;gt;%
+  col_vals_in_set(vars(f), set = c(&amp;quot;low&amp;quot;, &amp;quot;mid&amp;quot;, &amp;quot;high&amp;quot;)) %&amp;gt;%
+  col_vals_lt(vars(a), value = 10) %&amp;gt;%
+  col_vals_regex(vars(b), regex = &amp;quot;^[0-9]-[a-z]{3}-[0-9]{3}$&amp;quot;) %&amp;gt;%
+  col_vals_between(vars(d), left = 0, right = 5000) %&amp;gt;%
+  interrogate()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;L’objet &lt;code&gt;agent&lt;/code&gt; nous donne quelques informations sur la façon dont les choses se sont passées:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;agent&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;#&amp;gt; pointblank agent // &amp;lt;agent_2020-01-13_04:14:09&amp;gt;
+#&amp;gt; 
+#&amp;gt; number of validation steps: 5
+#&amp;gt; 
+#&amp;gt; interrogation (2020-01-13 04:14:09) resulted in:
+#&amp;gt;   - 4 passing validations
+#&amp;gt;   - 1 failing validation   more info: `get_agent_report()`&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Les «4 passing validations» signifient que toutes les validations individuelles en quatre étapes de validation ont réussi sans erreur. Une étape de validation a échoué et au moins une unité de test a échoué (chaque cellule testée équivaut à 1 unité de test). Nous pouvons générer un rapport avec plus de détails en utilisant &lt;code&gt;get_agent_report()&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;get_agent_report(agent)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-01-13-pointblank-0-3_files/agent_report.png&#34; style=&#34;width:100.0%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Le rapport est une table &lt;strong&gt;gt&lt;/strong&gt;, qui est imprimée par défaut si nous avons installé le paquet &lt;strong&gt;gt&lt;/strong&gt; (utilisez &lt;code&gt;remotes::install_github(&#34;rstudio/gt&#34;)&lt;/code&gt; pour installer ce paquet). Les cinq premières colonnes du rapport sont reconnaissables car ce sont les noms des fonctions de l’étape de validation et leurs paramètres. Les &lt;code&gt;preconditions&lt;/code&gt; colonne indique si la table a été modifiée juste avant l’interrogation (pour cette étape de validation). La colonne &lt;code&gt;Units&lt;/code&gt; nous indique le nombre total d’unités de test pour chaque étape de validation. La colonne &lt;code&gt;n_pass&lt;/code&gt; donne le nombre d’unités de test réussies tandis que la colonne &lt;code&gt;f_pass&lt;/code&gt; indique la fraction d’unités de test réussies. Les indicateurs &lt;code&gt;W&lt;/code&gt;, &lt;code&gt;S&lt;/code&gt;, &lt;code&gt;N&lt;/code&gt; nous indiquent si nous sommes entrés dans l’un des états &lt;code&gt;WARN&lt;/code&gt;, &lt;code&gt;STOP&lt;/code&gt; ou &lt;code&gt;NOTIFY&lt;/code&gt; pour ces étapes de validation. Étant donné que nous n’avons défini aucun seuil pour ces États, ils ne sont pas pertinents pour ce rapport. Enfin, l’indicateur &lt;code&gt;Extract&lt;/code&gt; nous indique si des extraits de données sont disponibles pour les unités de test ayant échoué. Pour &lt;em&gt;l’étape 5&lt;/em&gt;, l’étape de validation &lt;code&gt;col_vals_between()&lt;/code&gt;, un extrait de données est disponible. Nous pouvons jeter un œil à cet extrait avec &lt;code&gt;get_data_extracts()&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;get_data_extracts(agent, i = 5)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;#&amp;gt; # A tibble: 1 x 8
+#&amp;gt;   date_time           date           a b             c      d e     f    
+#&amp;gt;   &amp;lt;dttm&amp;gt;              &amp;lt;date&amp;gt;     &amp;lt;int&amp;gt; &amp;lt;chr&amp;gt;     &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt; &amp;lt;lgl&amp;gt; &amp;lt;chr&amp;gt;
+#&amp;gt; 1 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Rappelons que &lt;code&gt;l&#39;étape 5&lt;/code&gt; a affirmé que toutes les valeurs de la colonne &lt;code&gt;d&lt;/code&gt; doivent être comprises entre &lt;code&gt;0&lt;/code&gt; et &lt;code&gt;5000&lt;/code&gt;, cependant, cet extrait de &lt;code&gt;small_table&lt;/code&gt; montre que la colonne &lt;code&gt;d&lt;/code&gt; a une valeur qui se situe en dehors de cette plage spécifiée.&lt;/p&gt;
+&lt;h2 id=&#34;procédure-pas-à-pas-de-pointblank-dans-le-workflow-de-validation-des-données-basé-sur-le-pipeline&#34;&gt;Procédure pas à pas de &lt;strong&gt;pointblank&lt;/strong&gt; dans le workflow de validation des données basé sur le pipeline&lt;/h2&gt;
+&lt;p&gt;La deuxième méthodologie, la validation des données par pipeline, simplifie quelque peu le processus de vérification directe des données. Aucun &lt;em&gt;agent&lt;/em&gt; n’est impliqué ici et nous appelons plutôt les fonctions d’étape de validation directement sur les objets de la table de données. Parce qu’il n’y a pas d’agent, il n’y aura pas non plus de rapport. L’idée est que les effets secondaires sont les plus importants ici (les données passeront par les fonctions de validation inchangées). Nous pouvons déclencher des avertissements, générer des erreurs ou écrire des journaux en cas de dépassement des seuils d’échec spécifiés.&lt;/p&gt;
+&lt;p&gt;Où ferions-nous cela? Lors de l’importation de données, nous pourrions tester ces données en les passant par quelques fonctions d’étape de validation avec des niveaux de seuil &lt;code&gt;warn_at&lt;/code&gt; et &lt;code&gt;stop_at&lt;/code&gt; définis. Si nous devions transformer un tableau de données, nous pourrions également utiliser un ensemble de fonctions d’étape de validation comme mesure d’AQ et de CQ. Si la mauvaise qualité des données peut être mauvaise pour un produit de données en aval, il est probablement préférable d’arrêter le processus par le biais de tests de validation &lt;strong&gt;pointblank&lt;/strong&gt;, puis d’effectuer une analyse des causes profondes pour résoudre le problème de qualité des données.&lt;/p&gt;
+&lt;p&gt;Utilisons les instructions de l’exemple précédent pour travailler dans le workflow de validation des données basé sur le pipeline. Dans ce cas, nous utiliserons un simple appel de la fonction &lt;code&gt;action_levels()&lt;/code&gt; pour générer l’objet &lt;code&gt;al&lt;/code&gt;. Il est passé à l’argument &lt;code&gt;actions&lt;/code&gt; de chaque fonction d’étape de validation. Le paramètre implique que le pipeline sera arrêté en cas de défaillance d’une seule unité de test (avec &lt;code&gt;stop_at = 1&lt;/code&gt;).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Create an `action_levels` object, stopping the pipeline
+# if we get a single failing test unit
+al &amp;lt;- action_levels(stop_at = 1)
+
+small_table %&amp;gt;%
+  col_is_posix(vars(date_time), actions = al) %&amp;gt;%
+  col_vals_in_set(vars(f), set = c(&amp;quot;low&amp;quot;, &amp;quot;mid&amp;quot;, &amp;quot;high&amp;quot;), actions = al) %&amp;gt;%
+  col_vals_lt(vars(a), value = 10, actions = al) %&amp;gt;%
+  col_vals_regex(vars(b), regex = &amp;quot;^[0-9]-[a-z]{3}-[0-9]{3}$&amp;quot;, actions = al) %&amp;gt;%
+  col_vals_between(vars(d), left = 0, right = 5000, actions = al)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Error: The validation (`col_vals_between()`) meets or exceeds the stop threshold&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;C’est l’un de ces moments où nous pourrions être super heureux de voir une erreur. Le paramètre de seuil a arrêté l’évaluation du pipeline et, à son tour, arrête le script en cours d’exécution s’il est déployé et s’exécute automatiquement sur la version standard. La fonction &lt;code&gt;action_levels()&lt;/code&gt; est assez puissante et elle nous permet de définir des fonctions personnalisées qui sont évaluées lors de la saisie de chacun des trois états de défaillance. Dans ce type de workflow, nous n’avons pas besoin de définir ces fonctions, &lt;strong&gt;pointblank&lt;/strong&gt; nous aidera automatiquement à cela.&lt;/p&gt;
+&lt;h2 id=&#34;essayez-pointblank&#34;&gt;Essayez &lt;strong&gt;pointblank&lt;/strong&gt;!&lt;/h2&gt;
+&lt;p&gt;Ces courtes démonstrations présentent les principales caractéristiques des deux workflows de validation des données de &lt;strong&gt;pointblank&lt;/strong&gt;. Il existe de nombreuses choses que vous pouvez faire pour définir précisément les étapes de validation et pour que l’action correcte se produise lors de la saisie de différents états de défaillance. J’espère que vous êtes enclin à l’essayer sur vos propres données!&lt;/p&gt;
+&lt;/div&gt;
+&lt;!-- Start German Section --&gt;
+&lt;div id=&#34;German&#34; class=&#34;tabcontent&#34;&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-01-13-pointblank-0-3_files/pointblank-banner.svg&#34; style=&#34;width:100.0%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Die neueste Version des &lt;strong&gt;pointblank&lt;/strong&gt;-Pakets erleichtert die Validierung Ihrer Daten mit Workflows, die auf Ihre Datenqualitätsanforderungen abgestimmt sind. Sie können &lt;strong&gt;pointblank&lt;/strong&gt; 0.3 von CRAN installieren mit:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;install.packages(&amp;quot;pointblank&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Das Entwurfsziel von &lt;strong&gt;pointblank&lt;/strong&gt; besteht darin, zwei wichtige Datenvalidierungs-Workflows mit einem gemeinsamen Satz von Validierungsschrittfunktionen zu ermöglichen. Der geschriebene Code sollte mit Daten in lokalen Datentabellen und mit Daten in Datenbanken gleichermaßen gut funktionieren.&lt;/p&gt;
+&lt;p&gt;Die beiden wichtigsten Workflows, bei denen pointblank hilft, sind:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Berichterstattung zur Datenqualität&lt;/li&gt;
+&lt;li&gt;Pipeline-basierte Datenvalidierungen&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-01-13-pointblank-0-3_files/two_different_workflows.png&#34; style=&#34;width:100.0%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Der erste Workflow befasst sich mit der Datenqualität der Zieltabelle. Man würde Validierungsschrittfunktionen verwenden, um einen Validierungsplan zu erstellen. Dieser Plan führt zu einer Abfrage der Tabellendaten. Schließlich erhalten wir einen Bericht über die Abfrage, um die Datenqualität festzustellen. Es wird empfohlen, eine große Anzahl von Validierungsschrittfunktionen zu verwenden. Mit mehr von ihnen können wir Inkonsistenzen oder Fehler in der Tabelle besser aufdecken.&lt;/p&gt;
+&lt;p&gt;Der zweite Workflow ist in einer Datentransformationspipeline nützlich, die Tabellendaten verwendet. Die Validierungsfunktionen werden direkt verwendet, um uns entweder vor unvorhergesehenen Problemen mit der Datenintegrität zu warnen oder um die Pipeline vollständig zu stoppen. Anhalten ist eine gute Idee, wenn abhängige, nachgelagerte Prozesse (die die Daten in gewissem Umfang nutzen würden) durch schlechte Daten beeinträchtigt würden. Beide Workflows verwenden einen gemeinsamen Satz von Validierungsschrittfunktionen. “Action levels” (d. H. Fehlerschwellen) können schrittweise festgelegt werden. Zusätzlich können wir unsere eigenen &lt;strong&gt;R&lt;/strong&gt;-Funktionen verwenden, um Nebenwirkungen wie das Schreiben von Protokolldateien zu erzeugen.&lt;/p&gt;
+&lt;p&gt;Beide Workflows verwenden eine große Sammlung einfacher Validierungsschrittfunktionen. Diese Funktionen werden so benannt, dass es offensichtlich ist, was die Validierung bewirkt. Beispielsweise testet die Funktion &lt;code&gt;col_vals_gt()&lt;/code&gt;, ob die Zellenwerte in einer Spalte größer als ein angegebener Wert sind. Die Schnittstelle für jede Schrittfunktion ist konsistent, aber auch für die jeweilige Operation optimiert.&lt;/p&gt;
+&lt;h2 id=&#34;exemplarische-vorgehensweise-von-pointblank-im-workflow-für-die-berichterstellung-zur-datenqualität&#34;&gt;Exemplarische Vorgehensweise von &lt;strong&gt;pointblank&lt;/strong&gt; im Workflow für die Berichterstellung zur Datenqualität&lt;/h2&gt;
+&lt;p&gt;Um die Datenqualität für eine Tabelle zu bestimmen, verwenden wir einen Agenten. Es entwickelt einen Validierungsplan, führt die Befragung durch und enthält Informationen zu dieser Befragung (wir würden dann um einen Bericht bitten). Mit der Funktion &lt;code&gt;create_agent()&lt;/code&gt; wird der Agent erstellt. Die Zieltabelle wird dem Agenten übergeben, und die Tabelle kann ein tibble- oder ein &lt;code&gt;tbl_dbi&lt;/code&gt;-Objekt sein, das über eine Datenbankverbindung und die Funktion &lt;code&gt;dplyr::tbl()&lt;/code&gt; erstellt wurde.&lt;/p&gt;
+&lt;p&gt;Wir verwenden Validierungsschrittfunktionen, um einen Validierungsplan zu erstellen. Es gibt 23 von ihnen und einige prüfen die Existenz oder den Typ der Spalte (&lt;code&gt;col_exists()&lt;/code&gt; oder die Gruppe von &lt;code&gt;col_is_*()&lt;/code&gt; -Funktionen), während andere eine Prüfung in jeder Tabellenzelle innerhalb einer Spalte durchführen (z. B. alle &lt;code&gt;col_vals_*()&lt;/code&gt; Funktionen). Wir wenden bei der Verwendung der Pointblank-Step-Funktionen unser eigenes Verständnis der Daten in der Zieltabelle an und verwenden so viele, wie für angemessene Tests erforderlich sind.&lt;/p&gt;
+&lt;p&gt;Nachdem Sie Validierungsschrittfunktionen zum Erstellen eines Validierungsplans verwendet haben, sollte die Funktion &lt;code&gt;interrogate()&lt;/code&gt; verwendet werden. Damit wird die Tabelle abgefragt und die notwendigen Validierungsinformationen im Agenten gespeichert.&lt;/p&gt;
+&lt;p&gt;Das &lt;strong&gt;pointblank&lt;/strong&gt;-Paket enthält einen Datensatz mit dem Namen &lt;code&gt;small_table&lt;/code&gt;. Wir werden es für alle kommenden Beispiele verwenden:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;small_table&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;#&amp;gt; # A tibble: 13 x 8
+#&amp;gt;    date_time           date           a b             c      d e     f    
+#&amp;gt;    &amp;lt;dttm&amp;gt;              &amp;lt;date&amp;gt;     &amp;lt;int&amp;gt; &amp;lt;chr&amp;gt;     &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt; &amp;lt;lgl&amp;gt; &amp;lt;chr&amp;gt;
+#&amp;gt;  1 2016-01-04 11:00:00 2016-01-04     2 1-bcd-345     3  3423. TRUE  high 
+#&amp;gt;  2 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low  
+#&amp;gt;  3 2016-01-05 13:32:00 2016-01-05     6 8-kdg-938     3  2343. TRUE  high 
+#&amp;gt;  4 2016-01-06 17:23:00 2016-01-06     2 5-jdo-903    NA  3892. FALSE mid  
+#&amp;gt;  5 2016-01-09 12:36:00 2016-01-09     8 3-ldm-038     7   284. TRUE  low  
+#&amp;gt;  6 2016-01-11 06:15:00 2016-01-11     4 2-dhe-923     4  3291. TRUE  mid  
+#&amp;gt;  7 2016-01-15 18:46:00 2016-01-15     7 1-knw-093     3   843. TRUE  high 
+#&amp;gt;  8 2016-01-17 11:27:00 2016-01-17     4 5-boe-639     2  1036. FALSE low  
+#&amp;gt;  9 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&amp;gt; 10 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&amp;gt; 11 2016-01-26 20:07:00 2016-01-26     4 2-dmx-010     7   834. TRUE  low  
+#&amp;gt; 12 2016-01-28 02:51:00 2016-01-28     2 7-dmx-010     8   108. FALSE low  
+#&amp;gt; 13 2016-01-30 11:23:00 2016-01-30     1 3-dka-303    NA  2230. TRUE  high &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Der Validierungsplan für diese Tabelle verwendet die folgenden Zusicherungen:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Die Spalte &lt;code&gt;date_time&lt;/code&gt; ist eine Datum-Uhrzeit-Spalte&lt;/li&gt;
+&lt;li&gt;Spalte &lt;code&gt;f&lt;/code&gt; enthält nur die Werte &lt;code&gt;&#34;low&#34;&lt;/code&gt;, &lt;code&gt;&#34;mid&#34;&lt;/code&gt; und &lt;code&gt;&#34;high&#34;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Die Werte in Spalte &lt;code&gt;a&lt;/code&gt; sind alle kleiner als &lt;code&gt;10&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Die Zeichenfolgen in Spalte &lt;code&gt;b&lt;/code&gt; entsprechen einem angegebenen regulären Ausdruck&lt;/li&gt;
+&lt;li&gt;Spalte &lt;code&gt;d&lt;/code&gt; hat Werte im Bereich von &lt;code&gt;0&lt;/code&gt; bis &lt;code&gt;5000&lt;/code&gt; (dies ist nicht ganz richtig!)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Hier ist der Code für die obige Validierungslogik:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;agent &amp;lt;- 
+  small_table %&amp;gt;%
+  create_agent() %&amp;gt;%
+  col_is_posix(vars(date_time)) %&amp;gt;%
+  col_vals_in_set(vars(f), set = c(&amp;quot;low&amp;quot;, &amp;quot;mid&amp;quot;, &amp;quot;high&amp;quot;)) %&amp;gt;%
+  col_vals_lt(vars(a), value = 10) %&amp;gt;%
+  col_vals_regex(vars(b), regex = &amp;quot;^[0-9]-[a-z]{3}-[0-9]{3}$&amp;quot;) %&amp;gt;%
+  col_vals_between(vars(d), left = 0, right = 5000) %&amp;gt;%
+  interrogate()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Das &lt;code&gt;Agent&lt;/code&gt;-Objekt gibt uns ein paar Informationen über die Befragung:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;agent&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;#&amp;gt; pointblank agent // &amp;lt;agent_2020-01-13_04:14:09&amp;gt;
+#&amp;gt; 
+#&amp;gt; number of validation steps: 5
+#&amp;gt; 
+#&amp;gt; interrogation (2020-01-13 04:14:09) resulted in:
+#&amp;gt;   - 4 passing validations
+#&amp;gt;   - 1 failing validation   more info: `get_agent_report()`&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Die &lt;code&gt;4 passing validations&lt;/code&gt; bedeuten, dass alle Einzelvalidierungen in vier Validierungsschritten fehlerfrei bestanden wurden. Ein Validierungsschritt ist fehlgeschlagen, wobei mindestens eine Testeinheit ausgefallen ist (jede getestete Zelle entspricht 1 Testeinheit). Mit &lt;code&gt;get_agent_report()&lt;/code&gt; können wir einen detaillierteren Bericht erstellen:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;get_agent_report(agent)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-01-13-pointblank-0-3_files/agent_report.png&#34; style=&#34;width:100.0%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Der Bericht ist eine &lt;strong&gt;gt&lt;/strong&gt;-Tabelle, die standardmäßig gedruckt wird, wenn das &lt;strong&gt;gt&lt;/strong&gt;-Paket installiert ist (verwenden Sie &lt;code&gt;remotes::install_github(&#34;rstudio/gt&#34;)&lt;/code&gt;, um dieses Paket zu installieren). Die ersten fünf Spalten des Berichts sind erkennbar, da sie Namen der Validierungsschrittfunktionen und ihrer Parameter sind. Die Spalte &lt;code&gt;preconditions?&lt;/code&gt; gibt an, ob die Tabelle unmittelbar vor der Abfrage geändert wurde (für diesen Validierungsschritt). In der Spalte &lt;code&gt;Units&lt;/code&gt; wird die Gesamtzahl der Testeinheiten für jeden Validierungsschritt angezeigt. Die Spalte &lt;code&gt;n_pass&lt;/code&gt; gibt die Anzahl der bestandenen Testeinheiten an, während die Spalte &lt;code&gt;f_pass&lt;/code&gt; den Anteil der bestandenen Testeinheiten angibt. Die &lt;code&gt;W&lt;/code&gt;-, &lt;code&gt;S&lt;/code&gt;- und &lt;code&gt;N&lt;/code&gt;-Anzeigen zeigen an, ob wir für diese Überprüfungsschritte einen der Zustände &lt;code&gt;WARN&lt;/code&gt;, &lt;code&gt;STOP&lt;/code&gt; oder &lt;code&gt;NOTIFY&lt;/code&gt; eingegeben haben. Da wir für diese Staaten keine Schwellenwerte festgelegt haben, sind sie für diesen Bericht nicht relevant. Schließlich gibt der Indikator &lt;code&gt;Extract&lt;/code&gt; Auskunft darüber, ob für fehlerhafte Testeinheiten Datenextrakte verfügbar sind. Für &lt;code&gt;step 5&lt;/code&gt;, den Validierungsschritt &lt;code&gt;col_vals_between()&lt;/code&gt;, steht ein Datenextrakt zur Verfügung. Wir können uns diesen Auszug mit &lt;code&gt;get_data_extracts()&lt;/code&gt; ansehen:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;get_data_extracts(agent, i = 5)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;#&amp;gt; # A tibble: 1 x 8
+#&amp;gt;   date_time           date           a b             c      d e     f    
+#&amp;gt;   &amp;lt;dttm&amp;gt;              &amp;lt;date&amp;gt;     &amp;lt;int&amp;gt; &amp;lt;chr&amp;gt;     &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt; &amp;lt;lgl&amp;gt; &amp;lt;chr&amp;gt;
+#&amp;gt; 1 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Denken Sie daran, dass bei der Validierung in &lt;code&gt;step 5&lt;/code&gt; festgestellt wurde, dass alle Werte in Spalte &lt;code&gt;d&lt;/code&gt; zwischen &lt;code&gt;0&lt;/code&gt; und &lt;code&gt;5000&lt;/code&gt; liegen sollten. Dieser Auszug aus &lt;code&gt;small_table&lt;/code&gt; zeigt jedoch, dass Spalte &lt;code&gt;d&lt;/code&gt; einen Wert hat, der außerhalb des angegebenen Bereichs liegt.&lt;/p&gt;
+&lt;h2 id=&#34;eine-exemplarische-vorgehensweise-für-pointblank-im-pipeline-basierten-datenüberprüfungs-workflow&#34;&gt;Eine exemplarische Vorgehensweise für &lt;strong&gt;pointblank&lt;/strong&gt; im Pipeline-basierten Datenüberprüfungs-Workflow&lt;/h2&gt;
+&lt;p&gt;Der zweite Workflow, die pipelinebasierte Datenüberprüfung, vereinfacht die direkte Überprüfung der Daten ein wenig. Hier ist kein &lt;em&gt;Agent&lt;/em&gt; beteiligt. Stattdessen rufen wir Validierungsschrittfunktionen direkt auf den Datentabellenobjekten auf. Da es keinen Agenten gibt, wird es auch keinen Bericht geben. Die Idee ist, dass die Nebenwirkungen hier am wichtigsten sind (die Daten durchlaufen die Validierungsfunktionen unverändert). Wir können Warnungen auslösen, Fehler auslösen oder Protokolle ausschreiben, wenn bestimmte Fehlerschwellen überschritten werden.&lt;/p&gt;
+&lt;p&gt;Wo würden wir das machen? Beim Importieren von Daten konnten wir diese Daten testen, indem wir einige Validierungsschrittfunktionen mit festgelegten Schwellenwerten für &lt;code&gt;warn_at&lt;/code&gt; und &lt;code&gt;stop_at&lt;/code&gt; durchliefen. Wenn wir eine Datentabelle transformieren würden, könnten wir ebenfalls eine Reihe von Validierungsschrittfunktionen als QA / QC-Maß verwenden. Wenn eine schlechte Datenqualität für ein nachgeschaltetes Datenprodukt schlecht sein könnte, ist es wahrscheinlich besser, den Prozess durch &lt;strong&gt;pointblank&lt;/strong&gt;-Validierungstests zu stoppen und anschließend eine Ursachenanalyse durchzuführen, um das Datenqualitätsproblem zu beheben.&lt;/p&gt;
+&lt;p&gt;Verwenden Sie die Anweisungen aus dem vorherigen Beispiel, um im Workflow für die pipelinebasierte Datenüberprüfung zu arbeiten. In diesem Fall verwenden wir einen einfachen Aufruf der &lt;code&gt;action_levels()&lt;/code&gt; -Funktion, um das al-Objekt zu generieren. Es wird an das Argument &lt;code&gt;actions&lt;/code&gt; jeder Validierungsschrittfunktion übergeben. Die Einstellung impliziert, dass die Pipeline gestoppt wird, wenn eine einzelne Testeinheit ausfällt (mit &lt;code&gt;stop_at = 1&lt;/code&gt;).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Create an `action_levels` object, stopping the pipeline
+# if we get a single failing test unit
+al &amp;lt;- action_levels(stop_at = 1)
+
+small_table %&amp;gt;%
+  col_is_posix(vars(date_time), actions = al) %&amp;gt;%
+  col_vals_in_set(vars(f), set = c(&amp;quot;low&amp;quot;, &amp;quot;mid&amp;quot;, &amp;quot;high&amp;quot;), actions = al) %&amp;gt;%
+  col_vals_lt(vars(a), value = 10, actions = al) %&amp;gt;%
+  col_vals_regex(vars(b), regex = &amp;quot;^[0-9]-[a-z]{3}-[0-9]{3}$&amp;quot;, actions = al) %&amp;gt;%
+  col_vals_between(vars(d), left = 0, right = 5000, actions = al)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Error: The validation (`col_vals_between()`) meets or exceeds the stop threshold&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Dies ist eine der Situationen, in denen wir uns möglicherweise über einen Fehler freuen. Die Schwellenwerteinstellung hat die Auswertung der Pipeline gestoppt und stoppt das ausgeführte Skript, wenn es bereitgestellt wird und automatisch regelmäßig ausgeführt wird. Die &lt;code&gt;action_levels()&lt;/code&gt;-Funktion ist sehr leistungsfähig und ermöglicht es uns, benutzerdefinierte Funktionen zu definieren, die beim Eingeben der drei Fehlerzustände ausgewertet werden. In dieser Art von Workflow müssen diese Funktionen nicht definiert werden. Pointblank erledigt automatisch die sinnvolle Aufgabe und gibt eine &lt;code&gt;warning()&lt;/code&gt; oder eine &lt;code&gt;stop()&lt;/code&gt;-Meldung aus.&lt;/p&gt;
+&lt;h2 id=&#34;bitte-testen-sie-das-pointblank-paket&#34;&gt;Bitte testen Sie das &lt;strong&gt;pointblank&lt;/strong&gt;-Paket&lt;/h2&gt;
+&lt;p&gt;Diese kurzen Demonstrationen zeigen die Hauptmerkmale der beiden Datenvalidierungs-Workflows von &lt;strong&gt;pointblank&lt;/strong&gt;. Es gibt viele Möglichkeiten, um die Überprüfungsschritte genau zu definieren und die richtige Aktion auszulösen, wenn verschiedene Fehlerzustände eingegeben werden. Ich hoffe, Sie sind geneigt, es an Ihren eigenen Daten auszuprobieren!&lt;/p&gt;
+&lt;/div&gt;
+&lt;script&gt;
+function openLang(evt, cityName) {
+var i, tabcontent, tablinks;
+tabcontent = document.getElementsByClassName(&#34;tabcontent&#34;);
+for (i = 0; i &lt; tabcontent.length; i++) {
+tabcontent[i].style.display = &#34;none&#34;;
+}
+tablinks = document.getElementsByClassName(&#34;tablinks&#34;);
+for (i = 0; i &lt; tablinks.length; i++) {
+tablinks[i].className = tablinks[i].className.replace(&#34; active&#34;, &#34;&#34;);
+}
+document.getElementById(cityName).style.display = &#34;block&#34;;
+evt.currentTarget.className += &#34; active&#34;;
+}
+
+// Get the element with id=&#34;defaultOpen&#34; and click on it
+document.getElementById(&#34;defaultOpen&#34;).click();
+&lt;/script&gt;
+</description>
+    </item>
     
     <item>
       <title>blastula v0.3</title>
