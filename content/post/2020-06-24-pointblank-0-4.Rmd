@@ -113,7 +113,7 @@ The `expect_col_vals_between()` validation failed beyond the absolute threshold 
 * failure level (11) >= failure threshold (1) 
 ```
 
-By the way, these messages are consistent with the error and warning messages that are shown when using validation functions directly on data (e.g., `small_table %>% expect_col_vals_between(...)`).
+By the way, these messages are consistent with the error and warning messages that are shown when using validation functions directly on data (e.g., `small_table %>% col_vals_between(...)`).
 
 ## *Test* Functions
 
@@ -328,7 +328,7 @@ The `expect_col_vals_between()` validation failed beyond the absolute threshold 
 * failure level (11) >= failure threshold (1) 
 ```
 
-Ces messages sont cohérents avec les messages d'erreur et d'avertissement qui s'affichent lors de l'utilisation de fonctions de validation directement sur les données (par exemple, `small_table %>% expect_col_vals_between (...)`).
+Ces messages sont cohérents avec les messages d'erreur et d'avertissement qui s'affichent lors de l'utilisation de fonctions de validation directement sur les données (par exemple, `small_table %>% col_vals_between (...)`).
 
 ## *Test* fonctions
 
@@ -545,7 +545,7 @@ The `expect_col_vals_between()` validation failed beyond the absolute threshold 
 * failure level (11) >= failure threshold (1) 
 ```
 
-Übrigens stimmen diese Meldungen mit den Fehler- und Warnmeldungen überein, die angezeigt werden, wenn Validierungsfunktionen direkt für Daten verwendet werden (z. B. `small_table %>% expected_col_vals_between (...)`).
+Übrigens stimmen diese Meldungen mit den Fehler- und Warnmeldungen überein, die angezeigt werden, wenn Validierungsfunktionen direkt für Daten verwendet werden (z. B. `small_table %>% col_vals_between(...)`).
 
 ## *Test* Funktionen
 

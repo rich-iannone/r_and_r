@@ -86,7 +86,7 @@ expect_col_vals_between(
 &lt;pre&gt;&lt;code&gt;Error: Exceedance of failed test units where values in `c` should have been between `23` and `34`.
 The `expect_col_vals_between()` validation failed beyond the absolute threshold level (1).
 * failure level (11) &amp;gt;= failure threshold (1) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;By the way, these messages are consistent with the error and warning messages that are shown when using validation functions directly on data (e.g., &lt;code&gt;small_table %&amp;gt;% expect_col_vals_between(...)&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;By the way, these messages are consistent with the error and warning messages that are shown when using validation functions directly on data (e.g., &lt;code&gt;small_table %&amp;gt;% col_vals_between(...)&lt;/code&gt;).&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;test-functions&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;&lt;em&gt;Test&lt;/em&gt; Functions&lt;/h2&gt;
@@ -238,7 +238,7 @@ expect_col_vals_between(
 &lt;pre&gt;&lt;code&gt;Error: Exceedance of failed test units where values in `c` should have been between `23` and `34`.
 The `expect_col_vals_between()` validation failed beyond the absolute threshold level (1).
 * failure level (11) &amp;gt;= failure threshold (1) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Ces messages sont cohérents avec les messages d’erreur et d’avertissement qui s’affichent lors de l’utilisation de fonctions de validation directement sur les données (par exemple, &lt;code&gt;small_table %&amp;gt;% expect_col_vals_between (...)&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;Ces messages sont cohérents avec les messages d’erreur et d’avertissement qui s’affichent lors de l’utilisation de fonctions de validation directement sur les données (par exemple, &lt;code&gt;small_table %&amp;gt;% col_vals_between (...)&lt;/code&gt;).&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;test-fonctions&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;&lt;em&gt;Test&lt;/em&gt; fonctions&lt;/h2&gt;
@@ -392,7 +392,7 @@ expect_col_vals_between(
 &lt;pre&gt;&lt;code&gt;Error: Exceedance of failed test units where values in `c` should have been between `23` and `34`.
 The `expect_col_vals_between()` validation failed beyond the absolute threshold level (1).
 * failure level (11) &amp;gt;= failure threshold (1) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Übrigens stimmen diese Meldungen mit den Fehler- und Warnmeldungen überein, die angezeigt werden, wenn Validierungsfunktionen direkt für Daten verwendet werden (z. B. &lt;code&gt;small_table %&amp;gt;% expected_col_vals_between (...)&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;Übrigens stimmen diese Meldungen mit den Fehler- und Warnmeldungen überein, die angezeigt werden, wenn Validierungsfunktionen direkt für Daten verwendet werden (z. B. &lt;code&gt;small_table %&amp;gt;% col_vals_between(...)&lt;/code&gt;).&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;test-funktionen&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;&lt;em&gt;Test&lt;/em&gt; Funktionen&lt;/h2&gt;
