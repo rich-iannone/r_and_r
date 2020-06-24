@@ -135,7 +135,7 @@ tbl %&amp;gt;%
     b == 1 ~ a &amp;gt; 5 &amp;amp; c &amp;gt;= 1
   ))&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;[1] TRUE&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Should the evaluation of the expression not work out (for example, the non-existent &lt;code&gt;d&lt;/code&gt; column was used in the above) you’ll get an &lt;code&gt;NA&lt;/code&gt; value returned. If using an agent, the report will show that the evaluation was unsuccessful (look for the explosion in the &lt;code&gt;EVAL&lt;/code&gt; column).&lt;/p&gt;
+&lt;p&gt;Should the evaluation of the expression not work out (for example, if the non-existent &lt;code&gt;d&lt;/code&gt; column were to be used in the above example) you’ll get an &lt;code&gt;NA&lt;/code&gt; value returned. If using an agent, the report will show that the evaluation was unsuccessful (look for the explosion in the &lt;code&gt;EVAL&lt;/code&gt; column).&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;new-r-markdown-features&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;New &lt;strong&gt;R Markdown&lt;/strong&gt; Features&lt;/h2&gt;
@@ -180,7 +180,7 @@ tbl %&amp;gt;%
 &lt;/div&gt;
 &lt;div id=&#34;nicer-lookin-email&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Nicer Lookin’ Email&lt;/h2&gt;
-&lt;p&gt;You can send HTML email with the agent report inside (thanks to some help by the &lt;strong&gt;blastula&lt;/strong&gt; package). There’s seemingly no limit to the customizability of the message body, since the &lt;code&gt;email_blast()&lt;/code&gt; function has full access to the agent intel (have a look at the help article at &lt;code&gt;?email_blast&lt;/code&gt; for all the details on this). However, sometimes you want a reasonably-nice default email that won’t take much work develop. In this release, the default look of the email is much easier on the eyes.&lt;/p&gt;
+&lt;p&gt;You can send HTML email with the agent report inside (thanks to some help by the &lt;strong&gt;blastula&lt;/strong&gt; package). There’s seemingly no limit to the customizability of the message body, since the &lt;code&gt;email_blast()&lt;/code&gt; function has full access to the agent intel (have a look at the help article at &lt;code&gt;?email_blast&lt;/code&gt; for all the details on this). However, sometimes you want a reasonably-nice default email that won’t take much work to develop. In this release, the default look of the email is much easier on the eyes.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2020-06-24-pointblank-0-4_files/pointblank_email.png&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;It uses a small version of the agent report (575px wide) that still has those useful tooltips that provide &lt;em&gt;briefs&lt;/em&gt; (an unfortunate name for the short descriptions of each validation step). Sure, you could customize the email yourself with the &lt;code&gt;msg_header&lt;/code&gt;, &lt;code&gt;msg_body&lt;/code&gt;, and &lt;code&gt;msg_footer&lt;/code&gt; args but, now, you might not have a compulsion to do so.&lt;/p&gt;
 &lt;/div&gt;

@@ -581,7 +581,7 @@ tbl %&gt;%
     b == 1 ~ a &gt; 5 &amp; c &gt;= 1
   ))</code></pre>
 <pre><code>[1] TRUE</code></pre>
-<p>Should the evaluation of the expression not work out (for example, the non-existent <code>d</code> column was used in the above) you’ll get an <code>NA</code> value returned. If using an agent, the report will show that the evaluation was unsuccessful (look for the explosion in the <code>EVAL</code> column).</p>
+<p>Should the evaluation of the expression not work out (for example, if the non-existent <code>d</code> column were to be used in the above example) you’ll get an <code>NA</code> value returned. If using an agent, the report will show that the evaluation was unsuccessful (look for the explosion in the <code>EVAL</code> column).</p>
 </div>
 <div id="new-r-markdown-features" class="section level2">
 <h2>New <strong>R Markdown</strong> Features</h2>
@@ -626,7 +626,7 @@ tbl %&gt;%
 </div>
 <div id="nicer-lookin-email" class="section level2">
 <h2>Nicer Lookin’ Email</h2>
-<p>You can send HTML email with the agent report inside (thanks to some help by the <strong>blastula</strong> package). There’s seemingly no limit to the customizability of the message body, since the <code>email_blast()</code> function has full access to the agent intel (have a look at the help article at <code>?email_blast</code> for all the details on this). However, sometimes you want a reasonably-nice default email that won’t take much work develop. In this release, the default look of the email is much easier on the eyes.</p>
+<p>You can send HTML email with the agent report inside (thanks to some help by the <strong>blastula</strong> package). There’s seemingly no limit to the customizability of the message body, since the <code>email_blast()</code> function has full access to the agent intel (have a look at the help article at <code>?email_blast</code> for all the details on this). However, sometimes you want a reasonably-nice default email that won’t take much work to develop. In this release, the default look of the email is much easier on the eyes.</p>
 <p><img src="/post/2020-06-24-pointblank-0-4_files/pointblank_email.png" /></p>
 <p>It uses a small version of the agent report (575px wide) that still has those useful tooltips that provide <em>briefs</em> (an unfortunate name for the short descriptions of each validation step). Sure, you could customize the email yourself with the <code>msg_header</code>, <code>msg_body</code>, and <code>msg_footer</code> args but, now, you might not have a compulsion to do so.</p>
 </div>

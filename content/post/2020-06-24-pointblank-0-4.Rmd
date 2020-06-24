@@ -187,7 +187,7 @@ tbl %>%
 [1] TRUE
 ```
 
-Should the evaluation of the expression not work out (for example, the non-existent `d` column was used in the above) you'll get an `NA` value returned. If using an agent, the report will show that the evaluation was unsuccessful (look for the explosion in the `EVAL` column).
+Should the evaluation of the expression not work out (for example, if the non-existent `d` column were to be used in the above example) you'll get an `NA` value returned. If using an agent, the report will show that the evaluation was unsuccessful (look for the explosion in the `EVAL` column).
 
 ## New **R Markdown** Features
 
@@ -241,7 +241,7 @@ All of those Table Scans are of the `dplyr::storms` dataset. But whaddabout data
 
 ## Nicer Lookin' Email
 
-You can send HTML email with the agent report inside (thanks to some help by the **blastula** package). There's seemingly no limit to the customizability of the message body, since the `email_blast()` function has full access to the agent intel (have a look at the help article at `?email_blast` for all the details on this). However, sometimes you want a reasonably-nice default email that won't take much work develop. In this release, the default look of the email is much easier on the eyes. 
+You can send HTML email with the agent report inside (thanks to some help by the **blastula** package). There's seemingly no limit to the customizability of the message body, since the `email_blast()` function has full access to the agent intel (have a look at the help article at `?email_blast` for all the details on this). However, sometimes you want a reasonably-nice default email that won't take much work to develop. In this release, the default look of the email is much easier on the eyes. 
 
 ![](/post/2020-06-24-pointblank-0-4_files/pointblank_email.png)
 
