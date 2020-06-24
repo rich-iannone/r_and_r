@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.5.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Richard Iannone">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="The **pointblank** package at v0.4 has a whole lot more functions than ever before. And, the existing functions have been *improved*!">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/post/pointblank-0-4/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.css">
+
+  
+
+
+
+
+  
+
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon-32.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="/post/pointblank-0-4/">
+
+  
+  
+  
+  
+    
+  
+  
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="twitter:site" content="@riannone">
+  <meta property="twitter:creator" content="@riannone">
+  
+  <meta property="og:site_name" content="R &amp; R">
+  <meta property="og:url" content="/post/pointblank-0-4/">
+  <meta property="og:title" content="pointblank v0.4 | R &amp; R">
+  <meta property="og:description" content="The **pointblank** package at v0.4 has a whole lot more functions than ever before. And, the existing functions have been *improved*!"><meta property="og:image" content="/img/R_and_R_share.png">
+  <meta property="twitter:image" content="/img/R_and_R_share.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2020-06-24T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2020-06-24T13:10:00-05:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/post/pointblank-0-4/"
+  },
+  "headline": "pointblank v0.4",
+  
+  "datePublished": "2020-06-24T00:00:00Z",
+  "dateModified": "2020-06-24T13:10:00-05:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Richard Iannone"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "R \u0026 R",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/img/icon-512.png"
+    }
+  },
+  "description": "The **pointblank** package at v0.4 has a whole lot more functions than ever before. And, the existing functions have been *improved*!"
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>pointblank v0.4 | R &amp; R</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0 compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">R &amp; R</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav mr-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#contact"><span>Contact</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/blogroll/"><span>Blogroll</span></a>
+        </li>
+
+        
+        
+
+      
+      </ul>
+      <ul class="navbar-nav ml-auto">
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+        </li>
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+  <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>pointblank v0.4</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Last updated on
+      
+    
+    June 24, 2020
+  </span>
+  
+
+  
+
+  
+
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<html>
+<link rel="stylesheet" href="/post/css/style.css" />
+</html>
+<html>
+<div class="tab">
+<button class="tablinks" onclick="openLang(event, &#39;English&#39;)" id="defaultOpen">
+English
+</button>
+<button class="tablinks" onclick="openLang(event, &#39;French&#39;)">
+French
+</button>
+<button class="tablinks" onclick="openLang(event, &#39;German&#39;)">
+German
+</button>
+</div>
+</html>
+<!-- Start English Section -->
+<div id="English" class="tabcontent">
+<p><img src="/post/2020-06-24-pointblank-0-4_files/pointblank_v0_4.png" /></p>
+<p>The <a href="https://rich-iannone.github.io/pointblank/"><strong>pointblank</strong></a> package is now at version 0.4 and is chock full of goodies. There are new functions that allow us to do really interesting things with data validation. Some of the existing functions gained new superpowers. The docs? Better than ever! They’ve been totally revised and there are plenty of easy-to-use examples too. You can install <strong>pointblank</strong> 0.4 from CRAN with:</p>
+<pre class="r"><code>install.packages(&quot;pointblank&quot;)</code></pre>
+<p>With the last iteration of <strong>pointblank</strong> the goal was to enable two important, yet quite distinct, data validation workflows using a common set of validation step functions. Let’s have another look at the rationale for those, which were:</p>
+<ol style="list-style-type: decimal">
+<li>data quality reporting</li>
+<li>pipeline-based data validation</li>
+</ol>
+<p>For the first one, why is it so important? If you are dealing with data, and I’m sure you are, you really need to understand and get on top of data quality. Is the data good? Is it bad? What parts are good or bad? Are the bad parts <em>really</em> bad? Can we understand what’s making it bad? (I’m just assuming it’s bad.) Lots of questions, and we can get to answering them, so long as we have a process. What I’m hoping is that <strong>pointblank</strong> is up to the task.</p>
+<p><img src="/post/2020-06-24-pointblank-0-4_files/data_quality_workflow.png" /></p>
+<p>The second workflow is also important, but it’s really different than the first. The idea is that you need to check your data before it proceeds further down a pipeline. Perhaps the input data (rigorously checked and cleaned, thanks to data quality reporting) is just fine, but, what about the transformed data in a pipeline? We ought to check that data too.</p>
+<p>Those are the main workflows but there are some new ways of using <strong>pointblank</strong> now.</p>
+<div id="expectation-functions" class="section level2">
+<h2><em>Expectation</em> Functions</h2>
+<p>There are now 24 <em>expectation</em> functions (e.g., <code>expect_col_exists()</code>, <code>expect_rows_distinct()</code>, <code>expect_col_schema_match()</code>, etc.) as complements to the 24 validation functions. All of these can be used for <strong>testthat</strong> tests of tabular data. These new functions have a simplified interface that exposes an easy-to-use failure threshold (defaulting to <code>1</code>). We’ll go through some examples with the <code>small_table</code> dataset included in <strong>pointblank</strong>.</p>
+<pre class="r"><code>small_table</code></pre>
+<pre><code>#&gt; # A tibble: 13 x 8
+#&gt;    date_time           date           a b             c      d e     f    
+#&gt;    &lt;dttm&gt;              &lt;date&gt;     &lt;int&gt; &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;lgl&gt; &lt;chr&gt;
+#&gt;  1 2016-01-04 11:00:00 2016-01-04     2 1-bcd-345     3  3423. TRUE  high 
+#&gt;  2 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low  
+#&gt;  3 2016-01-05 13:32:00 2016-01-05     6 8-kdg-938     3  2343. TRUE  high 
+#&gt;  4 2016-01-06 17:23:00 2016-01-06     2 5-jdo-903    NA  3892. FALSE mid  
+#&gt;  5 2016-01-09 12:36:00 2016-01-09     8 3-ldm-038     7   284. TRUE  low  
+#&gt;  6 2016-01-11 06:15:00 2016-01-11     4 2-dhe-923     4  3291. TRUE  mid  
+#&gt;  7 2016-01-15 18:46:00 2016-01-15     7 1-knw-093     3   843. TRUE  high 
+#&gt;  8 2016-01-17 11:27:00 2016-01-17     4 5-boe-639     2  1036. FALSE low  
+#&gt;  9 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&gt; 10 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&gt; 11 2016-01-26 20:07:00 2016-01-26     4 2-dmx-010     7   834. TRUE  low  
+#&gt; 12 2016-01-28 02:51:00 2016-01-28     2 7-dmx-010     8   108. FALSE low  
+#&gt; 13 2016-01-30 11:23:00 2016-01-30     1 3-dka-303    NA  2230. TRUE  high </code></pre>
+<pre class="r"><code># With the `expect_*()` form, we would
+# typically perform one validation at a time
+# (the same way that testthat tests operate)
+expect_col_vals_between(
+  small_table, vars(c), 1, 9,
+  na_pass = TRUE
+)</code></pre>
+<p>This returns absolutely nothing, which means the test worked! In the case that it doesn’t work, we get an informative message:</p>
+<pre class="r"><code>expect_col_vals_between(
+  small_table, vars(c), 23, 34,
+  na_pass = TRUE
+)</code></pre>
+<pre><code>Error: Exceedance of failed test units where values in `c` should have been between `23` and `34`.
+The `expect_col_vals_between()` validation failed beyond the absolute threshold level (1).
+* failure level (11) &gt;= failure threshold (1) </code></pre>
+<p>By the way, these messages are consistent with the error and warning messages that are shown when using validation functions directly on data (e.g., <code>small_table %&gt;% expect_col_vals_between(...)</code>).</p>
+</div>
+<div id="test-functions" class="section level2">
+<h2><em>Test</em> Functions</h2>
+<p>On top of the <code>expect_*()</code> set of functions, there are now 24 <em>test</em> functions (e.g., <code>test_col_exists()</code>, <code>test_rows_distinct()</code>, <code>test_col_schema_match()</code>, etc.) to further complement the 24 validation functions. These functions return a logical value: <code>TRUE</code> if the failure threshold (having a default of 1) <em>is not</em> exceeded, <code>FALSE</code> otherwise. These <code>test_*()</code> functions use the same simplified interface of the <code>expect_*()</code> functions.</p>
+<pre class="r"><code># With the `test_*()` form, we should get a
+# single logical value returned to us
+test_col_vals_between(
+  small_table, vars(c), 1, 9,
+  na_pass = TRUE
+)</code></pre>
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div id="col_vals_expr-expect_col_vals_expr-and-test_col_vals_expr" class="section level2">
+<h2><code>col_vals_expr()</code>, <code>expect_col_vals_expr()</code>, and <code>test_col_vals_expr()</code></h2>
+<p>For those times when you just want a DIY expression for your validation, the <code>col_vals_expr()</code> function (and the <em>expectation</em> and <em>test</em> variants) could be what you need. The <strong>dplyr</strong> <code>expr()</code>, <code>case_when()</code>, and <code>between()</code> functions are now re-exported in <strong>pointblank</strong> for easier accessibility here since they work exceedingly well with the new functions. Here’s an example:</p>
+<pre class="r"><code># Let&#39;s use a tiny table for testing here
+tbl &lt;-
+  dplyr::tibble(
+    a = c(1, 2, 1, 7, 8, 6),
+    b = c(0, 0, 0, 1, 1, 1),
+    c = c(0.5, 0.3, 0.8, 1.4, 1.9, 1.2),
+  )
+  
+tbl</code></pre>
+<pre><code>#&gt; # A tibble: 6 x 3
+#&gt;       a     b     c
+#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1     1     0   0.5
+#&gt; 2     2     0   0.3
+#&gt; 3     1     0   0.8
+#&gt; 4     7     1   1.4
+#&gt; 5     8     1   1.9
+#&gt; 6     6     1   1.2</code></pre>
+<pre class="r"><code># Test that values in column `a`
+# are integer-like by using the R modulo
+# operator and expecting `0`
+test_col_vals_expr(tbl, ~ a %% 1 == 0)</code></pre>
+<pre><code>[1] TRUE</code></pre>
+<pre><code># We can do more complex things by
+# taking advantage of the `case_when()`
+# and `between()` functions (available
+# for use in the pointblank package) 
+tbl %&gt;%
+  test_col_vals_expr(~ case_when(
+    b == 0 ~ a %&gt;% between(0, 5) &amp; c &lt; 1,
+    b == 1 ~ a &gt; 5 &amp; c &gt;= 1
+  ))</code></pre>
+<pre><code>[1] TRUE</code></pre>
+<p>Should the evaluation of the expression not work out (for example, the non-existent <code>d</code> column was used in the above) you’ll get an <code>NA</code> value returned. If using an agent, the report will show that the evaluation was unsuccessful (look for the explosion in the <code>EVAL</code> column).</p>
+</div>
+<div id="new-r-markdown-features" class="section level2">
+<h2>New <strong>R Markdown</strong> Features</h2>
+<p>Almost forgot about this one! A new <strong>R Markdown</strong> validation feature allows for validation testing within specialized validation code chunks where the <code>validate = TRUE</code> option is set. Using pointblank validation functions on data in these marked code chunks will flag overall failure if the stop threshold is exceeded anywhere. All errors are reported in the validation code chunk after rendering the document to HTML, where green or red status buttons indicate whether all validations succeeded or failures occurred. But, better to show than to explain, here’s an animation:</p>
+<p><img src="/post/2020-06-24-pointblank-0-4_files/pointblank_rmarkdown.png" /></p>
+<p>There’s a very useful R Markdown template for this new <strong>R Markdown</strong> validation feature: <code>Pointblank Validation</code>.</p>
+<p>Using <strong>pointblank</strong> in an <strong>R Markdown</strong> workflow is enabled by default once the pointblank library is loaded. While the framework for such testing is set up by default, the new <code>validate_rmd()</code> function offers an opportunity to set UI and logging options.</p>
+</div>
+<div id="the-agent-report" class="section level2">
+<h2>The <strong>agent</strong> Report</h2>
+<p>The appearance of the agent report has improved (a lot!) and it’s gained some new features:</p>
+<ol style="list-style-type: decimal">
+<li>data extracts for failing rows (on row-based validation steps) can be downloaded as CSVs via the new buttons that appear in the <code>EXT</code> column</li>
+<li>there are useful tooltips on most fields of the table (e.g., hovering over items in <code>STEP</code> will show the ‘brief’, <code>TBL</code> icons will describe whether any preconditions were applied to the table prior to interrogation, etc.), and</li>
+<li>there are printing improvements in the <code>COLUMNS</code> and <code>VALUES</code> columns (e.g., table columns are distinguished from literal values).</li>
+</ol>
+<p>Here’s a diagram that better explains the whole thing:</p>
+<p><img src="/post/2020-06-24-pointblank-0-4_files/agent_report.png" /></p>
+<p>This bit of reporting is really important so expect even more improvements in an upcoming version.</p>
+</div>
+<div id="scanning-your-data-with-scan_data-improvements" class="section level2">
+<h2>Scanning Your Data with <code>scan_data()</code>: Improvements!</h2>
+<p>The <code>scan_data()</code> function let’s you ‘Thoroughly scan the table data so as to understand it better’ (that’s from the help page, at <code>?scan_data</code>). In case you haven’t seen it, this function generates an HTML report that explains the input table data. It’s a great thing to use before calling up an <strong>agent</strong> to validate the data. With this function, we can now quickly get to understanding the data with some level of precision. The reporting output contains several sections to make everything more digestible, and these are:</p>
+<ol style="list-style-type: decimal">
+<li>Overview: Table dimensions, duplicate row count, column types, and reproducibility information</li>
+<li>Variables: A summary for each table variable and further statistics and summaries depending on the variable type</li>
+<li>Interactions: A matrix plot that shows interactions between variables</li>
+<li>Correlations: A set of correlation matrix plots for numerical variables</li>
+<li>Missing Values: A summary figure that shows the degree of missingness across variables, and</li>
+<li>Sample: A table that provides the head and tail rows of the dataset</li>
+</ol>
+<p><img src="/post/2020-06-24-pointblank-0-4_files/table_scan.png" /></p>
+<p>It’s pretty cool! Try it out with your favorite dataset. I created a few examples, in various languages even, in <strong>RPubs</strong>:</p>
+<p><a href="https://rpubs.com/rich_i/pointblank_storms_english"><img src="https://img.shields.io/static/v1?label=Table%20Scan&amp;message=English&amp;color=blue" alt="Table Scan in English" /></a>
+<a href="https://rpubs.com/rich_i/pointblank_storms_french"><img src="https://img.shields.io/static/v1?label=Table%20Scan&amp;message=French&amp;color=blue" alt="Table Scan in French" /></a>
+<a href="https://rpubs.com/rich_i/pointblank_storms_german"><img src="https://img.shields.io/static/v1?label=Table%20Scan&amp;message=German&amp;color=blue" alt="Table Scan in German" /></a>
+<a href="https://rpubs.com/rich_i/pointblank_storms_italian"><img src="https://img.shields.io/static/v1?label=Table%20Scan&amp;message=Italian&amp;color=blue" alt="Table Scan in Italian" /></a>
+<a href="https://rpubs.com/rich_i/pointblank_storms_spanish"><img src="https://img.shields.io/static/v1?label=Table%20Scan&amp;message=Spanish&amp;color=blue" alt="Table Scan in Spanish" /></a></p>
+<p>All of those Table Scans are of the <code>dplyr::storms</code> dataset. But whaddabout database tables? That’s the improvement this time round! You can now use <code>scan_data()</code> to scan some DB tables. Here are two brand-new examples using the <code>full_region</code> table of the <strong>Rfam</strong> database (hosted publicly at “mysql-rfam-public.ebi.ac.uk”) and the <code>assembly</code> table of the <strong>Ensembl</strong> database (hosted publicly at “ensembldb.ensembl.org”).</p>
+<p><a href="https://rpubs.com/rich_i/rfam_full_region"><img src="https://img.shields.io/static/v1?label=Table%20Scan&amp;message=Rfam:%20full_region&amp;color=green" alt="Rfam: full_region" /></a>
+<a href="https://rpubs.com/rich_i/ensembl_assembly"><img src="https://img.shields.io/static/v1?label=Table%20Scan&amp;message=Ensembl:%20assembly&amp;color=green" alt="Ensembl: assembly" /></a></p>
+</div>
+<div id="nicer-lookin-email" class="section level2">
+<h2>Nicer Lookin’ Email</h2>
+<p>You can send HTML email with the agent report inside (thanks to some help by the <strong>blastula</strong> package). There’s seemingly no limit to the customizability of the message body, since the <code>email_blast()</code> function has full access to the agent intel (have a look at the help article at <code>?email_blast</code> for all the details on this). However, sometimes you want a reasonably-nice default email that won’t take much work develop. In this release, the default look of the email is much easier on the eyes.</p>
+<p><img src="/post/2020-06-24-pointblank-0-4_files/pointblank_email.png" /></p>
+<p>It uses a small version of the agent report (575px wide) that still has those useful tooltips that provide <em>briefs</em> (an unfortunate name for the short descriptions of each validation step). Sure, you could customize the email yourself with the <code>msg_header</code>, <code>msg_body</code>, and <code>msg_footer</code> args but, now, you might not have a compulsion to do so.</p>
+</div>
+<div id="wrapping-up" class="section level2">
+<h2>Wrapping Up</h2>
+<p>I hope this gives some insight into what <a href="https://rich-iannone.github.io/pointblank/"><strong>pointblank</strong></a> is all about and where its development is headed. Aside from these sizable improvements and new features, there were also plenty of bugfixes and smaller quality-of-life changes that made it into this release. As ever, I hope you get a chance to try it out on your own data.</p>
+</div>
+</div>
+<!-- Start French Section -->
+<div id="French" class="tabcontent">
+<p><img src="/post/2020-06-24-pointblank-0-4_files/pointblank_v0_4.png" /></p>
+<p>Le package <a href="https://rich-iannone.github.io/pointblank/"><strong>pointblank</strong></a> est maintenant à la version 0.4 et regorge de bonbons. Il y a de nouvelles fonctions qui nous permettent de faire des choses vraiment intéressantes avec la validation des données. Certaines des fonctions existantes ont acquis de nouvelles superpuissances. La documentation? Mieux que jamais! Ils ont été entièrement révisés et il existe également de nombreux exemples faciles à utiliser. Vous pouvez installer <strong>pointblank</strong> 0.4 de CRAN avec:</p>
+<pre class="r"><code>install.packages(&quot;pointblank&quot;)</code></pre>
+<p>Avec la dernière version de ** pointblank **, l’objectif était d’activer deux workflows de validation de données importants, mais assez distincts, à l’aide d’un ensemble commun de fonctions d’étape de validation. Jetons un autre regard sur la justification de ceux-ci, qui étaient:</p>
+<ol style="list-style-type: decimal">
+<li>rapports sur la qualité des données</li>
+<li>validation des données basée sur le pipeline</li>
+</ol>
+<p>Pourquoi le premier point est-il si important? Si vous traitez avec des données, et je suis sûr que vous l’êtes, vous devez vraiment comprendre et maîtriser la qualité des données. Les données sont-elles bonnes? Est-il mauvais? Quelles parties sont bonnes ou mauvaises? Les mauvaises parties sont-elles vraiment mauvaises? Pouvons-nous comprendre ce qui le rend mauvais? (Je suppose simplement que c’est mauvais.) Beaucoup de questions, et nous pouvons y répondre, tant que nous avons un processus. Ce que j’espère, c’est que <strong>pointblank</strong> est assez bon pour tout cela.</p>
+<p><img src="/post/2020-06-24-pointblank-0-4_files/data_quality_workflow.png" /></p>
+<p>Le deuxième flux de travail est également important, mais il est vraiment différent du premier. Vous devez vérifier vos données avant de poursuivre leur progression dans un pipeline. Peut-être que les données d’entrée (rigoureusement vérifiées et nettoyées, grâce aux rapports sur la qualité des données) sont très bien, mais qu’en est-il des données transformées dans un pipeline? Allons! Il faut le vérifier et vous le savez! Vous pourriez avoir de graves problèmes si vous ignorez tout cela. Alors faites-le! Simplement fais-le!</p>
+<p>Quoi qu’il en soit, ce sont les principaux workflows. Il y a de nouvelles choses qui permettent de nouvelles façons d’utiliser <strong>pointblank</strong>. C’est assez excitant!</p>
+<div id="expectation-fonctions" class="section level2">
+<h2><em>Expectation</em> fonctions</h2>
+<p>Il existe désormais 24 fonctions <em>expectation</em> (par exemple, <code>expect_col_exists()</code>, <code>expect_rows_distinct()</code>, <code>expect_col_schema_match()</code>, etc.) en complément des 24 fonctions de validation. Tous ces éléments peuvent être utilisés pour <strong>testthat</strong> tests de données tabulaires avec une interface simplifiée qui expose un seuil de défaillance facile à utiliser (par défaut à <code>1</code>). Explorons cela à travers des exemples. Nous utiliserons l’ensemble de données <code>small_table</code> inclus dans <strong>pointblank</strong>.</p>
+<pre class="r"><code>small_table</code></pre>
+<pre><code>#&gt; # A tibble: 13 x 8
+#&gt;    date_time           date           a b             c      d e     f    
+#&gt;    &lt;dttm&gt;              &lt;date&gt;     &lt;int&gt; &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;lgl&gt; &lt;chr&gt;
+#&gt;  1 2016-01-04 11:00:00 2016-01-04     2 1-bcd-345     3  3423. TRUE  high 
+#&gt;  2 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low  
+#&gt;  3 2016-01-05 13:32:00 2016-01-05     6 8-kdg-938     3  2343. TRUE  high 
+#&gt;  4 2016-01-06 17:23:00 2016-01-06     2 5-jdo-903    NA  3892. FALSE mid  
+#&gt;  5 2016-01-09 12:36:00 2016-01-09     8 3-ldm-038     7   284. TRUE  low  
+#&gt;  6 2016-01-11 06:15:00 2016-01-11     4 2-dhe-923     4  3291. TRUE  mid  
+#&gt;  7 2016-01-15 18:46:00 2016-01-15     7 1-knw-093     3   843. TRUE  high 
+#&gt;  8 2016-01-17 11:27:00 2016-01-17     4 5-boe-639     2  1036. FALSE low  
+#&gt;  9 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&gt; 10 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&gt; 11 2016-01-26 20:07:00 2016-01-26     4 2-dmx-010     7   834. TRUE  low  
+#&gt; 12 2016-01-28 02:51:00 2016-01-28     2 7-dmx-010     8   108. FALSE low  
+#&gt; 13 2016-01-30 11:23:00 2016-01-30     1 3-dka-303    NA  2230. TRUE  high </code></pre>
+<pre class="r"><code># Avec le formulaire `expect_*()`, nous
+# effectue généralement une validation à la fois
+# (de la même manière que les tests fonctionnent)
+expect_col_vals_between(
+  small_table, vars(c), 1, 9,
+  na_pass = TRUE
+)</code></pre>
+<p>Cela ne renvoie rien. Rien du tout. C’est bien! Cela signifie que le test a fonctionné! Dans le cas où cela ne fonctionne pas, nous obtenons un message informatif:</p>
+<pre class="r"><code>expect_col_vals_between(
+  small_table, vars(c), 23, 34,
+  na_pass = TRUE
+)</code></pre>
+<pre><code>Error: Exceedance of failed test units where values in `c` should have been between `23` and `34`.
+The `expect_col_vals_between()` validation failed beyond the absolute threshold level (1).
+* failure level (11) &gt;= failure threshold (1) </code></pre>
+<p>Ces messages sont cohérents avec les messages d’erreur et d’avertissement qui s’affichent lors de l’utilisation de fonctions de validation directement sur les données (par exemple, <code>small_table %&gt;% expect_col_vals_between (...)</code>).</p>
+</div>
+<div id="test-fonctions" class="section level2">
+<h2><em>Test</em> fonctions</h2>
+<p>En plus de l’ensemble de fonctions <code>expect_*()</code>, il existe désormais 24 <em>fonctions test</em> (par exemple, <code>test_col_exists()</code>, <code>test_rows_distinct()</code>, <code>test_col_schema_match()</code>, etc.) pour compléter 24 fonctions de validation. Ces fonctions renvoient une valeur logique: <code>TRUE</code> si le seuil de défaillance (ayant une valeur par défaut de <code>1</code>) <em>n’est pas</em> dépassé, <code>FALSE</code> sinon. Ces fonctions <code>test_*()</code> utilisent la même interface simplifiée que les fonctions <code>expect_*()</code>.</p>
+<pre class="r"><code># Avec le formulaire `test_*()`, nous
+# devrions obtenir un valeur TRUE ou FALSE
+# unique qui nous est retournée
+test_col_vals_between(
+  small_table, vars(c), 1, 9,
+  na_pass = TRUE
+)</code></pre>
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div id="col_vals_expr-expect_col_vals_expr-et-test_col_vals_expr" class="section level2">
+<h2><code>col_vals_expr()</code>, <code>expect_col_vals_expr()</code> et <code>test_col_vals_expr()</code></h2>
+<p>Si vous voulez juste une expression simple pour votre validation, la fonction <code>col_vals_expr()</code> (et les variantes <em>expectation</em> et <em>test</em>) pourrait être ce dont vous avez besoin. Les fonctions <strong>dplyr</strong> <code>expr()</code>, <code>case_when()</code> et <code>between()</code> sont maintenant réexportées dans <strong>pointblank</strong> pour une accessibilité plus facile ici. Ils fonctionnent à merveille avec les nouvelles fonctions. Voici un exemple:</p>
+<pre class="r"><code># Utilisons une p&#39;tit table pour tester
+tbl &lt;-
+  dplyr::tibble(
+    a = c(1, 2, 1, 7, 8, 6),
+    b = c(0, 0, 0, 1, 1, 1),
+    c = c(0.5, 0.3, 0.8, 1.4, 1.9, 1.2),
+  )
+  
+tbl</code></pre>
+<pre><code>#&gt; # A tibble: 6 x 3
+#&gt;       a     b     c
+#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1     1     0   0.5
+#&gt; 2     2     0   0.3
+#&gt; 3     1     0   0.8
+#&gt; 4     7     1   1.4
+#&gt; 5     8     1   1.9
+#&gt; 6     6     1   1.2</code></pre>
+<pre class="r"><code># Testez les valeurs de la colonne `a`
+# sont de type entier en utilisant le
+# module R opérateur et attend `0`
+test_col_vals_expr(tbl, ~ a %% 1 == 0)</code></pre>
+<pre><code>[1] TRUE</code></pre>
+<pre><code># Nous pouvons faire des choses plus
+# complexes en profitant du `case_when()`
+# et `between()` fonctions (disponibles
+# à utiliser dans le package pointblank)
+tbl %&gt;%
+  test_col_vals_expr(~ case_when(
+    b == 0 ~ a %&gt;% between(0, 5) &amp; c &lt; 1,
+    b == 1 ~ a &gt; 5 &amp; c &gt;= 1
+  ))</code></pre>
+<pre><code>[1] TRUE</code></pre>
+<p>Si l’évaluation de l’expression ne fonctionne pas (par exemple, la colonne <code>d</code> inexistante a été utilisée ci-dessus), vous obtiendrez une valeur <code>NA</code>. Si vous utilisez un agent, le rapport montrera que l’évaluation a échoué (recherchez l’explosion dans la colonne <code>EVAL</code>). C’est la bombe!</p>
+</div>
+<div id="nouvelles-fonctionnalités-r-markdown" class="section level2">
+<h2>Nouvelles fonctionnalités <strong>R Markdown</strong></h2>
+<p>Une nouvelle fonctionnalité de validation R Markdown permet d’effectuer des tests de validation dans des blocs de code de validation spécialisés où l’option <code>validate = TRUE</code> est définie. Voici une animation qui montre comment cela fonctionne:</p>
+<p><img src="/post/2020-06-24-pointblank-0-4_files/pointblank_rmarkdown.png" /></p>
+<p>Il existe un nouveau template R Markdown pour cela, appelé «Pointblank Validation».</p>
+<p>L’utilisation de <strong>pointblank</strong> dans un workflow <strong>R Markdown</strong> est activée par défaut une fois <strong>pointblank</strong> chargée. La nouvelle fonction <code>validate_rmd()</code> offre la possibilité de définir des options de journalisation.</p>
+</div>
+<div id="le-rapport-dagent" class="section level2">
+<h2>Le rapport d’<strong>agent</strong></h2>
+<p>L’apparence du rapport d’agent est désormais bien meilleure. Il a gagné de nouvelles fonctionnalités:</p>
+<ol style="list-style-type: decimal">
+<li>les extraits de données pour les lignes défaillantes (lors des étapes de validation basées sur les lignes) peuvent être téléchargés au format CSV via les nouveaux boutons qui apparaissent dans la colonne <code>EXT</code></li>
+<li>il existe des info-bulles utiles sur la plupart des champs du tableau (par exemple, survoler les éléments dans <code>STEP</code> affichera le résumé, les icônes <code>TBL</code> décriront si des conditions préalables ont été appliquées au tableau avant l’interrogation, etc.), et</li>
+<li>il y a des améliorations d’impression dans les colonnes <code>COLUMNS</code> et <code>VALUES</code> (par exemple, les colonnes du tableau sont distinguées des valeurs littérales).</li>
+</ol>
+<p>Voici un diagramme utile:</p>
+<p><img src="/post/2020-06-24-pointblank-0-4_files/agent_report.png" /></p>
+<p>Ce rapport est super important. Attendez-vous à d’autres améliorations dans un avenir proche.</p>
+</div>
+<div id="améliorations-avec-scan_data" class="section level2">
+<h2>Améliorations avec <code>scan_data()</code></h2>
+<p>Au cas où vous ne l’auriez pas vu, cette fonction génère un rapport HTML qui parcourt les données de la table d’entrée. C’est une bonne chose à utiliser avant d’appeler un <strong>agent</strong> pour valider les données. Avec cette fonction, nous pouvons maintenant rapidement comprendre les données avec un certain niveau de précision. La sortie du rapport contient plusieurs sections pour rendre tout plus digestible, et ce sont:</p>
+<ol style="list-style-type: decimal">
+<li>Aperçu: dimensions de la table, nombre de lignes en double, types de colonnes et informations de reproductibilité</li>
+<li>Variables: un résumé pour chaque variable du tableau et d’autres statistiques et résumés selon le type de variable</li>
+<li>Interactions: un graphique matriciel qui montre les interactions entre les variables</li>
+<li>Corrélations: un ensemble de graphiques matriciels de corrélation pour les variables numériques</li>
+<li>Valeurs manquantes: une figure récapitulative qui montre le degré de disparité entre les variables, et</li>
+<li>Exemple: un tableau qui fournit les lignes de tête et de queue de l’ensemble de données</li>
+</ol>
+<p><img src="/post/2020-06-24-pointblank-0-4_files/table_scan.png" /></p>
+<p>C’est bon! Essayez-le avec votre jeu de données préféré. J’ai créé quelques exemples, dans différentes langues même, dans <strong>RPubs</strong>:</p>
+<p><a href="https://rpubs.com/rich_i/pointblank_storms_english"><img src="https://img.shields.io/static/v1?label=Table%20Scan&amp;message=English&amp;color=blue" alt="Table Scan in English" /></a>
+<a href="https://rpubs.com/rich_i/pointblank_storms_french"><img src="https://img.shields.io/static/v1?label=Table%20Scan&amp;message=French&amp;color=blue" alt="Table Scan in French" /></a>
+<a href="https://rpubs.com/rich_i/pointblank_storms_german"><img src="https://img.shields.io/static/v1?label=Table%20Scan&amp;message=German&amp;color=blue" alt="Table Scan in German" /></a>
+<a href="https://rpubs.com/rich_i/pointblank_storms_italian"><img src="https://img.shields.io/static/v1?label=Table%20Scan&amp;message=Italian&amp;color=blue" alt="Table Scan in Italian" /></a>
+<a href="https://rpubs.com/rich_i/pointblank_storms_spanish"><img src="https://img.shields.io/static/v1?label=Table%20Scan&amp;message=Spanish&amp;color=blue" alt="Table Scan in Spanish" /></a></p>
+<p>Tous ces éléments font partie de l’ensemble de données <code>dplyr::storms</code>. Mais à propos des tables de base de données? C’est l’amélioration cette fois-ci! Vous pouvez maintenant utiliser <code>scan_data()</code> pour analyser certaines tables de base de données. Voici deux nouveaux exemples utilisant la table <code>full_region</code> de la base de données <strong>Rfam</strong> (hébergée publiquement sur “mysql-rfam-public.ebi.ac.uk”) et la table <code>assembly</code> de <strong>Ensembl</strong> base de données (hébergée publiquement sur “ensembldb.ensembl.org”).</p>
+<p><a href="https://rpubs.com/rich_i/rfam_full_region"><img src="https://img.shields.io/static/v1?label=Table%20Scan&amp;message=Rfam:%20full_region&amp;color=green" alt="Rfam: full_region" /></a>
+<a href="https://rpubs.com/rich_i/ensembl_assembly"><img src="https://img.shields.io/static/v1?label=Table%20Scan&amp;message=Ensembl:%20assembly&amp;color=green" alt="Ensembl: assembly" /></a></p>
+</div>
+<div id="courriel-jaime-le-way-quà-hang" class="section level2">
+<h2>Courriel: J’aime le way qu’à hang</h2>
+<p>Vous pouvez envoyer un e-mail HTML avec le rapport de l’agent à l’intérieur (grâce à l’aide du package <strong>blastula</strong>). Il n’y a apparemment aucune limite à la personnalisation du corps du message, car la fonction <code>email_blast()</code> a un accès complet aux informations de l’agent (consultez l’article d’aide à <code>?email_blast</code> pour tous les détails à ce sujet). Cependant, parfois, vous voulez un e-mail par défaut assez agréable qui ne prendra pas beaucoup de travail à envoyer. Dans cette version, l’apparence par défaut de l’e-mail est beaucoup plus facile pour les yeux.</p>
+<p><img src="/post/2020-06-24-pointblank-0-4_files/pointblank_email.png" /></p>
+<p>Il utilise une petite version du rapport d’agent (575 px de large) qui a toujours des info-bulles qui fournissent des <em>briefs</em> (un nom malheureux en anglais pour les courtes descriptions de chaque étape de validation). Bien sûr, vous pouvez personnaliser l’e-mail avec les arguments <code>msg_header</code>, <code>msg_body</code> et <code>msg_footer</code> mais, maintenant, vous n’avez peut-être pas la contrainte de le faire.</p>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>J’espère que cela vous donnera un aperçu de ce qu’est <a href="https://rich-iannone.github.io/pointblank/"><strong>pointblank</strong></a> et de son évolution. Mis à part ces améliorations considérables et ces nouvelles fonctionnalités, de nombreuses corrections de bugs et de petits changements de qualité de vie ont également été intégrés à cette version. Comme toujours, j’espère que vous aurez l’occasion de l’essayer sur vos propres données.</p>
+</div>
+</div>
+<!-- Start German Section -->
+<div id="German" class="tabcontent">
+<p><img src="/post/2020-06-24-pointblank-0-4_files/pointblank_v0_4.png" /></p>
+<p>Das <a href="https://rich-iannone.github.io/pointblank/"><strong>pointblank</strong>-Paket</a> ist jetzt in Version 0.4 und voller Goodies. Es gibt neue Funktionen, mit denen wir wirklich interessante Dinge mit der Datenvalidierung tun können. Einige der bestehenden Funktionen erhielten neue Superkräfte. Die Dokumentation? Besser denn je! Sie wurden komplett überarbeitet und es gibt auch viele benutzerfreundliche Beispiele. Sie können <strong>pointblank</strong> 0.4 von CRAN installieren mit:</p>
+<pre class="r"><code>install.packages(&quot;pointblank&quot;)</code></pre>
+<p>Mit der letzten Version von <strong>pointblank</strong> bestand das Ziel darin, zwei wichtige, jedoch recht unterschiedliche Datenvalidierungs-Workflows mithilfe eines gemeinsamen Satzes von Validierungsschrittfunktionen zu ermöglichen. Lassen Sie uns noch einen Blick auf die Gründe für diejenigen werfen, die waren:</p>
+<ol style="list-style-type: decimal">
+<li>Berichterstattung zur Datenqualität</li>
+<li>Pipeline-basierte Datenvalidierung2. pipeline-based data validation</li>
+</ol>
+<p>Warum ist es für den ersten so wichtig? Wenn Sie mit Daten zu tun haben und ich bin sicher, dass Sie es sind, müssen Sie die Datenqualität wirklich verstehen und auf den neuesten Stand bringen. Sind die Daten gut? Ist es schlimm? Welche Teile sind gut oder schlecht? Sind die schlechten Teile <em>wirklich</em> schlecht? Können wir verstehen, was es schlecht macht? (Ich gehe nur davon aus, dass es schlecht ist.) Viele Fragen, und wir können sie beantworten, solange wir einen Prozess haben. Was ich hoffe ist, dass <strong>pointblank</strong> der Aufgabe gewachsen ist.</p>
+<p><img src="/post/2020-06-24-pointblank-0-4_files/data_quality_workflow.png" /></p>
+<p>Der zweite Workflow ist ebenfalls wichtig, unterscheidet sich jedoch erheblich vom ersten. Die Idee ist, dass Sie Ihre Daten überprüfen müssen, bevor sie weiter unten in einer Pipeline fortgesetzt werden. Vielleicht sind die Eingabedaten (dank Datenqualitätsberichterstattung streng geprüft und bereinigt) in Ordnung, aber was ist mit den transformierten Daten in einer Pipeline? Wir sollten auch diese Daten überprüfen.</p>
+<p>Dies sind die Hauptworkflows, aber es gibt jetzt einige neue Möglichkeiten, <strong>pointblank</strong> zu verwenden.</p>
+<div id="expectation-funktionen" class="section level2">
+<h2><em>Expectation</em> Funktionen</h2>
+<p>Es gibt jetzt 24 <em>Expectation</em>-Funktionen (z. B. <code>expect_col_exists()</code>, <code>expect_rows_distinct()</code>, <code>expect_col_schema_match()</code> usw.) als Ergänzungen der 24 Validierungsfunktionen. All dies kann für <strong>testthat</strong> Testen von Tabellendaten mit einer vereinfachten Oberfläche verwendet werden, die einen benutzerfreundlichen Fehlerschwellenwert (standardmäßig <code>1</code>) anzeigt. Wir werden einige Beispiele mit dem in <strong>pointblank</strong> enthaltenen <code>small_table</code>-Dataset durchgehen.</p>
+<pre class="r"><code>small_table</code></pre>
+<pre><code>#&gt; # A tibble: 13 x 8
+#&gt;    date_time           date           a b             c      d e     f    
+#&gt;    &lt;dttm&gt;              &lt;date&gt;     &lt;int&gt; &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;lgl&gt; &lt;chr&gt;
+#&gt;  1 2016-01-04 11:00:00 2016-01-04     2 1-bcd-345     3  3423. TRUE  high 
+#&gt;  2 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low  
+#&gt;  3 2016-01-05 13:32:00 2016-01-05     6 8-kdg-938     3  2343. TRUE  high 
+#&gt;  4 2016-01-06 17:23:00 2016-01-06     2 5-jdo-903    NA  3892. FALSE mid  
+#&gt;  5 2016-01-09 12:36:00 2016-01-09     8 3-ldm-038     7   284. TRUE  low  
+#&gt;  6 2016-01-11 06:15:00 2016-01-11     4 2-dhe-923     4  3291. TRUE  mid  
+#&gt;  7 2016-01-15 18:46:00 2016-01-15     7 1-knw-093     3   843. TRUE  high 
+#&gt;  8 2016-01-17 11:27:00 2016-01-17     4 5-boe-639     2  1036. FALSE low  
+#&gt;  9 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&gt; 10 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&gt; 11 2016-01-26 20:07:00 2016-01-26     4 2-dmx-010     7   834. TRUE  low  
+#&gt; 12 2016-01-28 02:51:00 2016-01-28     2 7-dmx-010     8   108. FALSE low  
+#&gt; 13 2016-01-30 11:23:00 2016-01-30     1 3-dka-303    NA  2230. TRUE  high </code></pre>
+<pre class="r"><code># Mit dem Formular `expect_*()` würden
+# wir Führen Sie normalerweise jeweils
+# eine Validierung durch (genauso wie
+# testthat Tests funktionieren)
+expect_col_vals_between(
+  small_table, vars(c), 1, 9,
+  na_pass = TRUE
+)</code></pre>
+<p>Dies gibt absolut nichts zurück: eine Leere. Dies bedeutet, dass der Test funktioniert hat. Falls es nicht funktioniert, erhalten wir eine informative Nachricht:</p>
+<pre class="r"><code>expect_col_vals_between(
+  small_table, vars(c), 23, 34,
+  na_pass = TRUE
+)</code></pre>
+<pre><code>Error: Exceedance of failed test units where values in `c` should have been between `23` and `34`.
+The `expect_col_vals_between()` validation failed beyond the absolute threshold level (1).
+* failure level (11) &gt;= failure threshold (1) </code></pre>
+<p>Übrigens stimmen diese Meldungen mit den Fehler- und Warnmeldungen überein, die angezeigt werden, wenn Validierungsfunktionen direkt für Daten verwendet werden (z. B. <code>small_table %&gt;% expected_col_vals_between (...)</code>).</p>
+</div>
+<div id="test-funktionen" class="section level2">
+<h2><em>Test</em> Funktionen</h2>
+<p>Abgesehen von dem Funktionssatz <code>expect_*()</code> gibt es jetzt 24 <em>test</em>-Funktionen (z. B. <code>test_col_exists()</code>, <code>test_rows_distinct()</code>, <code>test_col_schema_match()</code> usw.), um die 24 weiter zu ergänzen Validierungsfunktionen. Diese Funktionen geben einen logischen Wert zurück: <code>TRUE</code>, wenn der Fehlerschwellenwert (mit einem Standardwert von 1) <em>nicht</em> überschritten wird, andernfalls <code>FALSE</code>. Diese <code>test_*()</code> Funktionen verwenden dieselbe vereinfachte Schnittstelle wie die <code>expect_*()</code> Funktionen.</p>
+<pre class="r"><code># Mit dem Formular `test_*()` sollten wir einen
+# einzelnen TRUE- oder FALSE-Wert erhalten, der
+# an uns zurückgegeben wird
+test_col_vals_between(
+  small_table, vars(c), 1, 9,
+  na_pass = TRUE
+)</code></pre>
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div id="col_vals_expr-expect_col_vals_expr-und-test_col_vals_expr" class="section level2">
+<h2><code>col_vals_expr()</code>, <code>expect_col_vals_expr()</code>, und <code>test_col_vals_expr()</code></h2>
+<p>Wenn Sie für Ihre Validierung einen einfachen Ausdruck benötigen, könnte die Funktion <code>col_vals_expr()</code> (und die Varianten <em>expectation</em> und <em>test</em>) genau das sein, was Sie benötigen. Die Funktionen <strong>dplyr</strong> <code>expr()</code>, <code>case_when()</code> und <code>between()</code> werden jetzt in <strong>pointblank</strong> erneut exportiert, um den Zugriff hier zu erleichtern, da sie mit den neuen Funktionen außerordentlich gut funktionieren. Hier ist ein Beispiel:</p>
+<pre class="r"><code># Lassen Sie uns hier eine winzige Tabelle
+# zum Testen verwenden
+tbl &lt;-
+  dplyr::tibble(
+    a = c(1, 2, 1, 7, 8, 6),
+    b = c(0, 0, 0, 1, 1, 1),
+    c = c(0.5, 0.3, 0.8, 1.4, 1.9, 1.2),
+  )
+  
+tbl</code></pre>
+<pre><code>#&gt; # A tibble: 6 x 3
+#&gt;       a     b     c
+#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1     1     0   0.5
+#&gt; 2     2     0   0.3
+#&gt; 3     1     0   0.8
+#&gt; 4     7     1   1.4
+#&gt; 5     8     1   1.9
+#&gt; 6     6     1   1.2</code></pre>
+<pre class="r"><code># Testen Sie, ob die Werte in Spalte `a`
+# ganzzahlig sind, indem Sie den 
+# R-Modulo-Operator verwenden und `0` erwarten
+test_col_vals_expr(tbl, ~ a %% 1 == 0)</code></pre>
+<pre><code>[1] TRUE</code></pre>
+<pre><code># Wir können komplexere Dinge tun, indem
+# wir die Funktionen `case_when()` und
+# `between()` nutzen (verfügbar für die
+# Verwendung im pointblank-Paket).
+tbl %&gt;%
+  test_col_vals_expr(~ case_when(
+    b == 0 ~ a %&gt;% between(0, 5) &amp; c &lt; 1,
+    b == 1 ~ a &gt; 5 &amp; c &gt;= 1
+  ))</code></pre>
+<pre><code>[1] TRUE</code></pre>
+<p>Sollte die Auswertung des Ausdrucks nicht funktionieren (z. B. wurde oben die nicht vorhandene Spalte <code>d</code> verwendet), wird ein <code>NA</code>-Wert zurückgegeben. Wenn Sie einen Agenten verwenden, zeigt der Bericht, dass die Auswertung nicht erfolgreich war (suchen Sie nach der Explosion in der Spalte <code>EVAL</code>).</p>
+</div>
+<div id="new-r-markdown-features-1" class="section level2">
+<h2>New <strong>R Markdown</strong> features</h2>
+<p>Eine neue R Markdown-Validierungsfunktion ermöglicht Validierungstests in speziellen Validierungscode-Blöcken, in denen die Option <code>validate = TRUE</code> festgelegt ist. Die Verwendung von Pointblank-Validierungsfunktionen für Daten in diesen Codeblöcken zeigt einen Gesamtfehler an, wenn der Stoppschwellenwert irgendwo überschritten wird. Alle Fehler werden im Validierungscode-Block gemeldet, nachdem das Dokument in HTML gerendert wurde. Hier ist eine Animation:</p>
+<p><img src="/post/2020-06-24-pointblank-0-4_files/pointblank_rmarkdown.png" /></p>
+<p>Hierfür gibt es eine neue R-Markdown-template namens “Pointblank Validation”.</p>
+<p>Using <strong>pointblank</strong> in an <strong>R Markdown</strong> workflow is enabled by default once the pointblank library is loaded. While the framework for such testing is set up by default, the new <code>validate_rmd()</code> function offers an opportunity to set UI and logging options.</p>
+<p>Die Verwendung von <strong>pointblank</strong> in einem <strong>R Markdown</strong>-Workflow ist standardmäßig aktiviert, sobald die pointblank-Bibliothek geladen ist. Während das Framework für solche Tests standardmäßig eingerichtet ist, bietet die neue Funktion <code>validate_rmd()</code> die Möglichkeit, Benutzeroberflächen- und Protokollierungsoptionen festzulegen.</p>
+</div>
+<div id="der-agent-bericht" class="section level2">
+<h2>Der <strong>agent</strong> Bericht</h2>
+<p>Das Erscheinungsbild des Agentenberichts wurde erheblich verbessert und verfügt nun über einige neue Funktionen:</p>
+<ol style="list-style-type: decimal">
+<li>Datenextrakte für fehlerhafte Zeilen (in zeilenbasierten Validierungsschritten) können über die neuen Schaltflächen in der Spalte <code>EXT</code> als CSVs heruntergeladen werden</li>
+<li>In den meisten Feldern der Tabelle gibt es nützliche QuickInfos (z. B. wenn Sie den Mauszeiger über Elemente in <code>STEP</code> halten, wird die Kurzdarstellung angezeigt, <code>TBL</code>-Symbole beschreiben, ob vor der Abfrage Vorbedingungen auf die Tabelle angewendet wurden usw.)</li>
+<li>Es gibt Druckverbesserungen in den Spalten <code>COLUMNS</code> und <code>VALUES</code> (z. B. werden Tabellenspalten von Literalwerten unterschieden).</li>
+</ol>
+<p>Hier ist ein Diagramm:</p>
+<p><img src="/post/2020-06-24-pointblank-0-4_files/agent_report.png" /></p>
+<p>Das ist alles sehr wichtig. Erwarten Sie weitere Verbesserungen in einer kommenden Version.</p>
+</div>
+<div id="verbesserungen-an-der-funktion-scan_data" class="section level2">
+<h2>Verbesserungen an der Funktion <code>scan_data()</code></h2>
+<p>Diese Funktion <code>scan_data()</code> generiert einen HTML-Bericht, in dem die Daten der Eingabetabelle erläutert werden. Es ist gut zu verwenden, bevor Sie die Daten validieren. Mit dieser Funktion können wir die Daten jetzt schnell und präzise verstehen. Die Berichtsausgabe enthält mehrere Abschnitte, um alles besser verdaulich zu machen. Diese sind:</p>
+<ol style="list-style-type: decimal">
+<li>Übersicht: Tabellenabmessungen, doppelte Zeilenanzahl, Spaltentypen und Informationen zur Reproduzierbarkeit</li>
+<li>Variablen: Eine Zusammenfassung für jede Tabellenvariable sowie weitere Statistiken und Zusammenfassungen je nach Variablentyp</li>
+<li>Interaktionen: Ein Matrixdiagramm, das Interaktionen zwischen Variablen zeigt</li>
+<li>Korrelationen: Eine Reihe von Korrelationsmatrixdiagrammen für numerische Variablen</li>
+<li>Fehlende Werte: Eine zusammenfassende Abbildung, die den Grad des Fehlens zwischen Variablen und zeigt</li>
+<li>Beispiel: Eine Tabelle, die die Kopf- und Endzeilen des Datensatzes enthält</li>
+</ol>
+<p><img src="/post/2020-06-24-pointblank-0-4_files/table_scan.png" /></p>
+<p>Es ist prima. Probieren Sie es mit Ihrem Lieblingsdatensatz aus. Ich habe einige Beispiele in verschiedenen Sprachen in <strong>RPubs</strong> erstellt:</p>
+<p><a href="https://rpubs.com/rich_i/pointblank_storms_english"><img src="https://img.shields.io/static/v1?label=Table%20Scan&amp;message=English&amp;color=blue" alt="Table Scan in English" /></a>
+<a href="https://rpubs.com/rich_i/pointblank_storms_french"><img src="https://img.shields.io/static/v1?label=Table%20Scan&amp;message=French&amp;color=blue" alt="Table Scan in French" /></a>
+<a href="https://rpubs.com/rich_i/pointblank_storms_german"><img src="https://img.shields.io/static/v1?label=Table%20Scan&amp;message=German&amp;color=blue" alt="Table Scan in German" /></a>
+<a href="https://rpubs.com/rich_i/pointblank_storms_italian"><img src="https://img.shields.io/static/v1?label=Table%20Scan&amp;message=Italian&amp;color=blue" alt="Table Scan in Italian" /></a>
+<a href="https://rpubs.com/rich_i/pointblank_storms_spanish"><img src="https://img.shields.io/static/v1?label=Table%20Scan&amp;message=Spanish&amp;color=blue" alt="Table Scan in Spanish" /></a></p>
+<p>Alle diese Beispiele verwenden den Datensatz <code>dplyr::storms</code>. Datenbanktabellen? Das ist die neue Verbesserung. Sie können jetzt <code>scan_data()</code> für Datenbanktabellen verwenden. Hier sind zwei neue Beispiele, die die Tabelle <code>full_region</code> der <strong>Rfam</strong>-Datenbank (öffentlich gehostet unter “mysql-rfam-public.ebi.ac.uk”) und die <code>assembly</code>-Tabelle des <strong>Ensembl</strong> verwenden. Datenbank (öffentlich gehostet unter “ensembldb.ensembl.org”).</p>
+<p><a href="https://rpubs.com/rich_i/rfam_full_region"><img src="https://img.shields.io/static/v1?label=Table%20Scan&amp;message=Rfam:%20full_region&amp;color=green" alt="Rfam: full_region" /></a>
+<a href="https://rpubs.com/rich_i/ensembl_assembly"><img src="https://img.shields.io/static/v1?label=Table%20Scan&amp;message=Ensembl:%20assembly&amp;color=green" alt="Ensembl: assembly" /></a></p>
+</div>
+<div id="besseres-erscheinungsbild-für-e-mail" class="section level2">
+<h2>Besseres Erscheinungsbild für E-Mail</h2>
+<p>Sie können eine HTML-E-Mail mit dem Bericht des Agenten senden. Dies wird durch das <strong>blastula</strong>-Paket unterstützt. Der Anpassbarkeit des Nachrichtentexts sind keine wirklichen Grenzen gesetzt, da die Funktion <code>email_blast()</code> nach der Abfrage vollen Zugriff auf Informationen hat. Weitere Informationen finden Sie im Hilfeartikel unter <code>?email_blast</code>. Manchmal möchten Sie jedoch eine gute Standard-E-Mail, deren Erstellung nicht viel Arbeit erfordert. In dieser Version sieht das Standard-Erscheinungsbild der E-Mail viel besser aus.</p>
+<p><img src="/post/2020-06-24-pointblank-0-4_files/pointblank_email.png" /></p>
+<p>Hierbei wird eine kleine Version des Agentenberichts (575 Pixel breit) verwendet, die noch QuickInfos enthält, die <em>briefs</em> enthalten (ein schlecht gewählter englischer Name für die Kurzbeschreibungen der einzelnen Validierungsschritte). Sie können die E-Mail selbst mit den Argumenten <code>msg_header</code>, <code>msg_body</code> und <code>msg_footer</code> anpassen. Möglicherweise möchten Sie dies jetzt jedoch nicht tun.</p>
+</div>
+<div id="abschließend" class="section level2">
+<h2>Abschließend</h2>
+<p>Ich hoffe, dies gibt einen Einblick in das, worum es bei <a href="https://rich-iannone.github.io/pointblank/"><strong>pointblank</strong></a> geht und wohin seine Entwicklung geht. Abgesehen von diesen beträchtlichen Verbesserungen und neuen Funktionen gab es auch viele Bugfixes und kleinere Änderungen. Ich hoffe, Sie haben die Möglichkeit, es an Ihren eigenen Daten auszuprobieren.</p>
+</div>
+</div>
+<script>
+function openLang(evt, cityName) {
+var i, tabcontent, tablinks;
+tabcontent = document.getElementsByClassName("tabcontent");
+for (i = 0; i < tabcontent.length; i++) {
+tabcontent[i].style.display = "none";
+}
+tablinks = document.getElementsByClassName("tablinks");
+for (i = 0; i < tablinks.length; i++) {
+tablinks[i].className = tablinks[i].className.replace(" active", "");
+}
+document.getElementById(cityName).style.display = "block";
+evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
+
+    </div>
+
+    
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/r-packages/">R Packages</a>
+  
+</div>
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=pointblank%20v0.4&amp;body=/post/pointblank-0-4/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/post/pointblank-0-4/&amp;text=pointblank%20v0.4" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/post/pointblank-0-4/&amp;title=pointblank%20v0.4" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/post/pointblank-0-4/&amp;title=pointblank%20v0.4" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://reddit.com/submit?url=/post/pointblank-0-4/&amp;title=pointblank%20v0.4" target="_blank" rel="noopener" class="share-btn-reddit">
+          <i class="fab fa-reddit-alien"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://pinterest.com/pin/create/link/?url=/post/pointblank-0-4/&amp;description=pointblank%20v0.4" target="_blank" rel="noopener" class="share-btn-pinterest">
+          <i class="fab fa-pinterest"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <img class="portrait mr-3" src="/authors/admin/avatar_hu7fba9da1679ce4a56c592454604cb9c1_170620_250x250_fill_q90_lanczos_center.jpg" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="/">Richard Iannone</a></h5>
+      <h6 class="card-subtitle">Software Engineer</h6>
+      <p class="card-text">I enjoy making things with R and showing people how to be successful with R.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.linkedin.com/in/richard-iannone-a5640017/" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/riannone" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/rich-iannone" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/post/pointblank-0-3/">pointblank v0.3</a></li>
+      
+      <li><a href="/post/blastula-0-3/">blastula v0.3</a></li>
+      
+      <li><a href="/projects/gt-pkg/">[R package] gt</a></li>
+      
+      <li><a href="/projects/blastula-pkg/">[R package] blastula</a></li>
+      
+      <li><a href="/projects/pointblank-pkg/">[R package] pointblank</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js" integrity="sha256-1zu+3BnLYV9LdiY85uXMzii3bdrkelyp37e0ZyTAQh0=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/r.min.js"></script>
+        
+      
+
+      
+      
+    
+
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.d6bd04fdad2ad213aa8111c5a3b72fc5.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms</a>
+    
+  </p>
+  
+
+  <p class="powered-by">
+    &copy; 2020 Richard Iannone &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -5,12 +5,519 @@
     <link>/post/</link>
       <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2020 Richard Iannone</copyright><lastBuildDate>Mon, 13 Jan 2020 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2020 Richard Iannone</copyright><lastBuildDate>Wed, 24 Jun 2020 00:00:00 +0000</lastBuildDate>
     <image>
       <url>/img/R_and_R_share.png</url>
       <title>Posts</title>
       <link>/post/</link>
     </image>
+    
+    <item>
+      <title>pointblank v0.4</title>
+      <link>/post/pointblank-0-4/</link>
+      <pubDate>Wed, 24 Jun 2020 00:00:00 +0000</pubDate>
+      <guid>/post/pointblank-0-4/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;html&gt;
+&lt;link rel=&#34;stylesheet&#34; href=&#34;/post/css/style.css&#34; /&gt;
+&lt;/html&gt;
+&lt;html&gt;
+&lt;div class=&#34;tab&#34;&gt;
+&lt;button class=&#34;tablinks&#34; onclick=&#34;openLang(event, &amp;#39;English&amp;#39;)&#34; id=&#34;defaultOpen&#34;&gt;
+English
+&lt;/button&gt;
+&lt;button class=&#34;tablinks&#34; onclick=&#34;openLang(event, &amp;#39;French&amp;#39;)&#34;&gt;
+French
+&lt;/button&gt;
+&lt;button class=&#34;tablinks&#34; onclick=&#34;openLang(event, &amp;#39;German&amp;#39;)&#34;&gt;
+German
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/html&gt;
+&lt;!-- Start English Section --&gt;
+&lt;div id=&#34;English&#34; class=&#34;tabcontent&#34;&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-06-24-pointblank-0-4_files/pointblank_v0_4.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The &lt;a href=&#34;https://rich-iannone.github.io/pointblank/&#34;&gt;&lt;strong&gt;pointblank&lt;/strong&gt;&lt;/a&gt; package is now at version 0.4 and is chock full of goodies. There are new functions that allow us to do really interesting things with data validation. Some of the existing functions gained new superpowers. The docs? Better than ever! They’ve been totally revised and there are plenty of easy-to-use examples too. You can install &lt;strong&gt;pointblank&lt;/strong&gt; 0.4 from CRAN with:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;install.packages(&amp;quot;pointblank&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;With the last iteration of &lt;strong&gt;pointblank&lt;/strong&gt; the goal was to enable two important, yet quite distinct, data validation workflows using a common set of validation step functions. Let’s have another look at the rationale for those, which were:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;data quality reporting&lt;/li&gt;
+&lt;li&gt;pipeline-based data validation&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;For the first one, why is it so important? If you are dealing with data, and I’m sure you are, you really need to understand and get on top of data quality. Is the data good? Is it bad? What parts are good or bad? Are the bad parts &lt;em&gt;really&lt;/em&gt; bad? Can we understand what’s making it bad? (I’m just assuming it’s bad.) Lots of questions, and we can get to answering them, so long as we have a process. What I’m hoping is that &lt;strong&gt;pointblank&lt;/strong&gt; is up to the task.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-06-24-pointblank-0-4_files/data_quality_workflow.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The second workflow is also important, but it’s really different than the first. The idea is that you need to check your data before it proceeds further down a pipeline. Perhaps the input data (rigorously checked and cleaned, thanks to data quality reporting) is just fine, but, what about the transformed data in a pipeline? We ought to check that data too.&lt;/p&gt;
+&lt;p&gt;Those are the main workflows but there are some new ways of using &lt;strong&gt;pointblank&lt;/strong&gt; now.&lt;/p&gt;
+&lt;div id=&#34;expectation-functions&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;&lt;em&gt;Expectation&lt;/em&gt; Functions&lt;/h2&gt;
+&lt;p&gt;There are now 24 &lt;em&gt;expectation&lt;/em&gt; functions (e.g., &lt;code&gt;expect_col_exists()&lt;/code&gt;, &lt;code&gt;expect_rows_distinct()&lt;/code&gt;, &lt;code&gt;expect_col_schema_match()&lt;/code&gt;, etc.) as complements to the 24 validation functions. All of these can be used for &lt;strong&gt;testthat&lt;/strong&gt; tests of tabular data. These new functions have a simplified interface that exposes an easy-to-use failure threshold (defaulting to &lt;code&gt;1&lt;/code&gt;). We’ll go through some examples with the &lt;code&gt;small_table&lt;/code&gt; dataset included in &lt;strong&gt;pointblank&lt;/strong&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;small_table&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;#&amp;gt; # A tibble: 13 x 8
+#&amp;gt;    date_time           date           a b             c      d e     f    
+#&amp;gt;    &amp;lt;dttm&amp;gt;              &amp;lt;date&amp;gt;     &amp;lt;int&amp;gt; &amp;lt;chr&amp;gt;     &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt; &amp;lt;lgl&amp;gt; &amp;lt;chr&amp;gt;
+#&amp;gt;  1 2016-01-04 11:00:00 2016-01-04     2 1-bcd-345     3  3423. TRUE  high 
+#&amp;gt;  2 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low  
+#&amp;gt;  3 2016-01-05 13:32:00 2016-01-05     6 8-kdg-938     3  2343. TRUE  high 
+#&amp;gt;  4 2016-01-06 17:23:00 2016-01-06     2 5-jdo-903    NA  3892. FALSE mid  
+#&amp;gt;  5 2016-01-09 12:36:00 2016-01-09     8 3-ldm-038     7   284. TRUE  low  
+#&amp;gt;  6 2016-01-11 06:15:00 2016-01-11     4 2-dhe-923     4  3291. TRUE  mid  
+#&amp;gt;  7 2016-01-15 18:46:00 2016-01-15     7 1-knw-093     3   843. TRUE  high 
+#&amp;gt;  8 2016-01-17 11:27:00 2016-01-17     4 5-boe-639     2  1036. FALSE low  
+#&amp;gt;  9 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&amp;gt; 10 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&amp;gt; 11 2016-01-26 20:07:00 2016-01-26     4 2-dmx-010     7   834. TRUE  low  
+#&amp;gt; 12 2016-01-28 02:51:00 2016-01-28     2 7-dmx-010     8   108. FALSE low  
+#&amp;gt; 13 2016-01-30 11:23:00 2016-01-30     1 3-dka-303    NA  2230. TRUE  high &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# With the `expect_*()` form, we would
+# typically perform one validation at a time
+# (the same way that testthat tests operate)
+expect_col_vals_between(
+  small_table, vars(c), 1, 9,
+  na_pass = TRUE
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This returns absolutely nothing, which means the test worked! In the case that it doesn’t work, we get an informative message:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;expect_col_vals_between(
+  small_table, vars(c), 23, 34,
+  na_pass = TRUE
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Error: Exceedance of failed test units where values in `c` should have been between `23` and `34`.
+The `expect_col_vals_between()` validation failed beyond the absolute threshold level (1).
+* failure level (11) &amp;gt;= failure threshold (1) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;By the way, these messages are consistent with the error and warning messages that are shown when using validation functions directly on data (e.g., &lt;code&gt;small_table %&amp;gt;% expect_col_vals_between(...)&lt;/code&gt;).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;test-functions&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;&lt;em&gt;Test&lt;/em&gt; Functions&lt;/h2&gt;
+&lt;p&gt;On top of the &lt;code&gt;expect_*()&lt;/code&gt; set of functions, there are now 24 &lt;em&gt;test&lt;/em&gt; functions (e.g., &lt;code&gt;test_col_exists()&lt;/code&gt;, &lt;code&gt;test_rows_distinct()&lt;/code&gt;, &lt;code&gt;test_col_schema_match()&lt;/code&gt;, etc.) to further complement the 24 validation functions. These functions return a logical value: &lt;code&gt;TRUE&lt;/code&gt; if the failure threshold (having a default of 1) &lt;em&gt;is not&lt;/em&gt; exceeded, &lt;code&gt;FALSE&lt;/code&gt; otherwise. These &lt;code&gt;test_*()&lt;/code&gt; functions use the same simplified interface of the &lt;code&gt;expect_*()&lt;/code&gt; functions.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# With the `test_*()` form, we should get a
+# single logical value returned to us
+test_col_vals_between(
+  small_table, vars(c), 1, 9,
+  na_pass = TRUE
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] TRUE&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;col_vals_expr-expect_col_vals_expr-and-test_col_vals_expr&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;&lt;code&gt;col_vals_expr()&lt;/code&gt;, &lt;code&gt;expect_col_vals_expr()&lt;/code&gt;, and &lt;code&gt;test_col_vals_expr()&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;For those times when you just want a DIY expression for your validation, the &lt;code&gt;col_vals_expr()&lt;/code&gt; function (and the &lt;em&gt;expectation&lt;/em&gt; and &lt;em&gt;test&lt;/em&gt; variants) could be what you need. The &lt;strong&gt;dplyr&lt;/strong&gt; &lt;code&gt;expr()&lt;/code&gt;, &lt;code&gt;case_when()&lt;/code&gt;, and &lt;code&gt;between()&lt;/code&gt; functions are now re-exported in &lt;strong&gt;pointblank&lt;/strong&gt; for easier accessibility here since they work exceedingly well with the new functions. Here’s an example:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Let&amp;#39;s use a tiny table for testing here
+tbl &amp;lt;-
+  dplyr::tibble(
+    a = c(1, 2, 1, 7, 8, 6),
+    b = c(0, 0, 0, 1, 1, 1),
+    c = c(0.5, 0.3, 0.8, 1.4, 1.9, 1.2),
+  )
+  
+tbl&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;#&amp;gt; # A tibble: 6 x 3
+#&amp;gt;       a     b     c
+#&amp;gt;   &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;
+#&amp;gt; 1     1     0   0.5
+#&amp;gt; 2     2     0   0.3
+#&amp;gt; 3     1     0   0.8
+#&amp;gt; 4     7     1   1.4
+#&amp;gt; 5     8     1   1.9
+#&amp;gt; 6     6     1   1.2&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Test that values in column `a`
+# are integer-like by using the R modulo
+# operator and expecting `0`
+test_col_vals_expr(tbl, ~ a %% 1 == 0)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] TRUE&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# We can do more complex things by
+# taking advantage of the `case_when()`
+# and `between()` functions (available
+# for use in the pointblank package) 
+tbl %&amp;gt;%
+  test_col_vals_expr(~ case_when(
+    b == 0 ~ a %&amp;gt;% between(0, 5) &amp;amp; c &amp;lt; 1,
+    b == 1 ~ a &amp;gt; 5 &amp;amp; c &amp;gt;= 1
+  ))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] TRUE&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Should the evaluation of the expression not work out (for example, the non-existent &lt;code&gt;d&lt;/code&gt; column was used in the above) you’ll get an &lt;code&gt;NA&lt;/code&gt; value returned. If using an agent, the report will show that the evaluation was unsuccessful (look for the explosion in the &lt;code&gt;EVAL&lt;/code&gt; column).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;new-r-markdown-features&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;New &lt;strong&gt;R Markdown&lt;/strong&gt; Features&lt;/h2&gt;
+&lt;p&gt;Almost forgot about this one! A new &lt;strong&gt;R Markdown&lt;/strong&gt; validation feature allows for validation testing within specialized validation code chunks where the &lt;code&gt;validate = TRUE&lt;/code&gt; option is set. Using pointblank validation functions on data in these marked code chunks will flag overall failure if the stop threshold is exceeded anywhere. All errors are reported in the validation code chunk after rendering the document to HTML, where green or red status buttons indicate whether all validations succeeded or failures occurred. But, better to show than to explain, here’s an animation:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-06-24-pointblank-0-4_files/pointblank_rmarkdown.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;There’s a very useful R Markdown template for this new &lt;strong&gt;R Markdown&lt;/strong&gt; validation feature: &lt;code&gt;Pointblank Validation&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Using &lt;strong&gt;pointblank&lt;/strong&gt; in an &lt;strong&gt;R Markdown&lt;/strong&gt; workflow is enabled by default once the pointblank library is loaded. While the framework for such testing is set up by default, the new &lt;code&gt;validate_rmd()&lt;/code&gt; function offers an opportunity to set UI and logging options.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;the-agent-report&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;The &lt;strong&gt;agent&lt;/strong&gt; Report&lt;/h2&gt;
+&lt;p&gt;The appearance of the agent report has improved (a lot!) and it’s gained some new features:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;data extracts for failing rows (on row-based validation steps) can be downloaded as CSVs via the new buttons that appear in the &lt;code&gt;EXT&lt;/code&gt; column&lt;/li&gt;
+&lt;li&gt;there are useful tooltips on most fields of the table (e.g., hovering over items in &lt;code&gt;STEP&lt;/code&gt; will show the ‘brief’, &lt;code&gt;TBL&lt;/code&gt; icons will describe whether any preconditions were applied to the table prior to interrogation, etc.), and&lt;/li&gt;
+&lt;li&gt;there are printing improvements in the &lt;code&gt;COLUMNS&lt;/code&gt; and &lt;code&gt;VALUES&lt;/code&gt; columns (e.g., table columns are distinguished from literal values).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Here’s a diagram that better explains the whole thing:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-06-24-pointblank-0-4_files/agent_report.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;This bit of reporting is really important so expect even more improvements in an upcoming version.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;scanning-your-data-with-scan_data-improvements&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Scanning Your Data with &lt;code&gt;scan_data()&lt;/code&gt;: Improvements!&lt;/h2&gt;
+&lt;p&gt;The &lt;code&gt;scan_data()&lt;/code&gt; function let’s you ‘Thoroughly scan the table data so as to understand it better’ (that’s from the help page, at &lt;code&gt;?scan_data&lt;/code&gt;). In case you haven’t seen it, this function generates an HTML report that explains the input table data. It’s a great thing to use before calling up an &lt;strong&gt;agent&lt;/strong&gt; to validate the data. With this function, we can now quickly get to understanding the data with some level of precision. The reporting output contains several sections to make everything more digestible, and these are:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Overview: Table dimensions, duplicate row count, column types, and reproducibility information&lt;/li&gt;
+&lt;li&gt;Variables: A summary for each table variable and further statistics and summaries depending on the variable type&lt;/li&gt;
+&lt;li&gt;Interactions: A matrix plot that shows interactions between variables&lt;/li&gt;
+&lt;li&gt;Correlations: A set of correlation matrix plots for numerical variables&lt;/li&gt;
+&lt;li&gt;Missing Values: A summary figure that shows the degree of missingness across variables, and&lt;/li&gt;
+&lt;li&gt;Sample: A table that provides the head and tail rows of the dataset&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-06-24-pointblank-0-4_files/table_scan.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;It’s pretty cool! Try it out with your favorite dataset. I created a few examples, in various languages even, in &lt;strong&gt;RPubs&lt;/strong&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://rpubs.com/rich_i/pointblank_storms_english&#34;&gt;&lt;img src=&#34;https://img.shields.io/static/v1?label=Table%20Scan&amp;amp;message=English&amp;amp;color=blue&#34; alt=&#34;Table Scan in English&#34; /&gt;&lt;/a&gt;
+&lt;a href=&#34;https://rpubs.com/rich_i/pointblank_storms_french&#34;&gt;&lt;img src=&#34;https://img.shields.io/static/v1?label=Table%20Scan&amp;amp;message=French&amp;amp;color=blue&#34; alt=&#34;Table Scan in French&#34; /&gt;&lt;/a&gt;
+&lt;a href=&#34;https://rpubs.com/rich_i/pointblank_storms_german&#34;&gt;&lt;img src=&#34;https://img.shields.io/static/v1?label=Table%20Scan&amp;amp;message=German&amp;amp;color=blue&#34; alt=&#34;Table Scan in German&#34; /&gt;&lt;/a&gt;
+&lt;a href=&#34;https://rpubs.com/rich_i/pointblank_storms_italian&#34;&gt;&lt;img src=&#34;https://img.shields.io/static/v1?label=Table%20Scan&amp;amp;message=Italian&amp;amp;color=blue&#34; alt=&#34;Table Scan in Italian&#34; /&gt;&lt;/a&gt;
+&lt;a href=&#34;https://rpubs.com/rich_i/pointblank_storms_spanish&#34;&gt;&lt;img src=&#34;https://img.shields.io/static/v1?label=Table%20Scan&amp;amp;message=Spanish&amp;amp;color=blue&#34; alt=&#34;Table Scan in Spanish&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;All of those Table Scans are of the &lt;code&gt;dplyr::storms&lt;/code&gt; dataset. But whaddabout database tables? That’s the improvement this time round! You can now use &lt;code&gt;scan_data()&lt;/code&gt; to scan some DB tables. Here are two brand-new examples using the &lt;code&gt;full_region&lt;/code&gt; table of the &lt;strong&gt;Rfam&lt;/strong&gt; database (hosted publicly at “mysql-rfam-public.ebi.ac.uk”) and the &lt;code&gt;assembly&lt;/code&gt; table of the &lt;strong&gt;Ensembl&lt;/strong&gt; database (hosted publicly at “ensembldb.ensembl.org”).&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://rpubs.com/rich_i/rfam_full_region&#34;&gt;&lt;img src=&#34;https://img.shields.io/static/v1?label=Table%20Scan&amp;amp;message=Rfam:%20full_region&amp;amp;color=green&#34; alt=&#34;Rfam: full_region&#34; /&gt;&lt;/a&gt;
+&lt;a href=&#34;https://rpubs.com/rich_i/ensembl_assembly&#34;&gt;&lt;img src=&#34;https://img.shields.io/static/v1?label=Table%20Scan&amp;amp;message=Ensembl:%20assembly&amp;amp;color=green&#34; alt=&#34;Ensembl: assembly&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;nicer-lookin-email&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Nicer Lookin’ Email&lt;/h2&gt;
+&lt;p&gt;You can send HTML email with the agent report inside (thanks to some help by the &lt;strong&gt;blastula&lt;/strong&gt; package). There’s seemingly no limit to the customizability of the message body, since the &lt;code&gt;email_blast()&lt;/code&gt; function has full access to the agent intel (have a look at the help article at &lt;code&gt;?email_blast&lt;/code&gt; for all the details on this). However, sometimes you want a reasonably-nice default email that won’t take much work develop. In this release, the default look of the email is much easier on the eyes.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-06-24-pointblank-0-4_files/pointblank_email.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;It uses a small version of the agent report (575px wide) that still has those useful tooltips that provide &lt;em&gt;briefs&lt;/em&gt; (an unfortunate name for the short descriptions of each validation step). Sure, you could customize the email yourself with the &lt;code&gt;msg_header&lt;/code&gt;, &lt;code&gt;msg_body&lt;/code&gt;, and &lt;code&gt;msg_footer&lt;/code&gt; args but, now, you might not have a compulsion to do so.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;wrapping-up&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Wrapping Up&lt;/h2&gt;
+&lt;p&gt;I hope this gives some insight into what &lt;a href=&#34;https://rich-iannone.github.io/pointblank/&#34;&gt;&lt;strong&gt;pointblank&lt;/strong&gt;&lt;/a&gt; is all about and where its development is headed. Aside from these sizable improvements and new features, there were also plenty of bugfixes and smaller quality-of-life changes that made it into this release. As ever, I hope you get a chance to try it out on your own data.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Start French Section --&gt;
+&lt;div id=&#34;French&#34; class=&#34;tabcontent&#34;&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-06-24-pointblank-0-4_files/pointblank_v0_4.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Le package &lt;a href=&#34;https://rich-iannone.github.io/pointblank/&#34;&gt;&lt;strong&gt;pointblank&lt;/strong&gt;&lt;/a&gt; est maintenant à la version 0.4 et regorge de bonbons. Il y a de nouvelles fonctions qui nous permettent de faire des choses vraiment intéressantes avec la validation des données. Certaines des fonctions existantes ont acquis de nouvelles superpuissances. La documentation? Mieux que jamais! Ils ont été entièrement révisés et il existe également de nombreux exemples faciles à utiliser. Vous pouvez installer &lt;strong&gt;pointblank&lt;/strong&gt; 0.4 de CRAN avec:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;install.packages(&amp;quot;pointblank&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Avec la dernière version de ** pointblank **, l’objectif était d’activer deux workflows de validation de données importants, mais assez distincts, à l’aide d’un ensemble commun de fonctions d’étape de validation. Jetons un autre regard sur la justification de ceux-ci, qui étaient:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;rapports sur la qualité des données&lt;/li&gt;
+&lt;li&gt;validation des données basée sur le pipeline&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Pourquoi le premier point est-il si important? Si vous traitez avec des données, et je suis sûr que vous l’êtes, vous devez vraiment comprendre et maîtriser la qualité des données. Les données sont-elles bonnes? Est-il mauvais? Quelles parties sont bonnes ou mauvaises? Les mauvaises parties sont-elles vraiment mauvaises? Pouvons-nous comprendre ce qui le rend mauvais? (Je suppose simplement que c’est mauvais.) Beaucoup de questions, et nous pouvons y répondre, tant que nous avons un processus. Ce que j’espère, c’est que &lt;strong&gt;pointblank&lt;/strong&gt; est assez bon pour tout cela.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-06-24-pointblank-0-4_files/data_quality_workflow.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Le deuxième flux de travail est également important, mais il est vraiment différent du premier. Vous devez vérifier vos données avant de poursuivre leur progression dans un pipeline. Peut-être que les données d’entrée (rigoureusement vérifiées et nettoyées, grâce aux rapports sur la qualité des données) sont très bien, mais qu’en est-il des données transformées dans un pipeline? Allons! Il faut le vérifier et vous le savez! Vous pourriez avoir de graves problèmes si vous ignorez tout cela. Alors faites-le! Simplement fais-le!&lt;/p&gt;
+&lt;p&gt;Quoi qu’il en soit, ce sont les principaux workflows. Il y a de nouvelles choses qui permettent de nouvelles façons d’utiliser &lt;strong&gt;pointblank&lt;/strong&gt;. C’est assez excitant!&lt;/p&gt;
+&lt;div id=&#34;expectation-fonctions&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;&lt;em&gt;Expectation&lt;/em&gt; fonctions&lt;/h2&gt;
+&lt;p&gt;Il existe désormais 24 fonctions &lt;em&gt;expectation&lt;/em&gt; (par exemple, &lt;code&gt;expect_col_exists()&lt;/code&gt;, &lt;code&gt;expect_rows_distinct()&lt;/code&gt;, &lt;code&gt;expect_col_schema_match()&lt;/code&gt;, etc.) en complément des 24 fonctions de validation. Tous ces éléments peuvent être utilisés pour &lt;strong&gt;testthat&lt;/strong&gt; tests de données tabulaires avec une interface simplifiée qui expose un seuil de défaillance facile à utiliser (par défaut à &lt;code&gt;1&lt;/code&gt;). Explorons cela à travers des exemples. Nous utiliserons l’ensemble de données &lt;code&gt;small_table&lt;/code&gt; inclus dans &lt;strong&gt;pointblank&lt;/strong&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;small_table&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;#&amp;gt; # A tibble: 13 x 8
+#&amp;gt;    date_time           date           a b             c      d e     f    
+#&amp;gt;    &amp;lt;dttm&amp;gt;              &amp;lt;date&amp;gt;     &amp;lt;int&amp;gt; &amp;lt;chr&amp;gt;     &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt; &amp;lt;lgl&amp;gt; &amp;lt;chr&amp;gt;
+#&amp;gt;  1 2016-01-04 11:00:00 2016-01-04     2 1-bcd-345     3  3423. TRUE  high 
+#&amp;gt;  2 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low  
+#&amp;gt;  3 2016-01-05 13:32:00 2016-01-05     6 8-kdg-938     3  2343. TRUE  high 
+#&amp;gt;  4 2016-01-06 17:23:00 2016-01-06     2 5-jdo-903    NA  3892. FALSE mid  
+#&amp;gt;  5 2016-01-09 12:36:00 2016-01-09     8 3-ldm-038     7   284. TRUE  low  
+#&amp;gt;  6 2016-01-11 06:15:00 2016-01-11     4 2-dhe-923     4  3291. TRUE  mid  
+#&amp;gt;  7 2016-01-15 18:46:00 2016-01-15     7 1-knw-093     3   843. TRUE  high 
+#&amp;gt;  8 2016-01-17 11:27:00 2016-01-17     4 5-boe-639     2  1036. FALSE low  
+#&amp;gt;  9 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&amp;gt; 10 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&amp;gt; 11 2016-01-26 20:07:00 2016-01-26     4 2-dmx-010     7   834. TRUE  low  
+#&amp;gt; 12 2016-01-28 02:51:00 2016-01-28     2 7-dmx-010     8   108. FALSE low  
+#&amp;gt; 13 2016-01-30 11:23:00 2016-01-30     1 3-dka-303    NA  2230. TRUE  high &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Avec le formulaire `expect_*()`, nous
+# effectue généralement une validation à la fois
+# (de la même manière que les tests fonctionnent)
+expect_col_vals_between(
+  small_table, vars(c), 1, 9,
+  na_pass = TRUE
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Cela ne renvoie rien. Rien du tout. C’est bien! Cela signifie que le test a fonctionné! Dans le cas où cela ne fonctionne pas, nous obtenons un message informatif:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;expect_col_vals_between(
+  small_table, vars(c), 23, 34,
+  na_pass = TRUE
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Error: Exceedance of failed test units where values in `c` should have been between `23` and `34`.
+The `expect_col_vals_between()` validation failed beyond the absolute threshold level (1).
+* failure level (11) &amp;gt;= failure threshold (1) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ces messages sont cohérents avec les messages d’erreur et d’avertissement qui s’affichent lors de l’utilisation de fonctions de validation directement sur les données (par exemple, &lt;code&gt;small_table %&amp;gt;% expect_col_vals_between (...)&lt;/code&gt;).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;test-fonctions&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;&lt;em&gt;Test&lt;/em&gt; fonctions&lt;/h2&gt;
+&lt;p&gt;En plus de l’ensemble de fonctions &lt;code&gt;expect_*()&lt;/code&gt;, il existe désormais 24 &lt;em&gt;fonctions test&lt;/em&gt; (par exemple, &lt;code&gt;test_col_exists()&lt;/code&gt;, &lt;code&gt;test_rows_distinct()&lt;/code&gt;, &lt;code&gt;test_col_schema_match()&lt;/code&gt;, etc.) pour compléter 24 fonctions de validation. Ces fonctions renvoient une valeur logique: &lt;code&gt;TRUE&lt;/code&gt; si le seuil de défaillance (ayant une valeur par défaut de &lt;code&gt;1&lt;/code&gt;) &lt;em&gt;n’est pas&lt;/em&gt; dépassé, &lt;code&gt;FALSE&lt;/code&gt; sinon. Ces fonctions &lt;code&gt;test_*()&lt;/code&gt; utilisent la même interface simplifiée que les fonctions &lt;code&gt;expect_*()&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Avec le formulaire `test_*()`, nous
+# devrions obtenir un valeur TRUE ou FALSE
+# unique qui nous est retournée
+test_col_vals_between(
+  small_table, vars(c), 1, 9,
+  na_pass = TRUE
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] TRUE&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;col_vals_expr-expect_col_vals_expr-et-test_col_vals_expr&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;&lt;code&gt;col_vals_expr()&lt;/code&gt;, &lt;code&gt;expect_col_vals_expr()&lt;/code&gt; et &lt;code&gt;test_col_vals_expr()&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;Si vous voulez juste une expression simple pour votre validation, la fonction &lt;code&gt;col_vals_expr()&lt;/code&gt; (et les variantes &lt;em&gt;expectation&lt;/em&gt; et &lt;em&gt;test&lt;/em&gt;) pourrait être ce dont vous avez besoin. Les fonctions &lt;strong&gt;dplyr&lt;/strong&gt; &lt;code&gt;expr()&lt;/code&gt;, &lt;code&gt;case_when()&lt;/code&gt; et &lt;code&gt;between()&lt;/code&gt; sont maintenant réexportées dans &lt;strong&gt;pointblank&lt;/strong&gt; pour une accessibilité plus facile ici. Ils fonctionnent à merveille avec les nouvelles fonctions. Voici un exemple:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Utilisons une p&amp;#39;tit table pour tester
+tbl &amp;lt;-
+  dplyr::tibble(
+    a = c(1, 2, 1, 7, 8, 6),
+    b = c(0, 0, 0, 1, 1, 1),
+    c = c(0.5, 0.3, 0.8, 1.4, 1.9, 1.2),
+  )
+  
+tbl&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;#&amp;gt; # A tibble: 6 x 3
+#&amp;gt;       a     b     c
+#&amp;gt;   &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;
+#&amp;gt; 1     1     0   0.5
+#&amp;gt; 2     2     0   0.3
+#&amp;gt; 3     1     0   0.8
+#&amp;gt; 4     7     1   1.4
+#&amp;gt; 5     8     1   1.9
+#&amp;gt; 6     6     1   1.2&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Testez les valeurs de la colonne `a`
+# sont de type entier en utilisant le
+# module R opérateur et attend `0`
+test_col_vals_expr(tbl, ~ a %% 1 == 0)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] TRUE&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# Nous pouvons faire des choses plus
+# complexes en profitant du `case_when()`
+# et `between()` fonctions (disponibles
+# à utiliser dans le package pointblank)
+tbl %&amp;gt;%
+  test_col_vals_expr(~ case_when(
+    b == 0 ~ a %&amp;gt;% between(0, 5) &amp;amp; c &amp;lt; 1,
+    b == 1 ~ a &amp;gt; 5 &amp;amp; c &amp;gt;= 1
+  ))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] TRUE&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Si l’évaluation de l’expression ne fonctionne pas (par exemple, la colonne &lt;code&gt;d&lt;/code&gt; inexistante a été utilisée ci-dessus), vous obtiendrez une valeur &lt;code&gt;NA&lt;/code&gt;. Si vous utilisez un agent, le rapport montrera que l’évaluation a échoué (recherchez l’explosion dans la colonne &lt;code&gt;EVAL&lt;/code&gt;). C’est la bombe!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;nouvelles-fonctionnalités-r-markdown&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Nouvelles fonctionnalités &lt;strong&gt;R Markdown&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Une nouvelle fonctionnalité de validation R Markdown permet d’effectuer des tests de validation dans des blocs de code de validation spécialisés où l’option &lt;code&gt;validate = TRUE&lt;/code&gt; est définie. Voici une animation qui montre comment cela fonctionne:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-06-24-pointblank-0-4_files/pointblank_rmarkdown.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Il existe un nouveau template R Markdown pour cela, appelé «Pointblank Validation».&lt;/p&gt;
+&lt;p&gt;L’utilisation de &lt;strong&gt;pointblank&lt;/strong&gt; dans un workflow &lt;strong&gt;R Markdown&lt;/strong&gt; est activée par défaut une fois &lt;strong&gt;pointblank&lt;/strong&gt; chargée. La nouvelle fonction &lt;code&gt;validate_rmd()&lt;/code&gt; offre la possibilité de définir des options de journalisation.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;le-rapport-dagent&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Le rapport d’&lt;strong&gt;agent&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;L’apparence du rapport d’agent est désormais bien meilleure. Il a gagné de nouvelles fonctionnalités:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;les extraits de données pour les lignes défaillantes (lors des étapes de validation basées sur les lignes) peuvent être téléchargés au format CSV via les nouveaux boutons qui apparaissent dans la colonne &lt;code&gt;EXT&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;il existe des info-bulles utiles sur la plupart des champs du tableau (par exemple, survoler les éléments dans &lt;code&gt;STEP&lt;/code&gt; affichera le résumé, les icônes &lt;code&gt;TBL&lt;/code&gt; décriront si des conditions préalables ont été appliquées au tableau avant l’interrogation, etc.), et&lt;/li&gt;
+&lt;li&gt;il y a des améliorations d’impression dans les colonnes &lt;code&gt;COLUMNS&lt;/code&gt; et &lt;code&gt;VALUES&lt;/code&gt; (par exemple, les colonnes du tableau sont distinguées des valeurs littérales).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Voici un diagramme utile:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-06-24-pointblank-0-4_files/agent_report.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Ce rapport est super important. Attendez-vous à d’autres améliorations dans un avenir proche.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;améliorations-avec-scan_data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Améliorations avec &lt;code&gt;scan_data()&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;Au cas où vous ne l’auriez pas vu, cette fonction génère un rapport HTML qui parcourt les données de la table d’entrée. C’est une bonne chose à utiliser avant d’appeler un &lt;strong&gt;agent&lt;/strong&gt; pour valider les données. Avec cette fonction, nous pouvons maintenant rapidement comprendre les données avec un certain niveau de précision. La sortie du rapport contient plusieurs sections pour rendre tout plus digestible, et ce sont:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Aperçu: dimensions de la table, nombre de lignes en double, types de colonnes et informations de reproductibilité&lt;/li&gt;
+&lt;li&gt;Variables: un résumé pour chaque variable du tableau et d’autres statistiques et résumés selon le type de variable&lt;/li&gt;
+&lt;li&gt;Interactions: un graphique matriciel qui montre les interactions entre les variables&lt;/li&gt;
+&lt;li&gt;Corrélations: un ensemble de graphiques matriciels de corrélation pour les variables numériques&lt;/li&gt;
+&lt;li&gt;Valeurs manquantes: une figure récapitulative qui montre le degré de disparité entre les variables, et&lt;/li&gt;
+&lt;li&gt;Exemple: un tableau qui fournit les lignes de tête et de queue de l’ensemble de données&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-06-24-pointblank-0-4_files/table_scan.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;C’est bon! Essayez-le avec votre jeu de données préféré. J’ai créé quelques exemples, dans différentes langues même, dans &lt;strong&gt;RPubs&lt;/strong&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://rpubs.com/rich_i/pointblank_storms_english&#34;&gt;&lt;img src=&#34;https://img.shields.io/static/v1?label=Table%20Scan&amp;amp;message=English&amp;amp;color=blue&#34; alt=&#34;Table Scan in English&#34; /&gt;&lt;/a&gt;
+&lt;a href=&#34;https://rpubs.com/rich_i/pointblank_storms_french&#34;&gt;&lt;img src=&#34;https://img.shields.io/static/v1?label=Table%20Scan&amp;amp;message=French&amp;amp;color=blue&#34; alt=&#34;Table Scan in French&#34; /&gt;&lt;/a&gt;
+&lt;a href=&#34;https://rpubs.com/rich_i/pointblank_storms_german&#34;&gt;&lt;img src=&#34;https://img.shields.io/static/v1?label=Table%20Scan&amp;amp;message=German&amp;amp;color=blue&#34; alt=&#34;Table Scan in German&#34; /&gt;&lt;/a&gt;
+&lt;a href=&#34;https://rpubs.com/rich_i/pointblank_storms_italian&#34;&gt;&lt;img src=&#34;https://img.shields.io/static/v1?label=Table%20Scan&amp;amp;message=Italian&amp;amp;color=blue&#34; alt=&#34;Table Scan in Italian&#34; /&gt;&lt;/a&gt;
+&lt;a href=&#34;https://rpubs.com/rich_i/pointblank_storms_spanish&#34;&gt;&lt;img src=&#34;https://img.shields.io/static/v1?label=Table%20Scan&amp;amp;message=Spanish&amp;amp;color=blue&#34; alt=&#34;Table Scan in Spanish&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Tous ces éléments font partie de l’ensemble de données &lt;code&gt;dplyr::storms&lt;/code&gt;. Mais à propos des tables de base de données? C’est l’amélioration cette fois-ci! Vous pouvez maintenant utiliser &lt;code&gt;scan_data()&lt;/code&gt; pour analyser certaines tables de base de données. Voici deux nouveaux exemples utilisant la table &lt;code&gt;full_region&lt;/code&gt; de la base de données &lt;strong&gt;Rfam&lt;/strong&gt; (hébergée publiquement sur “mysql-rfam-public.ebi.ac.uk”) et la table &lt;code&gt;assembly&lt;/code&gt; de &lt;strong&gt;Ensembl&lt;/strong&gt; base de données (hébergée publiquement sur “ensembldb.ensembl.org”).&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://rpubs.com/rich_i/rfam_full_region&#34;&gt;&lt;img src=&#34;https://img.shields.io/static/v1?label=Table%20Scan&amp;amp;message=Rfam:%20full_region&amp;amp;color=green&#34; alt=&#34;Rfam: full_region&#34; /&gt;&lt;/a&gt;
+&lt;a href=&#34;https://rpubs.com/rich_i/ensembl_assembly&#34;&gt;&lt;img src=&#34;https://img.shields.io/static/v1?label=Table%20Scan&amp;amp;message=Ensembl:%20assembly&amp;amp;color=green&#34; alt=&#34;Ensembl: assembly&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;courriel-jaime-le-way-quà-hang&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Courriel: J’aime le way qu’à hang&lt;/h2&gt;
+&lt;p&gt;Vous pouvez envoyer un e-mail HTML avec le rapport de l’agent à l’intérieur (grâce à l’aide du package &lt;strong&gt;blastula&lt;/strong&gt;). Il n’y a apparemment aucune limite à la personnalisation du corps du message, car la fonction &lt;code&gt;email_blast()&lt;/code&gt; a un accès complet aux informations de l’agent (consultez l’article d’aide à &lt;code&gt;?email_blast&lt;/code&gt; pour tous les détails à ce sujet). Cependant, parfois, vous voulez un e-mail par défaut assez agréable qui ne prendra pas beaucoup de travail à envoyer. Dans cette version, l’apparence par défaut de l’e-mail est beaucoup plus facile pour les yeux.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-06-24-pointblank-0-4_files/pointblank_email.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Il utilise une petite version du rapport d’agent (575 px de large) qui a toujours des info-bulles qui fournissent des &lt;em&gt;briefs&lt;/em&gt; (un nom malheureux en anglais pour les courtes descriptions de chaque étape de validation). Bien sûr, vous pouvez personnaliser l’e-mail avec les arguments &lt;code&gt;msg_header&lt;/code&gt;, &lt;code&gt;msg_body&lt;/code&gt; et &lt;code&gt;msg_footer&lt;/code&gt; mais, maintenant, vous n’avez peut-être pas la contrainte de le faire.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusion&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;J’espère que cela vous donnera un aperçu de ce qu’est &lt;a href=&#34;https://rich-iannone.github.io/pointblank/&#34;&gt;&lt;strong&gt;pointblank&lt;/strong&gt;&lt;/a&gt; et de son évolution. Mis à part ces améliorations considérables et ces nouvelles fonctionnalités, de nombreuses corrections de bugs et de petits changements de qualité de vie ont également été intégrés à cette version. Comme toujours, j’espère que vous aurez l’occasion de l’essayer sur vos propres données.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Start German Section --&gt;
+&lt;div id=&#34;German&#34; class=&#34;tabcontent&#34;&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-06-24-pointblank-0-4_files/pointblank_v0_4.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Das &lt;a href=&#34;https://rich-iannone.github.io/pointblank/&#34;&gt;&lt;strong&gt;pointblank&lt;/strong&gt;-Paket&lt;/a&gt; ist jetzt in Version 0.4 und voller Goodies. Es gibt neue Funktionen, mit denen wir wirklich interessante Dinge mit der Datenvalidierung tun können. Einige der bestehenden Funktionen erhielten neue Superkräfte. Die Dokumentation? Besser denn je! Sie wurden komplett überarbeitet und es gibt auch viele benutzerfreundliche Beispiele. Sie können &lt;strong&gt;pointblank&lt;/strong&gt; 0.4 von CRAN installieren mit:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;install.packages(&amp;quot;pointblank&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Mit der letzten Version von &lt;strong&gt;pointblank&lt;/strong&gt; bestand das Ziel darin, zwei wichtige, jedoch recht unterschiedliche Datenvalidierungs-Workflows mithilfe eines gemeinsamen Satzes von Validierungsschrittfunktionen zu ermöglichen. Lassen Sie uns noch einen Blick auf die Gründe für diejenigen werfen, die waren:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Berichterstattung zur Datenqualität&lt;/li&gt;
+&lt;li&gt;Pipeline-basierte Datenvalidierung2. pipeline-based data validation&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Warum ist es für den ersten so wichtig? Wenn Sie mit Daten zu tun haben und ich bin sicher, dass Sie es sind, müssen Sie die Datenqualität wirklich verstehen und auf den neuesten Stand bringen. Sind die Daten gut? Ist es schlimm? Welche Teile sind gut oder schlecht? Sind die schlechten Teile &lt;em&gt;wirklich&lt;/em&gt; schlecht? Können wir verstehen, was es schlecht macht? (Ich gehe nur davon aus, dass es schlecht ist.) Viele Fragen, und wir können sie beantworten, solange wir einen Prozess haben. Was ich hoffe ist, dass &lt;strong&gt;pointblank&lt;/strong&gt; der Aufgabe gewachsen ist.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-06-24-pointblank-0-4_files/data_quality_workflow.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Der zweite Workflow ist ebenfalls wichtig, unterscheidet sich jedoch erheblich vom ersten. Die Idee ist, dass Sie Ihre Daten überprüfen müssen, bevor sie weiter unten in einer Pipeline fortgesetzt werden. Vielleicht sind die Eingabedaten (dank Datenqualitätsberichterstattung streng geprüft und bereinigt) in Ordnung, aber was ist mit den transformierten Daten in einer Pipeline? Wir sollten auch diese Daten überprüfen.&lt;/p&gt;
+&lt;p&gt;Dies sind die Hauptworkflows, aber es gibt jetzt einige neue Möglichkeiten, &lt;strong&gt;pointblank&lt;/strong&gt; zu verwenden.&lt;/p&gt;
+&lt;div id=&#34;expectation-funktionen&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;&lt;em&gt;Expectation&lt;/em&gt; Funktionen&lt;/h2&gt;
+&lt;p&gt;Es gibt jetzt 24 &lt;em&gt;Expectation&lt;/em&gt;-Funktionen (z. B. &lt;code&gt;expect_col_exists()&lt;/code&gt;, &lt;code&gt;expect_rows_distinct()&lt;/code&gt;, &lt;code&gt;expect_col_schema_match()&lt;/code&gt; usw.) als Ergänzungen der 24 Validierungsfunktionen. All dies kann für &lt;strong&gt;testthat&lt;/strong&gt; Testen von Tabellendaten mit einer vereinfachten Oberfläche verwendet werden, die einen benutzerfreundlichen Fehlerschwellenwert (standardmäßig &lt;code&gt;1&lt;/code&gt;) anzeigt. Wir werden einige Beispiele mit dem in &lt;strong&gt;pointblank&lt;/strong&gt; enthaltenen &lt;code&gt;small_table&lt;/code&gt;-Dataset durchgehen.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;small_table&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;#&amp;gt; # A tibble: 13 x 8
+#&amp;gt;    date_time           date           a b             c      d e     f    
+#&amp;gt;    &amp;lt;dttm&amp;gt;              &amp;lt;date&amp;gt;     &amp;lt;int&amp;gt; &amp;lt;chr&amp;gt;     &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt; &amp;lt;lgl&amp;gt; &amp;lt;chr&amp;gt;
+#&amp;gt;  1 2016-01-04 11:00:00 2016-01-04     2 1-bcd-345     3  3423. TRUE  high 
+#&amp;gt;  2 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low  
+#&amp;gt;  3 2016-01-05 13:32:00 2016-01-05     6 8-kdg-938     3  2343. TRUE  high 
+#&amp;gt;  4 2016-01-06 17:23:00 2016-01-06     2 5-jdo-903    NA  3892. FALSE mid  
+#&amp;gt;  5 2016-01-09 12:36:00 2016-01-09     8 3-ldm-038     7   284. TRUE  low  
+#&amp;gt;  6 2016-01-11 06:15:00 2016-01-11     4 2-dhe-923     4  3291. TRUE  mid  
+#&amp;gt;  7 2016-01-15 18:46:00 2016-01-15     7 1-knw-093     3   843. TRUE  high 
+#&amp;gt;  8 2016-01-17 11:27:00 2016-01-17     4 5-boe-639     2  1036. FALSE low  
+#&amp;gt;  9 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&amp;gt; 10 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#&amp;gt; 11 2016-01-26 20:07:00 2016-01-26     4 2-dmx-010     7   834. TRUE  low  
+#&amp;gt; 12 2016-01-28 02:51:00 2016-01-28     2 7-dmx-010     8   108. FALSE low  
+#&amp;gt; 13 2016-01-30 11:23:00 2016-01-30     1 3-dka-303    NA  2230. TRUE  high &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Mit dem Formular `expect_*()` würden
+# wir Führen Sie normalerweise jeweils
+# eine Validierung durch (genauso wie
+# testthat Tests funktionieren)
+expect_col_vals_between(
+  small_table, vars(c), 1, 9,
+  na_pass = TRUE
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Dies gibt absolut nichts zurück: eine Leere. Dies bedeutet, dass der Test funktioniert hat. Falls es nicht funktioniert, erhalten wir eine informative Nachricht:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;expect_col_vals_between(
+  small_table, vars(c), 23, 34,
+  na_pass = TRUE
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Error: Exceedance of failed test units where values in `c` should have been between `23` and `34`.
+The `expect_col_vals_between()` validation failed beyond the absolute threshold level (1).
+* failure level (11) &amp;gt;= failure threshold (1) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Übrigens stimmen diese Meldungen mit den Fehler- und Warnmeldungen überein, die angezeigt werden, wenn Validierungsfunktionen direkt für Daten verwendet werden (z. B. &lt;code&gt;small_table %&amp;gt;% expected_col_vals_between (...)&lt;/code&gt;).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;test-funktionen&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;&lt;em&gt;Test&lt;/em&gt; Funktionen&lt;/h2&gt;
+&lt;p&gt;Abgesehen von dem Funktionssatz &lt;code&gt;expect_*()&lt;/code&gt; gibt es jetzt 24 &lt;em&gt;test&lt;/em&gt;-Funktionen (z. B. &lt;code&gt;test_col_exists()&lt;/code&gt;, &lt;code&gt;test_rows_distinct()&lt;/code&gt;, &lt;code&gt;test_col_schema_match()&lt;/code&gt; usw.), um die 24 weiter zu ergänzen Validierungsfunktionen. Diese Funktionen geben einen logischen Wert zurück: &lt;code&gt;TRUE&lt;/code&gt;, wenn der Fehlerschwellenwert (mit einem Standardwert von 1) &lt;em&gt;nicht&lt;/em&gt; überschritten wird, andernfalls &lt;code&gt;FALSE&lt;/code&gt;. Diese &lt;code&gt;test_*()&lt;/code&gt; Funktionen verwenden dieselbe vereinfachte Schnittstelle wie die &lt;code&gt;expect_*()&lt;/code&gt; Funktionen.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Mit dem Formular `test_*()` sollten wir einen
+# einzelnen TRUE- oder FALSE-Wert erhalten, der
+# an uns zurückgegeben wird
+test_col_vals_between(
+  small_table, vars(c), 1, 9,
+  na_pass = TRUE
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] TRUE&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;col_vals_expr-expect_col_vals_expr-und-test_col_vals_expr&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;&lt;code&gt;col_vals_expr()&lt;/code&gt;, &lt;code&gt;expect_col_vals_expr()&lt;/code&gt;, und &lt;code&gt;test_col_vals_expr()&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;Wenn Sie für Ihre Validierung einen einfachen Ausdruck benötigen, könnte die Funktion &lt;code&gt;col_vals_expr()&lt;/code&gt; (und die Varianten &lt;em&gt;expectation&lt;/em&gt; und &lt;em&gt;test&lt;/em&gt;) genau das sein, was Sie benötigen. Die Funktionen &lt;strong&gt;dplyr&lt;/strong&gt; &lt;code&gt;expr()&lt;/code&gt;, &lt;code&gt;case_when()&lt;/code&gt; und &lt;code&gt;between()&lt;/code&gt; werden jetzt in &lt;strong&gt;pointblank&lt;/strong&gt; erneut exportiert, um den Zugriff hier zu erleichtern, da sie mit den neuen Funktionen außerordentlich gut funktionieren. Hier ist ein Beispiel:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Lassen Sie uns hier eine winzige Tabelle
+# zum Testen verwenden
+tbl &amp;lt;-
+  dplyr::tibble(
+    a = c(1, 2, 1, 7, 8, 6),
+    b = c(0, 0, 0, 1, 1, 1),
+    c = c(0.5, 0.3, 0.8, 1.4, 1.9, 1.2),
+  )
+  
+tbl&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;#&amp;gt; # A tibble: 6 x 3
+#&amp;gt;       a     b     c
+#&amp;gt;   &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;
+#&amp;gt; 1     1     0   0.5
+#&amp;gt; 2     2     0   0.3
+#&amp;gt; 3     1     0   0.8
+#&amp;gt; 4     7     1   1.4
+#&amp;gt; 5     8     1   1.9
+#&amp;gt; 6     6     1   1.2&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Testen Sie, ob die Werte in Spalte `a`
+# ganzzahlig sind, indem Sie den 
+# R-Modulo-Operator verwenden und `0` erwarten
+test_col_vals_expr(tbl, ~ a %% 1 == 0)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] TRUE&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# Wir können komplexere Dinge tun, indem
+# wir die Funktionen `case_when()` und
+# `between()` nutzen (verfügbar für die
+# Verwendung im pointblank-Paket).
+tbl %&amp;gt;%
+  test_col_vals_expr(~ case_when(
+    b == 0 ~ a %&amp;gt;% between(0, 5) &amp;amp; c &amp;lt; 1,
+    b == 1 ~ a &amp;gt; 5 &amp;amp; c &amp;gt;= 1
+  ))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] TRUE&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Sollte die Auswertung des Ausdrucks nicht funktionieren (z. B. wurde oben die nicht vorhandene Spalte &lt;code&gt;d&lt;/code&gt; verwendet), wird ein &lt;code&gt;NA&lt;/code&gt;-Wert zurückgegeben. Wenn Sie einen Agenten verwenden, zeigt der Bericht, dass die Auswertung nicht erfolgreich war (suchen Sie nach der Explosion in der Spalte &lt;code&gt;EVAL&lt;/code&gt;).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;new-r-markdown-features-1&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;New &lt;strong&gt;R Markdown&lt;/strong&gt; features&lt;/h2&gt;
+&lt;p&gt;Eine neue R Markdown-Validierungsfunktion ermöglicht Validierungstests in speziellen Validierungscode-Blöcken, in denen die Option &lt;code&gt;validate = TRUE&lt;/code&gt; festgelegt ist. Die Verwendung von Pointblank-Validierungsfunktionen für Daten in diesen Codeblöcken zeigt einen Gesamtfehler an, wenn der Stoppschwellenwert irgendwo überschritten wird. Alle Fehler werden im Validierungscode-Block gemeldet, nachdem das Dokument in HTML gerendert wurde. Hier ist eine Animation:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-06-24-pointblank-0-4_files/pointblank_rmarkdown.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Hierfür gibt es eine neue R-Markdown-template namens “Pointblank Validation”.&lt;/p&gt;
+&lt;p&gt;Using &lt;strong&gt;pointblank&lt;/strong&gt; in an &lt;strong&gt;R Markdown&lt;/strong&gt; workflow is enabled by default once the pointblank library is loaded. While the framework for such testing is set up by default, the new &lt;code&gt;validate_rmd()&lt;/code&gt; function offers an opportunity to set UI and logging options.&lt;/p&gt;
+&lt;p&gt;Die Verwendung von &lt;strong&gt;pointblank&lt;/strong&gt; in einem &lt;strong&gt;R Markdown&lt;/strong&gt;-Workflow ist standardmäßig aktiviert, sobald die pointblank-Bibliothek geladen ist. Während das Framework für solche Tests standardmäßig eingerichtet ist, bietet die neue Funktion &lt;code&gt;validate_rmd()&lt;/code&gt; die Möglichkeit, Benutzeroberflächen- und Protokollierungsoptionen festzulegen.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;der-agent-bericht&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Der &lt;strong&gt;agent&lt;/strong&gt; Bericht&lt;/h2&gt;
+&lt;p&gt;Das Erscheinungsbild des Agentenberichts wurde erheblich verbessert und verfügt nun über einige neue Funktionen:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Datenextrakte für fehlerhafte Zeilen (in zeilenbasierten Validierungsschritten) können über die neuen Schaltflächen in der Spalte &lt;code&gt;EXT&lt;/code&gt; als CSVs heruntergeladen werden&lt;/li&gt;
+&lt;li&gt;In den meisten Feldern der Tabelle gibt es nützliche QuickInfos (z. B. wenn Sie den Mauszeiger über Elemente in &lt;code&gt;STEP&lt;/code&gt; halten, wird die Kurzdarstellung angezeigt, &lt;code&gt;TBL&lt;/code&gt;-Symbole beschreiben, ob vor der Abfrage Vorbedingungen auf die Tabelle angewendet wurden usw.)&lt;/li&gt;
+&lt;li&gt;Es gibt Druckverbesserungen in den Spalten &lt;code&gt;COLUMNS&lt;/code&gt; und &lt;code&gt;VALUES&lt;/code&gt; (z. B. werden Tabellenspalten von Literalwerten unterschieden).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Hier ist ein Diagramm:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-06-24-pointblank-0-4_files/agent_report.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Das ist alles sehr wichtig. Erwarten Sie weitere Verbesserungen in einer kommenden Version.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;verbesserungen-an-der-funktion-scan_data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Verbesserungen an der Funktion &lt;code&gt;scan_data()&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;Diese Funktion &lt;code&gt;scan_data()&lt;/code&gt; generiert einen HTML-Bericht, in dem die Daten der Eingabetabelle erläutert werden. Es ist gut zu verwenden, bevor Sie die Daten validieren. Mit dieser Funktion können wir die Daten jetzt schnell und präzise verstehen. Die Berichtsausgabe enthält mehrere Abschnitte, um alles besser verdaulich zu machen. Diese sind:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Übersicht: Tabellenabmessungen, doppelte Zeilenanzahl, Spaltentypen und Informationen zur Reproduzierbarkeit&lt;/li&gt;
+&lt;li&gt;Variablen: Eine Zusammenfassung für jede Tabellenvariable sowie weitere Statistiken und Zusammenfassungen je nach Variablentyp&lt;/li&gt;
+&lt;li&gt;Interaktionen: Ein Matrixdiagramm, das Interaktionen zwischen Variablen zeigt&lt;/li&gt;
+&lt;li&gt;Korrelationen: Eine Reihe von Korrelationsmatrixdiagrammen für numerische Variablen&lt;/li&gt;
+&lt;li&gt;Fehlende Werte: Eine zusammenfassende Abbildung, die den Grad des Fehlens zwischen Variablen und zeigt&lt;/li&gt;
+&lt;li&gt;Beispiel: Eine Tabelle, die die Kopf- und Endzeilen des Datensatzes enthält&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-06-24-pointblank-0-4_files/table_scan.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Es ist prima. Probieren Sie es mit Ihrem Lieblingsdatensatz aus. Ich habe einige Beispiele in verschiedenen Sprachen in &lt;strong&gt;RPubs&lt;/strong&gt; erstellt:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://rpubs.com/rich_i/pointblank_storms_english&#34;&gt;&lt;img src=&#34;https://img.shields.io/static/v1?label=Table%20Scan&amp;amp;message=English&amp;amp;color=blue&#34; alt=&#34;Table Scan in English&#34; /&gt;&lt;/a&gt;
+&lt;a href=&#34;https://rpubs.com/rich_i/pointblank_storms_french&#34;&gt;&lt;img src=&#34;https://img.shields.io/static/v1?label=Table%20Scan&amp;amp;message=French&amp;amp;color=blue&#34; alt=&#34;Table Scan in French&#34; /&gt;&lt;/a&gt;
+&lt;a href=&#34;https://rpubs.com/rich_i/pointblank_storms_german&#34;&gt;&lt;img src=&#34;https://img.shields.io/static/v1?label=Table%20Scan&amp;amp;message=German&amp;amp;color=blue&#34; alt=&#34;Table Scan in German&#34; /&gt;&lt;/a&gt;
+&lt;a href=&#34;https://rpubs.com/rich_i/pointblank_storms_italian&#34;&gt;&lt;img src=&#34;https://img.shields.io/static/v1?label=Table%20Scan&amp;amp;message=Italian&amp;amp;color=blue&#34; alt=&#34;Table Scan in Italian&#34; /&gt;&lt;/a&gt;
+&lt;a href=&#34;https://rpubs.com/rich_i/pointblank_storms_spanish&#34;&gt;&lt;img src=&#34;https://img.shields.io/static/v1?label=Table%20Scan&amp;amp;message=Spanish&amp;amp;color=blue&#34; alt=&#34;Table Scan in Spanish&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Alle diese Beispiele verwenden den Datensatz &lt;code&gt;dplyr::storms&lt;/code&gt;. Datenbanktabellen? Das ist die neue Verbesserung. Sie können jetzt &lt;code&gt;scan_data()&lt;/code&gt; für Datenbanktabellen verwenden. Hier sind zwei neue Beispiele, die die Tabelle &lt;code&gt;full_region&lt;/code&gt; der &lt;strong&gt;Rfam&lt;/strong&gt;-Datenbank (öffentlich gehostet unter “mysql-rfam-public.ebi.ac.uk”) und die &lt;code&gt;assembly&lt;/code&gt;-Tabelle des &lt;strong&gt;Ensembl&lt;/strong&gt; verwenden. Datenbank (öffentlich gehostet unter “ensembldb.ensembl.org”).&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://rpubs.com/rich_i/rfam_full_region&#34;&gt;&lt;img src=&#34;https://img.shields.io/static/v1?label=Table%20Scan&amp;amp;message=Rfam:%20full_region&amp;amp;color=green&#34; alt=&#34;Rfam: full_region&#34; /&gt;&lt;/a&gt;
+&lt;a href=&#34;https://rpubs.com/rich_i/ensembl_assembly&#34;&gt;&lt;img src=&#34;https://img.shields.io/static/v1?label=Table%20Scan&amp;amp;message=Ensembl:%20assembly&amp;amp;color=green&#34; alt=&#34;Ensembl: assembly&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;besseres-erscheinungsbild-für-e-mail&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Besseres Erscheinungsbild für E-Mail&lt;/h2&gt;
+&lt;p&gt;Sie können eine HTML-E-Mail mit dem Bericht des Agenten senden. Dies wird durch das &lt;strong&gt;blastula&lt;/strong&gt;-Paket unterstützt. Der Anpassbarkeit des Nachrichtentexts sind keine wirklichen Grenzen gesetzt, da die Funktion &lt;code&gt;email_blast()&lt;/code&gt; nach der Abfrage vollen Zugriff auf Informationen hat. Weitere Informationen finden Sie im Hilfeartikel unter &lt;code&gt;?email_blast&lt;/code&gt;. Manchmal möchten Sie jedoch eine gute Standard-E-Mail, deren Erstellung nicht viel Arbeit erfordert. In dieser Version sieht das Standard-Erscheinungsbild der E-Mail viel besser aus.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-06-24-pointblank-0-4_files/pointblank_email.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Hierbei wird eine kleine Version des Agentenberichts (575 Pixel breit) verwendet, die noch QuickInfos enthält, die &lt;em&gt;briefs&lt;/em&gt; enthalten (ein schlecht gewählter englischer Name für die Kurzbeschreibungen der einzelnen Validierungsschritte). Sie können die E-Mail selbst mit den Argumenten &lt;code&gt;msg_header&lt;/code&gt;, &lt;code&gt;msg_body&lt;/code&gt; und &lt;code&gt;msg_footer&lt;/code&gt; anpassen. Möglicherweise möchten Sie dies jetzt jedoch nicht tun.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;abschließend&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Abschließend&lt;/h2&gt;
+&lt;p&gt;Ich hoffe, dies gibt einen Einblick in das, worum es bei &lt;a href=&#34;https://rich-iannone.github.io/pointblank/&#34;&gt;&lt;strong&gt;pointblank&lt;/strong&gt;&lt;/a&gt; geht und wohin seine Entwicklung geht. Abgesehen von diesen beträchtlichen Verbesserungen und neuen Funktionen gab es auch viele Bugfixes und kleinere Änderungen. Ich hoffe, Sie haben die Möglichkeit, es an Ihren eigenen Daten auszuprobieren.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+function openLang(evt, cityName) {
+var i, tabcontent, tablinks;
+tabcontent = document.getElementsByClassName(&#34;tabcontent&#34;);
+for (i = 0; i &lt; tabcontent.length; i++) {
+tabcontent[i].style.display = &#34;none&#34;;
+}
+tablinks = document.getElementsByClassName(&#34;tablinks&#34;);
+for (i = 0; i &lt; tablinks.length; i++) {
+tablinks[i].className = tablinks[i].className.replace(&#34; active&#34;, &#34;&#34;);
+}
+document.getElementById(cityName).style.display = &#34;block&#34;;
+evt.currentTarget.className += &#34; active&#34;;
+}
+
+// Get the element with id=&#34;defaultOpen&#34; and click on it
+document.getElementById(&#34;defaultOpen&#34;).click();
+&lt;/script&gt;
+</description>
+    </item>
     
     <item>
       <title>pointblank v0.3</title>

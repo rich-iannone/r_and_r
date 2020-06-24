@@ -1,0 +1,710 @@
+---
+title: pointblank v0.4
+author: Rich
+date: '2020-06-24'
+slug: pointblank-0-4
+categories: []
+tags:
+  - R Packages
+subtitle: ''
+summary: 'The **pointblank** package at v0.4 has a whole lot more functions than ever before. And, the existing functions have been *improved*!'
+authors: []
+lastmod: '2020-06-24T13:10:00-05:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+```{r setup, echo=FALSE, include=FALSE}
+knitr::opts_chunk$set(include = FALSE)
+library(pointblank)
+library(tidyverse)
+```
+
+<html>
+<link rel="stylesheet" href="/post/css/style.css" />
+</html>
+
+
+<html>
+<div class="tab">
+<button class="tablinks" onclick="openLang(event, 'English')" id="defaultOpen">English</button>
+<button class="tablinks" onclick="openLang(event, 'French')">French</button>
+<button class="tablinks" onclick="openLang(event, 'German')">German</button>
+</div>
+
+</html>
+<!-- Start English Section --> 
+<div id="English" class="tabcontent">
+
+![](/post/2020-06-24-pointblank-0-4_files/pointblank_v0_4.png)
+
+The [**pointblank**](https://rich-iannone.github.io/pointblank/) package is now at version 0.4 and is chock full of goodies. There are new functions that allow us to do really interesting things with data validation. Some of the existing functions gained new superpowers. The docs? Better than ever! They've been totally revised and there are plenty of easy-to-use examples too. You can install **pointblank** 0.4 from CRAN with:
+
+```r
+install.packages("pointblank")
+```
+
+With the last iteration of **pointblank** the goal was to enable two important, yet quite distinct, data validation workflows using a common set of validation step functions. Let's have another look at the rationale for those, which were:
+
+1. data quality reporting
+2. pipeline-based data validation
+
+For the first one, why is it so important? If you are dealing with data, and I'm sure you are, you really need to understand and get on top of data quality. Is the data good? Is it bad? What parts are good or bad? Are the bad parts *really* bad? Can we understand what's making it bad? (I'm just assuming it's bad.) Lots of questions, and we can get to answering them, so long as we have a process. What I'm hoping is that **pointblank** is up to the task.
+
+![](/post/2020-06-24-pointblank-0-4_files/data_quality_workflow.png)
+
+The second workflow is also important, but it's really different than the first. The idea is that you need to check your data before it proceeds further down a pipeline. Perhaps the input data (rigorously checked and cleaned, thanks to data quality reporting) is just fine, but, what about the transformed data in a pipeline? We ought to check that data too.
+
+Those are the main workflows but there are some new ways of using **pointblank** now. 
+
+## *Expectation* Functions
+
+There are now 24 *expectation* functions (e.g., `expect_col_exists()`, `expect_rows_distinct()`, `expect_col_schema_match()`, etc.) as complements to the 24 validation functions. All of these can be used for **testthat** tests of tabular data. These new functions have a simplified interface that exposes an easy-to-use failure threshold (defaulting to `1`). We'll go through some examples with the `small_table` dataset included in **pointblank**.
+
+``` r
+small_table
+```
+
+```
+#> # A tibble: 13 x 8
+#>    date_time           date           a b             c      d e     f    
+#>    <dttm>              <date>     <int> <chr>     <dbl>  <dbl> <lgl> <chr>
+#>  1 2016-01-04 11:00:00 2016-01-04     2 1-bcd-345     3  3423. TRUE  high 
+#>  2 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low  
+#>  3 2016-01-05 13:32:00 2016-01-05     6 8-kdg-938     3  2343. TRUE  high 
+#>  4 2016-01-06 17:23:00 2016-01-06     2 5-jdo-903    NA  3892. FALSE mid  
+#>  5 2016-01-09 12:36:00 2016-01-09     8 3-ldm-038     7   284. TRUE  low  
+#>  6 2016-01-11 06:15:00 2016-01-11     4 2-dhe-923     4  3291. TRUE  mid  
+#>  7 2016-01-15 18:46:00 2016-01-15     7 1-knw-093     3   843. TRUE  high 
+#>  8 2016-01-17 11:27:00 2016-01-17     4 5-boe-639     2  1036. FALSE low  
+#>  9 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#> 10 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#> 11 2016-01-26 20:07:00 2016-01-26     4 2-dmx-010     7   834. TRUE  low  
+#> 12 2016-01-28 02:51:00 2016-01-28     2 7-dmx-010     8   108. FALSE low  
+#> 13 2016-01-30 11:23:00 2016-01-30     1 3-dka-303    NA  2230. TRUE  high 
+```
+
+``` r
+# With the `expect_*()` form, we would
+# typically perform one validation at a time
+# (the same way that testthat tests operate)
+expect_col_vals_between(
+  small_table, vars(c), 1, 9,
+  na_pass = TRUE
+)
+```
+
+This returns absolutely nothing, which means the test worked! In the case that it doesn't work, we get an informative message:
+
+``` r
+expect_col_vals_between(
+  small_table, vars(c), 23, 34,
+  na_pass = TRUE
+)
+```
+
+```
+Error: Exceedance of failed test units where values in `c` should have been between `23` and `34`.
+The `expect_col_vals_between()` validation failed beyond the absolute threshold level (1).
+* failure level (11) >= failure threshold (1) 
+```
+
+By the way, these messages are consistent with the error and warning messages that are shown when using validation functions directly on data (e.g., `small_table %>% expect_col_vals_between(...)`).
+
+## *Test* Functions
+
+On top of the `expect_*()` set of functions, there are now 24 *test* functions (e.g., `test_col_exists()`, `test_rows_distinct()`, `test_col_schema_match()`, etc.) to further complement the 24 validation functions. These functions return a logical value: `TRUE` if the failure threshold (having a default of 1) *is not* exceeded, `FALSE` otherwise. These `test_*()` functions use the same simplified interface of the `expect_*()` functions.
+
+``` r
+# With the `test_*()` form, we should get a
+# single logical value returned to us
+test_col_vals_between(
+  small_table, vars(c), 1, 9,
+  na_pass = TRUE
+)
+```
+
+```
+[1] TRUE
+```
+
+## `col_vals_expr()`, `expect_col_vals_expr()`, and `test_col_vals_expr()`
+
+For those times when you just want a DIY expression for your validation, the `col_vals_expr()` function (and the *expectation* and *test* variants) could be what you need. The **dplyr** `expr()`, `case_when()`, and `between()` functions are now re-exported in **pointblank** for easier accessibility here since they work exceedingly well with the new functions. Here's an example:
+
+``` r
+# Let's use a tiny table for testing here
+tbl <-
+  dplyr::tibble(
+    a = c(1, 2, 1, 7, 8, 6),
+    b = c(0, 0, 0, 1, 1, 1),
+    c = c(0.5, 0.3, 0.8, 1.4, 1.9, 1.2),
+  )
+  
+tbl
+```
+
+```
+#> # A tibble: 6 x 3
+#>       a     b     c
+#>   <dbl> <dbl> <dbl>
+#> 1     1     0   0.5
+#> 2     2     0   0.3
+#> 3     1     0   0.8
+#> 4     7     1   1.4
+#> 5     8     1   1.9
+#> 6     6     1   1.2
+```
+
+``` r
+# Test that values in column `a`
+# are integer-like by using the R modulo
+# operator and expecting `0`
+test_col_vals_expr(tbl, ~ a %% 1 == 0)
+```
+
+```
+[1] TRUE
+```
+
+```
+# We can do more complex things by
+# taking advantage of the `case_when()`
+# and `between()` functions (available
+# for use in the pointblank package) 
+tbl %>%
+  test_col_vals_expr(~ case_when(
+    b == 0 ~ a %>% between(0, 5) & c < 1,
+    b == 1 ~ a > 5 & c >= 1
+  ))
+```
+
+```
+[1] TRUE
+```
+
+Should the evaluation of the expression not work out (for example, the non-existent `d` column was used in the above) you'll get an `NA` value returned. If using an agent, the report will show that the evaluation was unsuccessful (look for the explosion in the `EVAL` column).
+
+## New **R Markdown** Features
+
+Almost forgot about this one! A new **R Markdown** validation feature allows for validation testing within specialized validation code chunks where the `validate = TRUE` option is set. Using pointblank validation functions on data in these marked code chunks will flag overall failure if the stop threshold is exceeded anywhere. All errors are reported in the validation code chunk after rendering the document to HTML, where green or red status buttons indicate whether all validations succeeded or failures occurred. But, better to show than to explain, here's an animation:
+
+![](/post/2020-06-24-pointblank-0-4_files/pointblank_rmarkdown.png)
+
+There's a very useful R Markdown template for this new **R Markdown** validation feature: `Pointblank Validation`.
+
+Using **pointblank** in an **R Markdown** workflow is enabled by default once the pointblank library is loaded. While the framework for such testing is set up by default, the new `validate_rmd()` function offers an opportunity to set UI and logging options. 
+
+## The **agent** Report
+
+The appearance of the agent report has improved (a lot!) and it's gained some new features:
+
+ 1. data extracts for failing rows (on row-based validation steps) can be downloaded as CSVs via the new buttons that appear in the `EXT` column
+ 2. there are useful tooltips on most fields of the table (e.g., hovering over items in `STEP` will show the 'brief', `TBL` icons will describe whether any preconditions were applied to the table prior to interrogation, etc.), and 
+ 3. there are printing improvements in the `COLUMNS` and `VALUES` columns (e.g., table columns are distinguished from literal values).
+ 
+Here's a diagram that better explains the whole thing: 
+ 
+![](/post/2020-06-24-pointblank-0-4_files/agent_report.png)
+
+This bit of reporting is really important so expect even more improvements in an upcoming version.
+
+## Scanning Your Data with `scan_data()`: Improvements!
+
+The `scan_data()` function let's you 'Thoroughly scan the table data so as to understand it better' (that's from the help page, at `?scan_data`). In case you haven't seen it, this function generates an HTML report that explains the input table data. It's a great thing to use before calling up an **agent** to validate the data. With this function, we can now quickly get to understanding the data with some level of precision. The reporting output contains several sections to make everything more digestible, and these are:
+
+ 1. Overview: Table dimensions, duplicate row count, column types, and reproducibility information
+ 2. Variables: A summary for each table variable and further statistics and summaries depending on the variable type
+ 3. Interactions: A matrix plot that shows interactions between variables
+ 4. Correlations: A set of correlation matrix plots for numerical variables
+ 5. Missing Values: A summary figure that shows the degree of missingness across variables, and
+ 6. Sample: A table that provides the head and tail rows of the dataset
+ 
+![](/post/2020-06-24-pointblank-0-4_files/table_scan.png)
+ 
+It's pretty cool! Try it out with your favorite dataset. I created a few examples, in various languages even, in **RPubs**:
+
+[![Table Scan in English](https://img.shields.io/static/v1?label=Table%20Scan&message=English&color=blue)](https://rpubs.com/rich_i/pointblank_storms_english)
+[![Table Scan in French](https://img.shields.io/static/v1?label=Table%20Scan&message=French&color=blue)](https://rpubs.com/rich_i/pointblank_storms_french)
+[![Table Scan in German](https://img.shields.io/static/v1?label=Table%20Scan&message=German&color=blue)](https://rpubs.com/rich_i/pointblank_storms_german)
+[![Table Scan in Italian](https://img.shields.io/static/v1?label=Table%20Scan&message=Italian&color=blue)](https://rpubs.com/rich_i/pointblank_storms_italian)
+[![Table Scan in Spanish](https://img.shields.io/static/v1?label=Table%20Scan&message=Spanish&color=blue)](https://rpubs.com/rich_i/pointblank_storms_spanish)
+
+All of those Table Scans are of the `dplyr::storms` dataset. But whaddabout database tables? That's the improvement this time round! You can now use `scan_data()` to scan some DB tables. Here are two brand-new examples using the `full_region` table of the **Rfam** database (hosted publicly at "mysql-rfam-public.ebi.ac.uk") and the `assembly` table of the **Ensembl** database (hosted publicly at "ensembldb.ensembl.org").
+
+[![Rfam: full_region](https://img.shields.io/static/v1?label=Table%20Scan&message=Rfam: full_region&color=green)](https://rpubs.com/rich_i/rfam_full_region)
+[![Ensembl: assembly](https://img.shields.io/static/v1?label=Table%20Scan&message=Ensembl: assembly&color=green)](https://rpubs.com/rich_i/ensembl_assembly)
+
+## Nicer Lookin' Email
+
+You can send HTML email with the agent report inside (thanks to some help by the **blastula** package). There's seemingly no limit to the customizability of the message body, since the `email_blast()` function has full access to the agent intel (have a look at the help article at `?email_blast` for all the details on this). However, sometimes you want a reasonably-nice default email that won't take much work develop. In this release, the default look of the email is much easier on the eyes. 
+
+![](/post/2020-06-24-pointblank-0-4_files/pointblank_email.png)
+
+It uses a small version of the agent report (575px wide) that still has those useful tooltips that provide *briefs* (an unfortunate name for the short descriptions of each validation step). Sure, you could customize the email yourself with the `msg_header`, `msg_body`, and `msg_footer` args but, now, you might not have a compulsion to do so.
+
+## Wrapping Up
+
+I hope this gives some insight into what [**pointblank**](https://rich-iannone.github.io/pointblank/) is all about and where its development is headed. Aside from these sizable improvements and new features, there were also plenty of bugfixes and smaller quality-of-life changes that made it into this release. As ever, I hope you get a chance to try it out on your own data.
+
+</div>
+<!-- Start French Section --> 
+<div id="French" class="tabcontent">
+
+![](/post/2020-06-24-pointblank-0-4_files/pointblank_v0_4.png)
+
+Le package [**pointblank**](https://rich-iannone.github.io/pointblank/) est maintenant à la version 0.4 et regorge de bonbons. Il y a de nouvelles fonctions qui nous permettent de faire des choses vraiment intéressantes avec la validation des données. Certaines des fonctions existantes ont acquis de nouvelles superpuissances. La documentation? Mieux que jamais! Ils ont été entièrement révisés et il existe également de nombreux exemples faciles à utiliser. Vous pouvez installer **pointblank** 0.4 de CRAN avec:
+
+```r
+install.packages("pointblank")
+```
+
+Avec la dernière version de ** pointblank **, l'objectif était d'activer deux workflows de validation de données importants, mais assez distincts, à l'aide d'un ensemble commun de fonctions d'étape de validation. Jetons un autre regard sur la justification de ceux-ci, qui étaient:
+
+1. rapports sur la qualité des données
+2. validation des données basée sur le pipeline
+
+Pourquoi le premier point est-il si important? Si vous traitez avec des données, et je suis sûr que vous l'êtes, vous devez vraiment comprendre et maîtriser la qualité des données. Les données sont-elles bonnes? Est-il mauvais? Quelles parties sont bonnes ou mauvaises? Les mauvaises parties sont-elles vraiment mauvaises? Pouvons-nous comprendre ce qui le rend mauvais? (Je suppose simplement que c'est mauvais.) Beaucoup de questions, et nous pouvons y répondre, tant que nous avons un processus. Ce que j'espère, c'est que **pointblank** est assez bon pour tout cela.
+
+![](/post/2020-06-24-pointblank-0-4_files/data_quality_workflow.png)
+
+Le deuxième flux de travail est également important, mais il est vraiment différent du premier. Vous devez vérifier vos données avant de poursuivre leur progression dans un pipeline. Peut-être que les données d'entrée (rigoureusement vérifiées et nettoyées, grâce aux rapports sur la qualité des données) sont très bien, mais qu'en est-il des données transformées dans un pipeline? Allons! Il faut le vérifier et vous le savez! Vous pourriez avoir de graves problèmes si vous ignorez tout cela. Alors faites-le! Simplement fais-le!
+
+Quoi qu'il en soit, ce sont les principaux workflows. Il y a de nouvelles choses qui permettent de nouvelles façons d'utiliser **pointblank**. C'est assez excitant!
+
+## *Expectation* fonctions
+
+Il existe désormais 24 fonctions *expectation* (par exemple, `expect_col_exists()`, `expect_rows_distinct()`, `expect_col_schema_match()`, etc.) en complément des 24 fonctions de validation. Tous ces éléments peuvent être utilisés pour **testthat** tests de données tabulaires avec une interface simplifiée qui expose un seuil de défaillance facile à utiliser (par défaut à `1`). Explorons cela à travers des exemples. Nous utiliserons l'ensemble de données `small_table` inclus dans **pointblank**.
+
+``` r
+small_table
+```
+
+```
+#> # A tibble: 13 x 8
+#>    date_time           date           a b             c      d e     f    
+#>    <dttm>              <date>     <int> <chr>     <dbl>  <dbl> <lgl> <chr>
+#>  1 2016-01-04 11:00:00 2016-01-04     2 1-bcd-345     3  3423. TRUE  high 
+#>  2 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low  
+#>  3 2016-01-05 13:32:00 2016-01-05     6 8-kdg-938     3  2343. TRUE  high 
+#>  4 2016-01-06 17:23:00 2016-01-06     2 5-jdo-903    NA  3892. FALSE mid  
+#>  5 2016-01-09 12:36:00 2016-01-09     8 3-ldm-038     7   284. TRUE  low  
+#>  6 2016-01-11 06:15:00 2016-01-11     4 2-dhe-923     4  3291. TRUE  mid  
+#>  7 2016-01-15 18:46:00 2016-01-15     7 1-knw-093     3   843. TRUE  high 
+#>  8 2016-01-17 11:27:00 2016-01-17     4 5-boe-639     2  1036. FALSE low  
+#>  9 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#> 10 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#> 11 2016-01-26 20:07:00 2016-01-26     4 2-dmx-010     7   834. TRUE  low  
+#> 12 2016-01-28 02:51:00 2016-01-28     2 7-dmx-010     8   108. FALSE low  
+#> 13 2016-01-30 11:23:00 2016-01-30     1 3-dka-303    NA  2230. TRUE  high 
+```
+
+``` r
+# Avec le formulaire `expect_*()`, nous
+# effectue généralement une validation à la fois
+# (de la même manière que les tests fonctionnent)
+expect_col_vals_between(
+  small_table, vars(c), 1, 9,
+  na_pass = TRUE
+)
+```
+
+Cela ne renvoie rien. Rien du tout. C'est bien! Cela signifie que le test a fonctionné! Dans le cas où cela ne fonctionne pas, nous obtenons un message informatif:
+
+``` r
+expect_col_vals_between(
+  small_table, vars(c), 23, 34,
+  na_pass = TRUE
+)
+```
+
+```
+Error: Exceedance of failed test units where values in `c` should have been between `23` and `34`.
+The `expect_col_vals_between()` validation failed beyond the absolute threshold level (1).
+* failure level (11) >= failure threshold (1) 
+```
+
+Ces messages sont cohérents avec les messages d'erreur et d'avertissement qui s'affichent lors de l'utilisation de fonctions de validation directement sur les données (par exemple, `small_table %>% expect_col_vals_between (...)`).
+
+## *Test* fonctions
+
+En plus de l'ensemble de fonctions `expect_*()`, il existe désormais 24 *fonctions test* (par exemple, `test_col_exists()`, `test_rows_distinct()`, `test_col_schema_match()`, etc.) pour compléter 24 fonctions de validation. Ces fonctions renvoient une valeur logique: `TRUE` si le seuil de défaillance (ayant une valeur par défaut de `1`) *n'est pas* dépassé, `FALSE` sinon. Ces fonctions `test_*()` utilisent la même interface simplifiée que les fonctions `expect_*()`.
+
+``` r
+# Avec le formulaire `test_*()`, nous
+# devrions obtenir un valeur TRUE ou FALSE
+# unique qui nous est retournée
+test_col_vals_between(
+  small_table, vars(c), 1, 9,
+  na_pass = TRUE
+)
+```
+
+```
+[1] TRUE
+```
+
+## `col_vals_expr()`, `expect_col_vals_expr()` et `test_col_vals_expr()`
+
+Si vous voulez juste une expression simple pour votre validation, la fonction `col_vals_expr()` (et les variantes *expectation* et *test*) pourrait être ce dont vous avez besoin. Les fonctions **dplyr** `expr()`, `case_when()` et `between()` sont maintenant réexportées dans **pointblank** pour une accessibilité plus facile ici. Ils fonctionnent à merveille avec les nouvelles fonctions. Voici un exemple:
+
+``` r
+# Utilisons une p'tit table pour tester
+tbl <-
+  dplyr::tibble(
+    a = c(1, 2, 1, 7, 8, 6),
+    b = c(0, 0, 0, 1, 1, 1),
+    c = c(0.5, 0.3, 0.8, 1.4, 1.9, 1.2),
+  )
+  
+tbl
+```
+
+```
+#> # A tibble: 6 x 3
+#>       a     b     c
+#>   <dbl> <dbl> <dbl>
+#> 1     1     0   0.5
+#> 2     2     0   0.3
+#> 3     1     0   0.8
+#> 4     7     1   1.4
+#> 5     8     1   1.9
+#> 6     6     1   1.2
+```
+
+``` r
+# Testez les valeurs de la colonne `a`
+# sont de type entier en utilisant le
+# module R opérateur et attend `0`
+test_col_vals_expr(tbl, ~ a %% 1 == 0)
+```
+
+```
+[1] TRUE
+```
+
+```
+# Nous pouvons faire des choses plus
+# complexes en profitant du `case_when()`
+# et `between()` fonctions (disponibles
+# à utiliser dans le package pointblank)
+tbl %>%
+  test_col_vals_expr(~ case_when(
+    b == 0 ~ a %>% between(0, 5) & c < 1,
+    b == 1 ~ a > 5 & c >= 1
+  ))
+```
+
+```
+[1] TRUE
+```
+
+Si l'évaluation de l'expression ne fonctionne pas (par exemple, la colonne `d` inexistante a été utilisée ci-dessus), vous obtiendrez une valeur `NA`. Si vous utilisez un agent, le rapport montrera que l'évaluation a échoué (recherchez l'explosion dans la colonne `EVAL`). C'est la bombe!
+
+## Nouvelles fonctionnalités **R Markdown**
+
+Une nouvelle fonctionnalité de validation R Markdown permet d'effectuer des tests de validation dans des blocs de code de validation spécialisés où l'option `validate = TRUE` est définie. Voici une animation qui montre comment cela fonctionne:
+
+![](/post/2020-06-24-pointblank-0-4_files/pointblank_rmarkdown.png)
+
+Il existe un nouveau template R Markdown pour cela, appelé «Pointblank Validation».
+
+L'utilisation de **pointblank** dans un workflow **R Markdown** est activée par défaut une fois **pointblank** chargée. La nouvelle fonction `validate_rmd()` offre la possibilité de définir des options de journalisation.
+
+## Le rapport d'**agent**
+
+L'apparence du rapport d'agent est désormais bien meilleure. Il a gagné de nouvelles fonctionnalités:
+
+ 1. les extraits de données pour les lignes défaillantes (lors des étapes de validation basées sur les lignes) peuvent être téléchargés au format CSV via les nouveaux boutons qui apparaissent dans la colonne `EXT`
+ 2. il existe des info-bulles utiles sur la plupart des champs du tableau (par exemple, survoler les éléments dans `STEP` affichera le résumé, les icônes `TBL` décriront si des conditions préalables ont été appliquées au tableau avant l'interrogation, etc.), et
+ 3. il y a des améliorations d'impression dans les colonnes `COLUMNS` et `VALUES` (par exemple, les colonnes du tableau sont distinguées des valeurs littérales).
+ 
+Voici un diagramme utile:
+ 
+![](/post/2020-06-24-pointblank-0-4_files/agent_report.png)
+
+Ce rapport est super important. Attendez-vous à d'autres améliorations dans un avenir proche.
+
+## Améliorations avec `scan_data()`
+
+Au cas où vous ne l'auriez pas vu, cette fonction génère un rapport HTML qui parcourt les données de la table d'entrée. C'est une bonne chose à utiliser avant d'appeler un **agent** pour valider les données. Avec cette fonction, nous pouvons maintenant rapidement comprendre les données avec un certain niveau de précision. La sortie du rapport contient plusieurs sections pour rendre tout plus digestible, et ce sont:
+
+  1. Aperçu: dimensions de la table, nombre de lignes en double, types de colonnes et informations de reproductibilité
+  2. Variables: un résumé pour chaque variable du tableau et d'autres statistiques et résumés selon le type de variable
+  3. Interactions: un graphique matriciel qui montre les interactions entre les variables
+  4. Corrélations: un ensemble de graphiques matriciels de corrélation pour les variables numériques
+  5. Valeurs manquantes: une figure récapitulative qui montre le degré de disparité entre les variables, et
+  6. Exemple: un tableau qui fournit les lignes de tête et de queue de l'ensemble de données
+ 
+![](/post/2020-06-24-pointblank-0-4_files/table_scan.png)
+ 
+C'est bon! Essayez-le avec votre jeu de données préféré. J'ai créé quelques exemples, dans différentes langues même, dans **RPubs**:
+
+[![Table Scan in English](https://img.shields.io/static/v1?label=Table%20Scan&message=English&color=blue)](https://rpubs.com/rich_i/pointblank_storms_english)
+[![Table Scan in French](https://img.shields.io/static/v1?label=Table%20Scan&message=French&color=blue)](https://rpubs.com/rich_i/pointblank_storms_french)
+[![Table Scan in German](https://img.shields.io/static/v1?label=Table%20Scan&message=German&color=blue)](https://rpubs.com/rich_i/pointblank_storms_german)
+[![Table Scan in Italian](https://img.shields.io/static/v1?label=Table%20Scan&message=Italian&color=blue)](https://rpubs.com/rich_i/pointblank_storms_italian)
+[![Table Scan in Spanish](https://img.shields.io/static/v1?label=Table%20Scan&message=Spanish&color=blue)](https://rpubs.com/rich_i/pointblank_storms_spanish)
+
+Tous ces éléments font partie de l'ensemble de données `dplyr::storms`. Mais à propos des tables de base de données? C'est l'amélioration cette fois-ci! Vous pouvez maintenant utiliser `scan_data()` pour analyser certaines tables de base de données. Voici deux nouveaux exemples utilisant la table `full_region` de la base de données **Rfam** (hébergée publiquement sur "mysql-rfam-public.ebi.ac.uk") et la table `assembly` de **Ensembl** base de données (hébergée publiquement sur "ensembldb.ensembl.org").
+
+[![Rfam: full_region](https://img.shields.io/static/v1?label=Table%20Scan&message=Rfam: full_region&color=green)](https://rpubs.com/rich_i/rfam_full_region)
+[![Ensembl: assembly](https://img.shields.io/static/v1?label=Table%20Scan&message=Ensembl: assembly&color=green)](https://rpubs.com/rich_i/ensembl_assembly)
+
+## Courriel: J'aime le way qu'à hang
+
+Vous pouvez envoyer un e-mail HTML avec le rapport de l'agent à l'intérieur (grâce à l'aide du package **blastula**). Il n'y a apparemment aucune limite à la personnalisation du corps du message, car la fonction `email_blast()` a un accès complet aux informations de l'agent (consultez l'article d'aide à `?email_blast` pour tous les détails à ce sujet). Cependant, parfois, vous voulez un e-mail par défaut assez agréable qui ne prendra pas beaucoup de travail à envoyer. Dans cette version, l'apparence par défaut de l'e-mail est beaucoup plus facile pour les yeux.
+
+![](/post/2020-06-24-pointblank-0-4_files/pointblank_email.png)
+
+Il utilise une petite version du rapport d'agent (575 px de large) qui a toujours des info-bulles qui fournissent des *briefs* (un nom malheureux en anglais pour les courtes descriptions de chaque étape de validation). Bien sûr, vous pouvez personnaliser l'e-mail avec les arguments `msg_header`, `msg_body` et `msg_footer` mais, maintenant, vous n'avez peut-être pas la contrainte de le faire.
+
+## Conclusion
+
+J'espère que cela vous donnera un aperçu de ce qu'est [**pointblank**](https://rich-iannone.github.io/pointblank/) et de son évolution. Mis à part ces améliorations considérables et ces nouvelles fonctionnalités, de nombreuses corrections de bugs et de petits changements de qualité de vie ont également été intégrés à cette version. Comme toujours, j'espère que vous aurez l'occasion de l'essayer sur vos propres données.
+
+</div>
+<!-- Start German Section --> 
+<div id="German" class="tabcontent">
+
+![](/post/2020-06-24-pointblank-0-4_files/pointblank_v0_4.png)
+
+Das [**pointblank**-Paket](https://rich-iannone.github.io/pointblank/) ist jetzt in Version 0.4 und voller Goodies. Es gibt neue Funktionen, mit denen wir wirklich interessante Dinge mit der Datenvalidierung tun können. Einige der bestehenden Funktionen erhielten neue Superkräfte. Die Dokumentation? Besser denn je! Sie wurden komplett überarbeitet und es gibt auch viele benutzerfreundliche Beispiele. Sie können **pointblank** 0.4 von CRAN installieren mit:
+
+```r
+install.packages("pointblank")
+```
+
+Mit der letzten Version von **pointblank** bestand das Ziel darin, zwei wichtige, jedoch recht unterschiedliche Datenvalidierungs-Workflows mithilfe eines gemeinsamen Satzes von Validierungsschrittfunktionen zu ermöglichen. Lassen Sie uns noch einen Blick auf die Gründe für diejenigen werfen, die waren:
+
+1. Berichterstattung zur Datenqualität
+2. Pipeline-basierte Datenvalidierung2. pipeline-based data validation
+
+Warum ist es für den ersten so wichtig? Wenn Sie mit Daten zu tun haben und ich bin sicher, dass Sie es sind, müssen Sie die Datenqualität wirklich verstehen und auf den neuesten Stand bringen. Sind die Daten gut? Ist es schlimm? Welche Teile sind gut oder schlecht? Sind die schlechten Teile *wirklich* schlecht? Können wir verstehen, was es schlecht macht? (Ich gehe nur davon aus, dass es schlecht ist.) Viele Fragen, und wir können sie beantworten, solange wir einen Prozess haben. Was ich hoffe ist, dass **pointblank** der Aufgabe gewachsen ist.
+
+![](/post/2020-06-24-pointblank-0-4_files/data_quality_workflow.png)
+
+Der zweite Workflow ist ebenfalls wichtig, unterscheidet sich jedoch erheblich vom ersten. Die Idee ist, dass Sie Ihre Daten überprüfen müssen, bevor sie weiter unten in einer Pipeline fortgesetzt werden. Vielleicht sind die Eingabedaten (dank Datenqualitätsberichterstattung streng geprüft und bereinigt) in Ordnung, aber was ist mit den transformierten Daten in einer Pipeline? Wir sollten auch diese Daten überprüfen.
+
+Dies sind die Hauptworkflows, aber es gibt jetzt einige neue Möglichkeiten, **pointblank** zu verwenden.
+
+## *Expectation* Funktionen
+
+Es gibt jetzt 24 *Expectation*-Funktionen (z. B. `expect_col_exists()`, `expect_rows_distinct()`, `expect_col_schema_match()` usw.) als Ergänzungen der 24 Validierungsfunktionen. All dies kann für **testthat** Testen von Tabellendaten mit einer vereinfachten Oberfläche verwendet werden, die einen benutzerfreundlichen Fehlerschwellenwert (standardmäßig `1`) anzeigt. Wir werden einige Beispiele mit dem in **pointblank** enthaltenen `small_table`-Dataset durchgehen.
+
+``` r
+small_table
+```
+
+```
+#> # A tibble: 13 x 8
+#>    date_time           date           a b             c      d e     f    
+#>    <dttm>              <date>     <int> <chr>     <dbl>  <dbl> <lgl> <chr>
+#>  1 2016-01-04 11:00:00 2016-01-04     2 1-bcd-345     3  3423. TRUE  high 
+#>  2 2016-01-04 00:32:00 2016-01-04     3 5-egh-163     8 10000. TRUE  low  
+#>  3 2016-01-05 13:32:00 2016-01-05     6 8-kdg-938     3  2343. TRUE  high 
+#>  4 2016-01-06 17:23:00 2016-01-06     2 5-jdo-903    NA  3892. FALSE mid  
+#>  5 2016-01-09 12:36:00 2016-01-09     8 3-ldm-038     7   284. TRUE  low  
+#>  6 2016-01-11 06:15:00 2016-01-11     4 2-dhe-923     4  3291. TRUE  mid  
+#>  7 2016-01-15 18:46:00 2016-01-15     7 1-knw-093     3   843. TRUE  high 
+#>  8 2016-01-17 11:27:00 2016-01-17     4 5-boe-639     2  1036. FALSE low  
+#>  9 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#> 10 2016-01-20 04:30:00 2016-01-20     3 5-bce-642     9   838. FALSE high 
+#> 11 2016-01-26 20:07:00 2016-01-26     4 2-dmx-010     7   834. TRUE  low  
+#> 12 2016-01-28 02:51:00 2016-01-28     2 7-dmx-010     8   108. FALSE low  
+#> 13 2016-01-30 11:23:00 2016-01-30     1 3-dka-303    NA  2230. TRUE  high 
+```
+
+``` r
+# Mit dem Formular `expect_*()` würden
+# wir Führen Sie normalerweise jeweils
+# eine Validierung durch (genauso wie
+# testthat Tests funktionieren)
+expect_col_vals_between(
+  small_table, vars(c), 1, 9,
+  na_pass = TRUE
+)
+```
+
+Dies gibt absolut nichts zurück: eine Leere. Dies bedeutet, dass der Test funktioniert hat. Falls es nicht funktioniert, erhalten wir eine informative Nachricht:
+
+``` r
+expect_col_vals_between(
+  small_table, vars(c), 23, 34,
+  na_pass = TRUE
+)
+```
+
+```
+Error: Exceedance of failed test units where values in `c` should have been between `23` and `34`.
+The `expect_col_vals_between()` validation failed beyond the absolute threshold level (1).
+* failure level (11) >= failure threshold (1) 
+```
+
+Übrigens stimmen diese Meldungen mit den Fehler- und Warnmeldungen überein, die angezeigt werden, wenn Validierungsfunktionen direkt für Daten verwendet werden (z. B. `small_table %>% expected_col_vals_between (...)`).
+
+## *Test* Funktionen
+
+Abgesehen von dem Funktionssatz `expect_*()` gibt es jetzt 24 *test*-Funktionen (z. B. `test_col_exists()`, `test_rows_distinct()`, `test_col_schema_match()` usw.), um die 24 weiter zu ergänzen Validierungsfunktionen. Diese Funktionen geben einen logischen Wert zurück: `TRUE`, wenn der Fehlerschwellenwert (mit einem Standardwert von 1) *nicht* überschritten wird, andernfalls `FALSE`. Diese `test_*()` Funktionen verwenden dieselbe vereinfachte Schnittstelle wie die `expect_*()` Funktionen.
+
+``` r
+# Mit dem Formular `test_*()` sollten wir einen
+# einzelnen TRUE- oder FALSE-Wert erhalten, der
+# an uns zurückgegeben wird
+test_col_vals_between(
+  small_table, vars(c), 1, 9,
+  na_pass = TRUE
+)
+```
+
+```
+[1] TRUE
+```
+
+## `col_vals_expr()`, `expect_col_vals_expr()`, und `test_col_vals_expr()`
+
+Wenn Sie für Ihre Validierung einen einfachen Ausdruck benötigen, könnte die Funktion `col_vals_expr()` (und die Varianten *expectation* und *test*) genau das sein, was Sie benötigen. Die Funktionen **dplyr** `expr()`, `case_when()` und `between()` werden jetzt in **pointblank** erneut exportiert, um den Zugriff hier zu erleichtern, da sie mit den neuen Funktionen außerordentlich gut funktionieren. Hier ist ein Beispiel:
+
+``` r
+# Lassen Sie uns hier eine winzige Tabelle
+# zum Testen verwenden
+tbl <-
+  dplyr::tibble(
+    a = c(1, 2, 1, 7, 8, 6),
+    b = c(0, 0, 0, 1, 1, 1),
+    c = c(0.5, 0.3, 0.8, 1.4, 1.9, 1.2),
+  )
+  
+tbl
+```
+
+```
+#> # A tibble: 6 x 3
+#>       a     b     c
+#>   <dbl> <dbl> <dbl>
+#> 1     1     0   0.5
+#> 2     2     0   0.3
+#> 3     1     0   0.8
+#> 4     7     1   1.4
+#> 5     8     1   1.9
+#> 6     6     1   1.2
+```
+
+``` r
+# Testen Sie, ob die Werte in Spalte `a`
+# ganzzahlig sind, indem Sie den 
+# R-Modulo-Operator verwenden und `0` erwarten
+test_col_vals_expr(tbl, ~ a %% 1 == 0)
+```
+
+```
+[1] TRUE
+```
+
+```
+# Wir können komplexere Dinge tun, indem
+# wir die Funktionen `case_when()` und
+# `between()` nutzen (verfügbar für die
+# Verwendung im pointblank-Paket).
+tbl %>%
+  test_col_vals_expr(~ case_when(
+    b == 0 ~ a %>% between(0, 5) & c < 1,
+    b == 1 ~ a > 5 & c >= 1
+  ))
+```
+
+```
+[1] TRUE
+```
+
+Sollte die Auswertung des Ausdrucks nicht funktionieren (z. B. wurde oben die nicht vorhandene Spalte `d` verwendet), wird ein `NA`-Wert zurückgegeben. Wenn Sie einen Agenten verwenden, zeigt der Bericht, dass die Auswertung nicht erfolgreich war (suchen Sie nach der Explosion in der Spalte `EVAL`).
+
+## New **R Markdown** features
+
+Eine neue R Markdown-Validierungsfunktion ermöglicht Validierungstests in speziellen Validierungscode-Blöcken, in denen die Option `validate = TRUE` festgelegt ist. Die Verwendung von Pointblank-Validierungsfunktionen für Daten in diesen Codeblöcken zeigt einen Gesamtfehler an, wenn der Stoppschwellenwert irgendwo überschritten wird. Alle Fehler werden im Validierungscode-Block gemeldet, nachdem das Dokument in HTML gerendert wurde. Hier ist eine Animation:
+
+![](/post/2020-06-24-pointblank-0-4_files/pointblank_rmarkdown.png)
+
+Hierfür gibt es eine neue R-Markdown-template namens "Pointblank Validation".
+
+Using **pointblank** in an **R Markdown** workflow is enabled by default once the pointblank library is loaded. While the framework for such testing is set up by default, the new `validate_rmd()` function offers an opportunity to set UI and logging options. 
+
+
+Die Verwendung von **pointblank** in einem **R Markdown**-Workflow ist standardmäßig aktiviert, sobald die pointblank-Bibliothek geladen ist. Während das Framework für solche Tests standardmäßig eingerichtet ist, bietet die neue Funktion `validate_rmd()` die Möglichkeit, Benutzeroberflächen- und Protokollierungsoptionen festzulegen.
+
+## Der **agent** Bericht
+
+Das Erscheinungsbild des Agentenberichts wurde erheblich verbessert und verfügt nun über einige neue Funktionen:
+
+ 1. Datenextrakte für fehlerhafte Zeilen (in zeilenbasierten Validierungsschritten) können über die neuen Schaltflächen in der Spalte `EXT` als CSVs heruntergeladen werden
+ 2. In den meisten Feldern der Tabelle gibt es nützliche QuickInfos (z. B. wenn Sie den Mauszeiger über Elemente in `STEP` halten, wird die Kurzdarstellung angezeigt, `TBL`-Symbole beschreiben, ob vor der Abfrage Vorbedingungen auf die Tabelle angewendet wurden usw.)
+ 3. Es gibt Druckverbesserungen in den Spalten `COLUMNS` und `VALUES` (z. B. werden Tabellenspalten von Literalwerten unterschieden).
+ 
+Hier ist ein Diagramm:
+ 
+![](/post/2020-06-24-pointblank-0-4_files/agent_report.png)
+
+Das ist alles sehr wichtig. Erwarten Sie weitere Verbesserungen in einer kommenden Version.
+
+## Verbesserungen an der Funktion `scan_data()`
+
+Diese Funktion `scan_data()` generiert einen HTML-Bericht, in dem die Daten der Eingabetabelle erläutert werden. Es ist gut zu verwenden, bevor Sie die Daten validieren. Mit dieser Funktion können wir die Daten jetzt schnell und präzise verstehen. Die Berichtsausgabe enthält mehrere Abschnitte, um alles besser verdaulich zu machen. Diese sind:
+
+ 1. Übersicht: Tabellenabmessungen, doppelte Zeilenanzahl, Spaltentypen und Informationen zur Reproduzierbarkeit
+ 2. Variablen: Eine Zusammenfassung für jede Tabellenvariable sowie weitere Statistiken und Zusammenfassungen je nach Variablentyp
+ 3. Interaktionen: Ein Matrixdiagramm, das Interaktionen zwischen Variablen zeigt
+ 4. Korrelationen: Eine Reihe von Korrelationsmatrixdiagrammen für numerische Variablen
+ 5. Fehlende Werte: Eine zusammenfassende Abbildung, die den Grad des Fehlens zwischen Variablen und zeigt
+ 6. Beispiel: Eine Tabelle, die die Kopf- und Endzeilen des Datensatzes enthält
+ 
+![](/post/2020-06-24-pointblank-0-4_files/table_scan.png)
+ 
+Es ist prima. Probieren Sie es mit Ihrem Lieblingsdatensatz aus. Ich habe einige Beispiele in verschiedenen Sprachen in **RPubs** erstellt:
+
+[![Table Scan in English](https://img.shields.io/static/v1?label=Table%20Scan&message=English&color=blue)](https://rpubs.com/rich_i/pointblank_storms_english)
+[![Table Scan in French](https://img.shields.io/static/v1?label=Table%20Scan&message=French&color=blue)](https://rpubs.com/rich_i/pointblank_storms_french)
+[![Table Scan in German](https://img.shields.io/static/v1?label=Table%20Scan&message=German&color=blue)](https://rpubs.com/rich_i/pointblank_storms_german)
+[![Table Scan in Italian](https://img.shields.io/static/v1?label=Table%20Scan&message=Italian&color=blue)](https://rpubs.com/rich_i/pointblank_storms_italian)
+[![Table Scan in Spanish](https://img.shields.io/static/v1?label=Table%20Scan&message=Spanish&color=blue)](https://rpubs.com/rich_i/pointblank_storms_spanish)
+
+Alle diese Beispiele verwenden den Datensatz `dplyr::storms`. Datenbanktabellen? Das ist die neue Verbesserung. Sie können jetzt `scan_data()` für Datenbanktabellen verwenden. Hier sind zwei neue Beispiele, die die Tabelle `full_region` der **Rfam**-Datenbank (öffentlich gehostet unter "mysql-rfam-public.ebi.ac.uk") und die `assembly`-Tabelle des **Ensembl** verwenden. Datenbank (öffentlich gehostet unter "ensembldb.ensembl.org").
+
+[![Rfam: full_region](https://img.shields.io/static/v1?label=Table%20Scan&message=Rfam: full_region&color=green)](https://rpubs.com/rich_i/rfam_full_region)
+[![Ensembl: assembly](https://img.shields.io/static/v1?label=Table%20Scan&message=Ensembl: assembly&color=green)](https://rpubs.com/rich_i/ensembl_assembly)
+
+## Besseres Erscheinungsbild für E-Mail
+
+Sie können eine HTML-E-Mail mit dem Bericht des Agenten senden. Dies wird durch das **blastula**-Paket unterstützt. Der Anpassbarkeit des Nachrichtentexts sind keine wirklichen Grenzen gesetzt, da die Funktion `email_blast()` nach der Abfrage vollen Zugriff auf Informationen hat. Weitere Informationen finden Sie im Hilfeartikel unter `?email_blast`. Manchmal möchten Sie jedoch eine gute Standard-E-Mail, deren Erstellung nicht viel Arbeit erfordert. In dieser Version sieht das Standard-Erscheinungsbild der E-Mail viel besser aus.
+
+![](/post/2020-06-24-pointblank-0-4_files/pointblank_email.png)
+
+Hierbei wird eine kleine Version des Agentenberichts (575 Pixel breit) verwendet, die noch QuickInfos enthält, die *briefs* enthalten (ein schlecht gewählter englischer Name für die Kurzbeschreibungen der einzelnen Validierungsschritte). Sie können die E-Mail selbst mit den Argumenten `msg_header`, `msg_body` und `msg_footer` anpassen. Möglicherweise möchten Sie dies jetzt jedoch nicht tun.
+
+## Abschließend
+
+Ich hoffe, dies gibt einen Einblick in das, worum es bei [**pointblank**](https://rich-iannone.github.io/pointblank/) geht und wohin seine Entwicklung geht. Abgesehen von diesen beträchtlichen Verbesserungen und neuen Funktionen gab es auch viele Bugfixes und kleinere Änderungen. Ich hoffe, Sie haben die Möglichkeit, es an Ihren eigenen Daten auszuprobieren.
+
+</div>
+<script>
+function openLang(evt, cityName) {
+var i, tabcontent, tablinks;
+tabcontent = document.getElementsByClassName("tabcontent");
+for (i = 0; i < tabcontent.length; i++) {
+tabcontent[i].style.display = "none";
+}
+tablinks = document.getElementsByClassName("tablinks");
+for (i = 0; i < tablinks.length; i++) {
+tablinks[i].className = tablinks[i].className.replace(" active", "");
+}
+document.getElementById(cityName).style.display = "block";
+evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
+
