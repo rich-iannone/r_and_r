@@ -445,12 +445,11 @@ tbl %&amp;gt;%
 &lt;pre&gt;&lt;code&gt;[1] TRUE&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Sollte die Auswertung des Ausdrucks nicht funktionieren (z. B. wurde oben die nicht vorhandene Spalte &lt;code&gt;d&lt;/code&gt; verwendet), wird ein &lt;code&gt;NA&lt;/code&gt;-Wert zurückgegeben. Wenn Sie einen Agenten verwenden, zeigt der Bericht, dass die Auswertung nicht erfolgreich war (suchen Sie nach der Explosion in der Spalte &lt;code&gt;EVAL&lt;/code&gt;).&lt;/p&gt;
 &lt;/div&gt;
-&lt;div id=&#34;new-r-markdown-features-1&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;New &lt;strong&gt;R Markdown&lt;/strong&gt; features&lt;/h2&gt;
+&lt;div id=&#34;neue-r-markdown-funktionen&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Neue &lt;strong&gt;R Markdown&lt;/strong&gt; Funktionen&lt;/h2&gt;
 &lt;p&gt;Eine neue R Markdown-Validierungsfunktion ermöglicht Validierungstests in speziellen Validierungscode-Blöcken, in denen die Option &lt;code&gt;validate = TRUE&lt;/code&gt; festgelegt ist. Die Verwendung von Pointblank-Validierungsfunktionen für Daten in diesen Codeblöcken zeigt einen Gesamtfehler an, wenn der Stoppschwellenwert irgendwo überschritten wird. Alle Fehler werden im Validierungscode-Block gemeldet, nachdem das Dokument in HTML gerendert wurde. Hier ist eine Animation:&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2020-06-24-pointblank-0-4_files/pointblank_rmarkdown.png&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Hierfür gibt es eine neue R-Markdown-template namens “Pointblank Validation”.&lt;/p&gt;
-&lt;p&gt;Using &lt;strong&gt;pointblank&lt;/strong&gt; in an &lt;strong&gt;R Markdown&lt;/strong&gt; workflow is enabled by default once the pointblank library is loaded. While the framework for such testing is set up by default, the new &lt;code&gt;validate_rmd()&lt;/code&gt; function offers an opportunity to set UI and logging options.&lt;/p&gt;
 &lt;p&gt;Die Verwendung von &lt;strong&gt;pointblank&lt;/strong&gt; in einem &lt;strong&gt;R Markdown&lt;/strong&gt;-Workflow ist standardmäßig aktiviert, sobald die pointblank-Bibliothek geladen ist. Während das Framework für solche Tests standardmäßig eingerichtet ist, bietet die neue Funktion &lt;code&gt;validate_rmd()&lt;/code&gt; die Möglichkeit, Benutzeroberflächen- und Protokollierungsoptionen festzulegen.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;der-agent-bericht&#34; class=&#34;section level2&#34;&gt;

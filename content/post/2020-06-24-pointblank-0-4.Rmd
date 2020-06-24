@@ -623,16 +623,13 @@ tbl %>%
 
 Sollte die Auswertung des Ausdrucks nicht funktionieren (z. B. wurde oben die nicht vorhandene Spalte `d` verwendet), wird ein `NA`-Wert zurückgegeben. Wenn Sie einen Agenten verwenden, zeigt der Bericht, dass die Auswertung nicht erfolgreich war (suchen Sie nach der Explosion in der Spalte `EVAL`).
 
-## New **R Markdown** features
+## Neue **R Markdown** Funktionen
 
 Eine neue R Markdown-Validierungsfunktion ermöglicht Validierungstests in speziellen Validierungscode-Blöcken, in denen die Option `validate = TRUE` festgelegt ist. Die Verwendung von Pointblank-Validierungsfunktionen für Daten in diesen Codeblöcken zeigt einen Gesamtfehler an, wenn der Stoppschwellenwert irgendwo überschritten wird. Alle Fehler werden im Validierungscode-Block gemeldet, nachdem das Dokument in HTML gerendert wurde. Hier ist eine Animation:
 
 ![](/post/2020-06-24-pointblank-0-4_files/pointblank_rmarkdown.png)
 
 Hierfür gibt es eine neue R-Markdown-template namens "Pointblank Validation".
-
-Using **pointblank** in an **R Markdown** workflow is enabled by default once the pointblank library is loaded. While the framework for such testing is set up by default, the new `validate_rmd()` function offers an opportunity to set UI and logging options. 
-
 
 Die Verwendung von **pointblank** in einem **R Markdown**-Workflow ist standardmäßig aktiviert, sobald die pointblank-Bibliothek geladen ist. Während das Framework für solche Tests standardmäßig eingerichtet ist, bietet die neue Funktion `validate_rmd()` die Möglichkeit, Benutzeroberflächen- und Protokollierungsoptionen festzulegen.
 

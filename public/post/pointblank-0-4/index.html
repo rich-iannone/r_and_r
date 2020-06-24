@@ -891,12 +891,11 @@ tbl %&gt;%
 <pre><code>[1] TRUE</code></pre>
 <p>Sollte die Auswertung des Ausdrucks nicht funktionieren (z. B. wurde oben die nicht vorhandene Spalte <code>d</code> verwendet), wird ein <code>NA</code>-Wert zurückgegeben. Wenn Sie einen Agenten verwenden, zeigt der Bericht, dass die Auswertung nicht erfolgreich war (suchen Sie nach der Explosion in der Spalte <code>EVAL</code>).</p>
 </div>
-<div id="new-r-markdown-features-1" class="section level2">
-<h2>New <strong>R Markdown</strong> features</h2>
+<div id="neue-r-markdown-funktionen" class="section level2">
+<h2>Neue <strong>R Markdown</strong> Funktionen</h2>
 <p>Eine neue R Markdown-Validierungsfunktion ermöglicht Validierungstests in speziellen Validierungscode-Blöcken, in denen die Option <code>validate = TRUE</code> festgelegt ist. Die Verwendung von Pointblank-Validierungsfunktionen für Daten in diesen Codeblöcken zeigt einen Gesamtfehler an, wenn der Stoppschwellenwert irgendwo überschritten wird. Alle Fehler werden im Validierungscode-Block gemeldet, nachdem das Dokument in HTML gerendert wurde. Hier ist eine Animation:</p>
 <p><img src="/post/2020-06-24-pointblank-0-4_files/pointblank_rmarkdown.png" /></p>
 <p>Hierfür gibt es eine neue R-Markdown-template namens “Pointblank Validation”.</p>
-<p>Using <strong>pointblank</strong> in an <strong>R Markdown</strong> workflow is enabled by default once the pointblank library is loaded. While the framework for such testing is set up by default, the new <code>validate_rmd()</code> function offers an opportunity to set UI and logging options.</p>
 <p>Die Verwendung von <strong>pointblank</strong> in einem <strong>R Markdown</strong>-Workflow ist standardmäßig aktiviert, sobald die pointblank-Bibliothek geladen ist. Während das Framework für solche Tests standardmäßig eingerichtet ist, bietet die neue Funktion <code>validate_rmd()</code> die Möglichkeit, Benutzeroberflächen- und Protokollierungsoptionen festzulegen.</p>
 </div>
 <div id="der-agent-bericht" class="section level2">
