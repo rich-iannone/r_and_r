@@ -5,12 +5,23 @@
     <link>/</link>
       <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <description>R &amp; R</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2020 Richard Iannone</copyright><lastBuildDate>Wed, 24 Jun 2020 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2020 Richard Iannone</copyright><lastBuildDate>Thu, 06 Aug 2020 00:00:00 +0000</lastBuildDate>
     <image>
       <url>/img/R_and_R_share.png</url>
       <title>R &amp; R</title>
       <link>/</link>
     </image>
+    
+    <item>
+      <title>Test</title>
+      <link>/post/test/</link>
+      <pubDate>Thu, 06 Aug 2020 00:00:00 +0000</pubDate>
+      <guid>/post/test/</guid>
+      <description>&lt;p&gt;This is a post.&lt;/p&gt;
+
+&lt;p&gt;This is how you get &lt;a href=&#34;https://git-scm.com&#34; target=&#34;_blank&#34;&gt;git&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>pointblank v0.4</title>
