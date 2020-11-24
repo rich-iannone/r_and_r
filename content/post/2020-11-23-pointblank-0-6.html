@@ -1,0 +1,163 @@
+---
+title: pointblank v0.6
+author: Rich
+date: '2020-11-24'
+slug: pointblank-0-6
+categories: []
+tags:
+  - R Packages
+subtitle: ''
+summary: 'With v0.6 of **pointblank** we now have a workflow for describing our data tables, and, many other things have improved.'
+authors: []
+lastmod: '2020-11-24T10:00:00-05:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+
+<p>With the release of <strong>pointblank</strong> v0.6, workflows for the validation of tabular data have been refined. On top of those improvements, we have a new workflow for <em>describing</em> our tabular data. There’s really so much that’s new in the release that we can only go over the big stuff in this post. For everything else, have a look at the <a href="https://github.com/rich-iannone/pointblank/releases/tag/v0.6.0"><em>Release Notes</em></a>.</p>
+<div id="pointblank-information" class="section level2">
+<h2>Pointblank Information</h2>
+<p><img src="https://silly-jackson-b3dec8.netlify.app/info_fns.png" /></p>
+<p>The new <em>Information Management</em> workflow is full of features that help you to describe tables and keep on top of changes to them. We added the <a href="https://rich-iannone.github.io/pointblank/reference/create_informant.html"><code>create_informant()</code></a> function to create an <em>informant</em> object that is meant to hold information (as much as you want, really) for a target table, with reporting features geared toward communication.</p>
+<p>The informant works in conjunction with functions to facilitate the entry of <em>info text</em>: <a href="https://rich-iannone.github.io/pointblank/reference/info_columns.html"><code>info_columns()</code></a>, <a href="https://rich-iannone.github.io/pointblank/reference/info_tabular.html"><code>info_tabular()</code></a>, and <a href="https://rich-iannone.github.io/pointblank/reference/info_section.html"><code>info_section()</code></a>. These functions are focused on describing columns, the table proper, and for reporting on any other aspects of the table. We can even glean little snippets of information from the target table and mix them into the <em>info text</em> to make the overall information more dynamic. The all-important <a href="https://rich-iannone.github.io/pointblank/reference/incorporate.html"><code>incorporate()</code></a> function concludes this workflow, reaching out to the target table to ensure that queries to it are made and that table properties are synchronized with the reporting.</p>
+<pre class="r"><code>informant &lt;- 
+  create_informant(
+    read_fn = ~ small_table,
+    tbl_name = &quot;small_table&quot;,
+    label = &quot;Example No. 1&quot;
+  ) %&gt;%
+  info_tabular(
+    description = &quot;This table is included in the **pointblank** pkg.&quot;
+  ) %&gt;%
+  info_columns(
+    columns = &quot;date_time&quot;,
+    info = &quot;This column is full of timestamps.&quot;
+  ) %&gt;%
+  info_section(
+    section_name = &quot;further information&quot;, 
+    `examples and documentation` = &quot;Examples for how to use the `info_*()` functions
+    (and many more) are available at the 
+    [**pointblank** site](https://rich-iannone.github.io/pointblank/).&quot;
+  ) %&gt;%
+  incorporate()</code></pre>
+<p><img src="https://silly-jackson-b3dec8.netlify.app/informant_report_3.png" /></p>
+<p>This ultra-simple example report has some basic information on the <a href="https://rich-iannone.github.io/pointblank/reference/small_table.html"><code>small_table</code></a> dataset available in <strong>pointblank</strong>. The <strong>TABLE</strong> and <strong>COLUMNS</strong> sections are in their prescribed order and the section <strong>FURTHER INFORMATION</strong> follows those (having one subsection called <strong>EXAMPLES AND DOCUMENTATION</strong>).</p>
+<p>If all this new functionality for describing data tables wasn’t enough, this release also adds the <a href="https://rich-iannone.github.io/pointblank/reference/info_snippet.html"><code>info_snippet()</code></a> function to round out the collection of <code>info_*()</code> functions for this workflow. The idea here is to have some methodology for acquiring important bits of data from the target table (that’s <a href="https://rich-iannone.github.io/pointblank/reference/info_snippet.html"><code>info_snippet()</code></a>’s job) and then use <a href="https://rich-iannone.github.io/pointblank/reference/incorporate.html"><code>incorporate()</code></a> to grab those morsels of data and stitch them into the <em>info text</em> (via <code>{ }</code>).</p>
+<p>The <em>informant</em> produces an information report that can be printed, included in <strong>R Markdown</strong> documents and Shiny apps, or emailed with the <a href="https://rich-iannone.github.io/pointblank/reference/email_create.html"><code>email_create()</code></a> function. Here’s an information report I put together for the <a href="https://allisonhorst.github.io/palmerpenguins/reference/penguins.html"><code>penguins</code></a> dataset available in the <a href="https://github.com/allisonhorst/palmerpenguins"><strong>palmerpenguins</strong> package</a> (code is available in this <a href="https://gist.github.com/rich-iannone/9918703b60eea0dcd358d304511e6a08">GitHub Gist</a>).</p>
+<p><img src="https://silly-jackson-b3dec8.netlify.app/pointblank_informant_pp.png" /></p>
+<p>Because this workflow has <em>a lot</em> to it, two new articles were written to explain everything that can be done. Start with a <a href="https://rich-iannone.github.io/pointblank/articles/INFO-1.html">gentle introduction</a> and find out even more in an <a href="https://rich-iannone.github.io/pointblank/articles/INFO-2.html">advanced article</a>. It’s hoped that this method of creating a data report, data dictionary, metadata summary (or whatever you want to call it) is both enjoyable and brings great value to an organization that uses shared data.</p>
+</div>
+<div id="translations-and-locales" class="section level2">
+<h2>Translations and Locales</h2>
+<p>One of the design goals of <strong>pointblank</strong> is to produce reporting in several spoken languages. Many improvements have been made in v0.6 to continue down this road. For starters, three new translations are available: Portuguese (<code>"pt"</code>, Brazil), Chinese (<code>"zh"</code>, China mainland), and Russian (<code>"ru"</code>). With these additions, your validation reports, information reports, and table scans (via <a href="https://rich-iannone.github.io/pointblank/reference/scan_data.html"><code>scan_data()</code></a>) can now be produced in any of eight different languages. Secondly, all numerical values are formatted to match the base locale of the language, which just makes sense (and it’s possible to use a different locale ID, there’s over 700 options there).</p>
+<p><img src="https://silly-jackson-b3dec8.netlify.app/scan_data_langs.png" /></p>
+<p>Email generation through <a href="https://rich-iannone.github.io/pointblank/reference/email_create.html"><code>email_create()</code></a> will properly translate the agent report or the information report to any of the eight supported languages when generating the <a href="https://github.com/rstudio/blastula"><strong>blastula</strong></a> email object. How? It’s the language setting (<code>"lang"</code>) in the <em>agent</em> or the <em>informant</em> that is used to determine the language of email message content.</p>
+<p><img src="https://silly-jackson-b3dec8.netlify.app/pointblank_email_fr.png" /></p>
+</div>
+<div id="more-new-functions" class="section level2">
+<h2>More New Functions</h2>
+<p>Database tables work exceedingly well as table sources in <strong>pointblank</strong>. While it’s not too difficult to obtain a <code>tbl_dbi</code> object, this new release adds a function to make that process ridiculously easy: <a href="https://rich-iannone.github.io/pointblank/reference/db_tbl.html"><code>db_tbl()</code></a>. It allows us to access a database table from a selection of popular database types. We only need to supply one of the following short names and the correct DB driver will be used:</p>
+<ul>
+<li><code>"postgres"</code> (PostgreSQL)</li>
+<li><code>"mysql"</code> (MySQL)</li>
+<li><code>"maria"</code> (MariaDB)</li>
+<li><code>"duckdb"</code> (DuckDB)</li>
+<li><code>"sqlite"</code> (SQLite)</li>
+</ul>
+<p>If none of these cover your needs you can take a DIY approach and supply any driver function you want so that the vital connection is made.</p>
+<p>Here’s an example where we might get the <a href="https://github.com/rich-iannone/intendo"><code>intendo::intendo_revenue</code></a> table into an in-memory <strong>DuckDB</strong> database table. We are creating a <strong>pointblank</strong> <em>agent</em> for use in a data validation workflow, so, we could pass the <a href="https://rich-iannone.github.io/pointblank/reference/db_tbl.html"><code>db_tbl()</code></a> call to the <code>read_fn</code> argument of <a href="https://rich-iannone.github.io/pointblank/reference/create_agent.html"><code>create_agent()</code></a>.</p>
+<pre class="r"><code>agent &lt;- 
+  create_agent(
+      read_fn = 
+        ~ db_tbl(
+          db = &quot;duckdb&quot;,
+          dbname = &quot;:memory:&quot;,
+          table = intendo::intendo_revenue,
+        ),
+      tbl_name = &quot;revenue&quot;,
+      label = &quot;The **intendo** revenue table.&quot;
+    ) %&gt;%
+    &lt;VALIDATION FUNCTIONS&gt; %&gt;%
+    interrogate()</code></pre>
+<p>Take a look at the <a href="https://rich-iannone.github.io/pointblank/articles/VALID-I.html"><em>Introduction to the Data Quality Reporting Workflow (<strong>VALID-I</strong>)</em> article</a> for more information on how this workflow can be used.</p>
+<p>To make logging easier during data validation, the <a href="https://rich-iannone.github.io/pointblank/reference/log4r_step.html"><code>log4r_step()</code></a> function has been added. This function is used as an action in an <a href="https://rich-iannone.github.io/pointblank/reference/action_levels.html"><code>action_levels()</code></a> function call. This allows for the production of logs based on failure conditions (i.e., <code>warn</code>, <code>stop</code>, and <code>notify</code>).</p>
+<pre class="r"><code>al &lt;- 
+  action_levels(
+    warn_at = 0.1,
+    stop_at = 0.2,
+    fns = list(
+      warn = ~ log4r_step(x),
+      stop = ~ log4r_step(x)
+    )
+  )</code></pre>
+<p>Printing this <code>al</code> object will show us the failure threshold settings and the associated actions for the failure conditions (this print method is <strong>NEW</strong> for v0.6 🎊🎉).</p>
+<pre><code>── The `action_levels` settings ────────────────────────────────────────────
+WARN failure threshold of 0.1 of all test units.
+\fns\ ~ log4r_step(x)
+STOP failure threshold of 0.2 of all test units.
+\fns\ ~ log4r_step(x)
+──────────────────────────────────────────────────────────────────────────</code></pre>
+<p>Using the <code>al</code> object with our validation workflow will result in failures at certain validation steps to be logged. By default, logging is to a file named <code>"pb_log_file"</code> in the working directory but the <a href="https://rich-iannone.github.io/pointblank/reference/log4r_step.html"><code>log4r_step()</code></a> function is flexible for allowing any <a href="https://github.com/johnmyleswhite/log4r"><strong>log4r</strong></a> <em>appender</em> to be used. Running the following data validation code</p>
+<pre class="r"><code>agent &lt;- 
+  create_agent(
+    tbl = small_table,
+    tbl_name = &quot;small_table&quot;,
+    label = &quot;`log4r_step()` Example&quot;,
+    actions = al
+  ) %&gt;%
+  col_is_posix(vars(date_time)) %&gt;%
+  col_vals_in_set(vars(f), set = c(&quot;low&quot;, &quot;mid&quot;)) %&gt;%
+  col_vals_lt(vars(a), value = 7) %&gt;%
+  col_vals_regex(vars(b), regex = &quot;^[0-9]-[a-w]{3}-[2-9]{3}$&quot;) %&gt;%
+  col_vals_between(vars(d), left = 0, right = 4000) %&gt;%
+  interrogate()
+  
+agent</code></pre>
+<p>will print a validation report that looks like this</p>
+<p><img src="https://silly-jackson-b3dec8.netlify.app/log4r_validation_report.png" /></p>
+<p>but it will also produce new log entries in the file <code>"pb_log_file"</code>, which is created if it doesn’t exist. Upon inspection with <code>readLines()</code> we see four entries (one for each validation step with at least a <code>WARN</code> condition).</p>
+<pre class="r"><code>readLines(&quot;pb_log_file&quot;)</code></pre>
+<pre><code>#&gt; [1] &quot;ERROR [2020-11-24 10:26:07] Step 2 exceeded the STOP failure threshold (f_failed = 0.46154) [&#39;col_vals_in_set&#39;]&quot; 
+#&gt; [2] &quot;WARN  [2020-11-24 10:26:07] Step 3 exceeded the WARN failure threshold (f_failed = 0.15385) [&#39;col_vals_lt&#39;]&quot;     
+#&gt; [3] &quot;ERROR [2020-11-24 10:26:07] Step 4 exceeded the STOP failure threshold (f_failed = 0.53846) [&#39;col_vals_regex&#39;]&quot;  
+#&gt; [4] &quot;WARN  [2020-11-24 10:26:07] Step 5 exceeded the WARN failure threshold (f_failed = 0.07692) [&#39;col_vals_between&#39;]&quot;</code></pre>
+</div>
+<div id="dozens-of-other-small-changes-here-and-there" class="section level2">
+<h2>Dozens of Other Small Changes Here and There</h2>
+<p>This release makes lots of small improvements to almost all aspects of the package. Documentation got some much-needed love here, adding several articles that explain the different <em>Validation Workflows</em> (there are <a href="https://rich-iannone.github.io/pointblank/articles/validation_workflows.html">six of ’em</a>) and articles that go over the <em>Information Management</em> workflow. On top of that, there is improved documentation for almost every function in the package.</p>
+<p>One thing that was very important to improve upon was the overall appearance of the agent report (<em>aka</em> the validation report). This reporting for data validation needs to be in tip-top shape, so, here’s a quick listing of ten things that changed for the better:</p>
+<ol style="list-style-type: decimal">
+<li>more tooltips</li>
+<li>the tooltips are much improved (they animate, have larger text, and are snappier than the previous ones)</li>
+<li>SVGs are now used as symbols for the validation steps instead of blurry PNGs</li>
+<li>less confusing glyphs are now used in the <code>TBL</code> column</li>
+<li>the <em>agent</em> label can be expressed as Markdown and looks nicer in the report</li>
+<li>the table type (and name, if supplied as <code>tbl_name</code>) is shown in the header</li>
+<li>validation threshold levels also shown in the table header</li>
+<li>interrogation starting/ending timestamps are shown (along with duration) in the table footer</li>
+<li>the table font has been changed to be less default-y</li>
+<li>adjustments to table borders and cell shading were made for better readability</li>
+</ol>
+<p>Whoa! That’s a lot of stuff. But, in the end, the table does look nice and it packs in a lot of information. There are live examples of validation reports for the <a href="https://github.com/rich-iannone/intendo"><code>intendo::intendo_revenue</code></a> table for three different data sources: <a href="https://rpubs.com/rich_i/intendo_rev_postgres">PostgreSQL</a>, <a href="https://rpubs.com/rich_i/intendo_rev_mysql">MySQL</a>, and <a href="https://rpubs.com/rich_i/intendo_rev_duckdb">DuckDB</a>. In future releases we can expect even more improvements (across all <strong>pointblank</strong> reporting outputs).</p>
+</div>
+<div id="closing-remarks" class="section level2">
+<h2>Closing Remarks</h2>
+<p>All in all, the changes made in v0.6 have really improved the package! And even though there have been a ton of changes for the better, we have not skimped on QC measures. For a package that does validation, it’s super important to ensure that everything is as correct as possible. To make this possible, <strong>pointblank</strong> has the following quality measures in place:</p>
+<ul>
+<li><a href="https://github.com/rich-iannone/pointblank/tree/master/tests/testthat"><em>lots</em> of unit tests</a> (now over 3,000!)</li>
+<li>a <a href="https://github.com/rich-iannone/pointblank/actions?query=workflow%3Alint">code linting step on CI</a></li>
+<li>testing of all workflows with tables on live databases</li>
+<li>adoption of <a href="https://bestpractices.coreinfrastructure.org/en/projects/4310">CII Best practices</a></li>
+<li>continuation of improvements to documentation (for individual functions and for long-form articles)</li>
+</ul>
+<p>We have a lot planned for the v0.7 and v0.8 releases, so the future for <strong>pointblank</strong> is pretty exciting! You can take a look at the updating table at the bottom of the <a href="https://github.com/rich-iannone/pointblank">project README</a> for some insight on where development is headed. As always, feel free to file an <a href="https://github.com/rich-iannone/pointblank/issues">issue</a> if you encounter a bug, have usage questions, or want to share ideas to make this package better.</p>
+</div>

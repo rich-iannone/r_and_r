@@ -1,0 +1,205 @@
+---
+title: pointblank v0.6
+author: Rich
+date: '2020-11-24'
+slug: pointblank-0-6
+categories: []
+tags:
+  - R Packages
+subtitle: ''
+summary: 'With v0.6 of **pointblank** we now have a workflow for describing our data tables, and, many other things have improved.'
+authors: []
+lastmod: '2020-11-24T10:00:00-05:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+```{r setup, echo=FALSE, include=FALSE}
+knitr::opts_chunk$set(include = FALSE)
+library(pointblank)
+library(tidyverse)
+```
+
+With the release of **pointblank** v0.6, workflows for the validation of tabular data have been refined. On top of those improvements, we have a new workflow for *describing* our tabular data. There’s really so much that's new in the release that we can only go over the big stuff in this post. For everything else, have a look at the [*Release Notes*](https://github.com/rich-iannone/pointblank/releases/tag/v0.6.0). 
+
+## Pointblank Information
+
+![](https://silly-jackson-b3dec8.netlify.app/info_fns.png)
+
+The new *Information Management* workflow is full of features that help you to describe tables and keep on top of changes to them. We added the [`create_informant()`](https://rich-iannone.github.io/pointblank/reference/create_informant.html) function to create an *informant* object that is meant to hold information (as much as you want, really) for a target table, with reporting features geared toward communication.
+
+The informant works in conjunction with functions to facilitate the entry of *info text*: [`info_columns()`](https://rich-iannone.github.io/pointblank/reference/info_columns.html), [`info_tabular()`](https://rich-iannone.github.io/pointblank/reference/info_tabular.html), and [`info_section()`](https://rich-iannone.github.io/pointblank/reference/info_section.html). These functions are focused on describing columns, the table proper, and for reporting on any other aspects of the table. We can even glean little snippets of information from the target table and mix them into the *info text* to make the overall information more dynamic. The all-important [`incorporate()`](https://rich-iannone.github.io/pointblank/reference/incorporate.html) function concludes this workflow, reaching out to the target table to ensure that queries to it are made and that table properties are synchronized with the reporting.
+
+``` r
+informant <- 
+  create_informant(
+    read_fn = ~ small_table,
+    tbl_name = "small_table",
+    label = "Example No. 1"
+  ) %>%
+  info_tabular(
+    description = "This table is included in the **pointblank** pkg."
+  ) %>%
+  info_columns(
+    columns = "date_time",
+    info = "This column is full of timestamps."
+  ) %>%
+  info_section(
+    section_name = "further information", 
+    `examples and documentation` = "Examples for how to use the `info_*()` functions
+    (and many more) are available at the 
+    [**pointblank** site](https://rich-iannone.github.io/pointblank/)."
+  ) %>%
+  incorporate()
+```
+
+![](https://silly-jackson-b3dec8.netlify.app/informant_report_3.png)
+
+This ultra-simple example report has some basic information on the [`small_table`](https://rich-iannone.github.io/pointblank/reference/small_table.html) dataset available in **pointblank**. The **TABLE** and **COLUMNS** sections are in their prescribed order and the section **FURTHER INFORMATION** follows those (having one subsection called **EXAMPLES AND DOCUMENTATION**).
+
+If all this new functionality for describing data tables wasn't enough, this release also adds the [`info_snippet()`](https://rich-iannone.github.io/pointblank/reference/info_snippet.html) function to round out the collection of `info_*()` functions for this workflow. The idea here is to have some methodology for acquiring important bits of data from the target table (that's [`info_snippet()`](https://rich-iannone.github.io/pointblank/reference/info_snippet.html)'s job) and then use [`incorporate()`](https://rich-iannone.github.io/pointblank/reference/incorporate.html) to grab those morsels of data and stitch them into the *info text* (via `{ }`).
+
+The *informant* produces an information report that can be printed, included in **R Markdown** documents and Shiny apps, or emailed with the [`email_create()`](https://rich-iannone.github.io/pointblank/reference/email_create.html) function. Here's an information report I put together for the [`penguins`](https://allisonhorst.github.io/palmerpenguins/reference/penguins.html) dataset available in the [**palmerpenguins** package](https://github.com/allisonhorst/palmerpenguins) (code is available in this [GitHub Gist](https://gist.github.com/rich-iannone/9918703b60eea0dcd358d304511e6a08)).
+
+![](https://silly-jackson-b3dec8.netlify.app/pointblank_informant_pp.png)
+
+Because this workflow has *a lot* to it, two new articles were written to explain everything that can be done. Start with a [gentle introduction](https://rich-iannone.github.io/pointblank/articles/INFO-1.html) and find out even more in an [advanced article](https://rich-iannone.github.io/pointblank/articles/INFO-2.html). It's hoped that this method of creating a data report, data dictionary, metadata summary (or whatever you want to call it) is both enjoyable and brings great value to an organization that uses shared data.
+
+## Translations and Locales
+
+One of the design goals of **pointblank** is to produce reporting in several spoken languages. Many improvements have been made in v0.6 to continue down this road. For starters, three new translations are available: Portuguese (`"pt"`, Brazil), Chinese (`"zh"`, China mainland), and Russian (`"ru"`). With these additions, your validation reports, information reports, and table scans (via [`scan_data()`](https://rich-iannone.github.io/pointblank/reference/scan_data.html)) can now be produced in any of eight different languages. Secondly, all numerical values are formatted to match the base locale of the language, which just makes sense (and it's possible to use a different locale ID, there's over 700 options there).
+
+![](https://silly-jackson-b3dec8.netlify.app/scan_data_langs.png)
+
+Email generation through [`email_create()`](https://rich-iannone.github.io/pointblank/reference/email_create.html) will properly translate the agent report or the information report to any of the eight supported languages when generating the [**blastula**](https://github.com/rstudio/blastula) email object. How? It's the language setting (`"lang"`) in the *agent* or the *informant* that is used to determine the language of email message content.
+
+![](https://silly-jackson-b3dec8.netlify.app/pointblank_email_fr.png)
+
+## More New Functions
+
+Database tables work exceedingly well as table sources in **pointblank**. While it’s not too difficult to obtain a `tbl_dbi` object, this new release adds a function to make that process ridiculously easy: [`db_tbl()`](https://rich-iannone.github.io/pointblank/reference/db_tbl.html). It allows us to access a database table from a selection of popular database types. We only need to supply one of the following short names and the correct DB driver will be used:
+
+- `"postgres"` (PostgreSQL)
+- `"mysql"` (MySQL)
+- `"maria"` (MariaDB)
+- `"duckdb"` (DuckDB)
+- `"sqlite"` (SQLite)
+
+If none of these cover your needs you can take a DIY approach and supply any driver function you want so that the vital connection is made.
+
+Here's an example where we might get the [`intendo::intendo_revenue`](https://github.com/rich-iannone/intendo) table into an in-memory **DuckDB** database table. We are creating a **pointblank** *agent* for use in a data validation workflow, so, we could pass the [`db_tbl()`](https://rich-iannone.github.io/pointblank/reference/db_tbl.html) call to the `read_fn` argument of [`create_agent()`](https://rich-iannone.github.io/pointblank/reference/create_agent.html).
+
+``` r
+agent <- 
+  create_agent(
+      read_fn = 
+        ~ db_tbl(
+          db = "duckdb",
+          dbname = ":memory:",
+          table = intendo::intendo_revenue,
+        ),
+      tbl_name = "revenue",
+      label = "The **intendo** revenue table."
+    ) %>%
+    <VALIDATION FUNCTIONS> %>%
+    interrogate()
+```
+
+Take a look at the [*Introduction to the Data Quality Reporting Workflow (**VALID-I**)* article](https://rich-iannone.github.io/pointblank/articles/VALID-I.html) for more information on how this workflow can be used.
+
+To make logging easier during data validation, the [`log4r_step()`](https://rich-iannone.github.io/pointblank/reference/log4r_step.html) function has been added. This function is used as an action in an [`action_levels()`](https://rich-iannone.github.io/pointblank/reference/action_levels.html) function call. This allows for the production of logs based on failure conditions (i.e., `warn`, `stop`, and `notify`).
+
+``` r
+al <- 
+  action_levels(
+    warn_at = 0.1,
+    stop_at = 0.2,
+    fns = list(
+      warn = ~ log4r_step(x),
+      stop = ~ log4r_step(x)
+    )
+  )
+```
+
+Printing this `al` object will show us the failure threshold settings and the associated actions for the failure conditions (this print method is **NEW** for v0.6 🎊🎉).
+
+```
+── The `action_levels` settings ────────────────────────────────────────────
+WARN failure threshold of 0.1 of all test units.
+\fns\ ~ log4r_step(x)
+STOP failure threshold of 0.2 of all test units.
+\fns\ ~ log4r_step(x)
+──────────────────────────────────────────────────────────────────────────
+```
+
+Using the `al` object with our validation workflow will result in failures at certain validation steps to be logged. By default, logging is to a file named `"pb_log_file"` in the working directory but the [`log4r_step()`](https://rich-iannone.github.io/pointblank/reference/log4r_step.html) function is flexible for allowing any [**log4r**](https://github.com/johnmyleswhite/log4r) *appender* to be used. Running the following data validation code
+
+``` r
+agent <- 
+  create_agent(
+    tbl = small_table,
+    tbl_name = "small_table",
+    label = "`log4r_step()` Example",
+    actions = al
+  ) %>%
+  col_is_posix(vars(date_time)) %>%
+  col_vals_in_set(vars(f), set = c("low", "mid")) %>%
+  col_vals_lt(vars(a), value = 7) %>%
+  col_vals_regex(vars(b), regex = "^[0-9]-[a-w]{3}-[2-9]{3}$") %>%
+  col_vals_between(vars(d), left = 0, right = 4000) %>%
+  interrogate()
+  
+agent
+```
+
+will print a validation report that looks like this
+
+![](https://silly-jackson-b3dec8.netlify.app/log4r_validation_report.png)
+
+but it will also produce new log entries in the file `"pb_log_file"`, which is created if it doesn't exist. Upon inspection with `readLines()` we see four entries (one for each validation step with at least a `WARN` condition).
+
+``` r
+readLines("pb_log_file")
+```
+
+```
+#> [1] "ERROR [2020-11-24 10:26:07] Step 2 exceeded the STOP failure threshold (f_failed = 0.46154) ['col_vals_in_set']" 
+#> [2] "WARN  [2020-11-24 10:26:07] Step 3 exceeded the WARN failure threshold (f_failed = 0.15385) ['col_vals_lt']"     
+#> [3] "ERROR [2020-11-24 10:26:07] Step 4 exceeded the STOP failure threshold (f_failed = 0.53846) ['col_vals_regex']"  
+#> [4] "WARN  [2020-11-24 10:26:07] Step 5 exceeded the WARN failure threshold (f_failed = 0.07692) ['col_vals_between']"
+```
+
+## Dozens of Other Small Changes Here and There
+
+This release makes lots of small improvements to almost all aspects of the package. Documentation got some much-needed love here, adding several articles that explain the different *Validation Workflows* (there are [six of 'em](https://rich-iannone.github.io/pointblank/articles/validation_workflows.html)) and articles that go over the *Information Management* workflow. On top of that, there is improved documentation for almost every function in the package.
+
+One thing that was very important to improve upon was the overall appearance of the agent report (*aka* the validation report). This reporting for data validation needs to be in tip-top shape, so, here’s a quick listing of ten things that changed for the better:
+
+(1) more tooltips
+(2) the tooltips are much improved (they animate, have larger text, and are snappier than the previous ones)
+(3) SVGs are now used as symbols for the validation steps instead of blurry PNGs
+(4) less confusing glyphs are now used in the `TBL` column
+(5) the *agent* label can be expressed as Markdown and looks nicer in the report
+(6) the table type (and name, if supplied as `tbl_name`) is shown in the header
+(7) validation threshold levels also shown in the table header
+(8) interrogation starting/ending timestamps are shown (along with duration) in the table footer
+(9) the table font has been changed to be less default-y
+(10) adjustments to table borders and cell shading were made for better readability
+
+Whoa! That’s a lot of stuff. But, in the end, the table does look nice and it packs in a lot of information. There are live examples of validation reports for the [`intendo::intendo_revenue`](https://github.com/rich-iannone/intendo) table for three different data sources: [PostgreSQL](https://rpubs.com/rich_i/intendo_rev_postgres), [MySQL](https://rpubs.com/rich_i/intendo_rev_mysql), and [DuckDB](https://rpubs.com/rich_i/intendo_rev_duckdb). In future releases we can expect even more improvements (across all **pointblank** reporting outputs).
+
+## Closing Remarks
+
+All in all, the changes made in v0.6 have really improved the package! And even though there have been a ton of changes for the better, we have not skimped on QC measures. For a package that does validation, it's super important to ensure that everything is as correct as possible. To make this possible, **pointblank** has the following quality measures in place: 
+
+- [*lots* of unit tests](https://github.com/rich-iannone/pointblank/tree/master/tests/testthat) (now over 3,000!)
+- a [code linting step on CI](https://github.com/rich-iannone/pointblank/actions?query=workflow%3Alint) 
+- testing of all workflows with tables on live databases
+- adoption of [CII Best practices](https://bestpractices.coreinfrastructure.org/en/projects/4310)
+- continuation of improvements to documentation (for individual functions and for long-form articles)
+
+We have a lot planned for the v0.7 and v0.8 releases, so the future for **pointblank** is pretty exciting! You can take a look at the updating table at the bottom of the [project README](https://github.com/rich-iannone/pointblank) for some insight on where development is headed. As always, feel free to file an [issue](https://github.com/rich-iannone/pointblank/issues) if you encounter a bug, have usage questions, or want to share ideas to make this package better.
